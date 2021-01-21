@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:3.1-bionic AS build
+WORKDIR /build
+
+# copy csproj and restore as distinct layers
+COPY scr/otusapp.blank/otusapp.blank.csproj ./otusapp.blank/otusapp.blank.csproj.csproj
+RUN dotnet restore otusapp.blank/otusapp.blank.csproj.csproj
+
+# copy everything else and build app
+COPY scr ./
+RUN dotnet publish otusapp.blank/otusapp.blank.csproj -c release -o /app --no-restore
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/aspnet:3.1-bionic
+WORKDIR /app
+COPY --from=build /app ./
+
+ENTRYPOINT ["dotnet", "otusapp.blank.dll"]
+CMD ["--port=8000"]

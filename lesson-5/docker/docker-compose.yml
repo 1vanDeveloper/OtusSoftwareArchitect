@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  otusapp.blank:
+    container_name: otusapp.blank
+    image: visiuswebcr.azurecr.io/visius-data-processor:$(Build.BuildId)
+    environment:
+    - ASPNETCORE_URLS=http://+:8000
+
+    ports:
+    - 8000:8000

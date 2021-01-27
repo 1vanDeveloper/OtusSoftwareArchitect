@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: otus-app-pod
+  labels:
+    name: otus-app
+spec:
+  containers:
+  - name: otus-app
+    image: 1vandev/otus-app:v2
+    resources:
+      limits:
+        memory: "32Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80

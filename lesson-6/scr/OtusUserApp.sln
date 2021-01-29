@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtusUserApp.Host", "OtusUserApp.Host\OtusUserApp.Host.csproj", "{2EA21710-15A8-42DB-BE51-9BEA70E6D6DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtusUserApp.Domain", "OtusUserApp.Domain\OtusUserApp.Domain.csproj", "{D9F736EA-2D83-4090-B1F1-F051BA5E9B6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EA21710-15A8-42DB-BE51-9BEA70E6D6DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA21710-15A8-42DB-BE51-9BEA70E6D6DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA21710-15A8-42DB-BE51-9BEA70E6D6DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA21710-15A8-42DB-BE51-9BEA70E6D6DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9F736EA-2D83-4090-B1F1-F051BA5E9B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9F736EA-2D83-4090-B1F1-F051BA5E9B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9F736EA-2D83-4090-B1F1-F051BA5E9B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9F736EA-2D83-4090-B1F1-F051BA5E9B6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5FE6BB9-F343-4C9C-BAE2-D126348E3BA1}
+	EndGlobalSection
+EndGlobal

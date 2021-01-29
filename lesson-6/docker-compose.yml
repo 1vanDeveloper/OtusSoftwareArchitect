@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  otusapp.blank:
+    container_name: otusapp.blank
+    build: 
+      context: .
+      dockerfile: docker/dockerfile
+    environment:
+    - ASPNETCORE_URLS=http://+:8000
+
+    ports:
+    - 8000:8000

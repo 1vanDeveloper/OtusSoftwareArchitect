@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using OtusUserApp.Domain.Models;
 
 namespace OtusUserApp.Host.Models
@@ -8,11 +7,13 @@ namespace OtusUserApp.Host.Models
     /// </summary>
     public class UserDto: UserCreationDto
     {
+        /// <inheritdoc />
         public UserDto()
         {
             
         }
 
+        /// <inheritdoc />
         public UserDto(User user) : base(user)
         {
             Id = user.Id;
@@ -22,7 +23,8 @@ namespace OtusUserApp.Host.Models
         /// Идентификатор
         /// </summary>
         public long Id { get; set; }
-        
+
+        /// <inheritdoc />
         public override User ConvertToUser()
         {
             var user = base.ConvertToUser();

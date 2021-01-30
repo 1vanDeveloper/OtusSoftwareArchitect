@@ -8,11 +8,18 @@ namespace OtusUserApp.Host.Models
     /// </summary>
     public class UserParamsDto
     {
+        /// <summary>
+        /// Constructor for deserializing
+        /// </summary>
         public UserParamsDto()
         {
             
         }
         
+        /// <summary>
+        /// Constructor for <see cref="User"/> to UserParamsDto converting
+        /// </summary>
+        /// <param name="user"></param>
         public UserParamsDto(User user)
         {
             FirstName = user.FirstName;

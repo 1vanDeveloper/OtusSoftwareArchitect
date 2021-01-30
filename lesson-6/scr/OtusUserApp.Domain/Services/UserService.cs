@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OtusUserApp.Domain.Models;
@@ -10,11 +11,16 @@ namespace OtusUserApp.Domain.Services
     {
         private readonly AppDbContext _dbContext;
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dbContext"></param>
         public UserService(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         
+        /// <inheritdoc />
         public async Task<User> CreateUserAsync(User user)
         {
             var createdUser = (await _dbContext.Users.AddAsync(user)).Entity;
@@ -23,15 +29,27 @@ namespace OtusUserApp.Domain.Services
             return createdUser;
         }
 
-        public Task<User> GetUserAsync(long userId)
+        /// <inheritdoc />
+        public async Task<User> GetUserAsync(long userId)
         {
-            return _dbContext.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            if (dbUser == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return dbUser;
         }
 
+        /// <inheritdoc />
         public async Task UpdateUserAsync(User user)
         {
             var dbUser = await _dbContext.Users
-                .SingleOrDefaultAsync(g => g.Id == user.Id) ?? throw new KeyNotFoundException($"User (with id {user.Id}) is not found");
+                .SingleOrDefaultAsync(g => g.Id == user.Id);
+            if (dbUser == null)
+            {
+                throw new KeyNotFoundException();
+            }
 
             dbUser.FirstName = user.FirstName;
             dbUser.LastName = user.LastName;
@@ -43,10 +61,15 @@ namespace OtusUserApp.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task RemoveUserAsync(long userId)
         {
             var dbUser = await _dbContext.Users
-                .SingleOrDefaultAsync(g => g.Id == userId) ?? throw new KeyNotFoundException($"User (with id {userId}) is not found");
+                .SingleOrDefaultAsync(g => g.Id == userId);
+            if (dbUser == null)
+            {
+                throw new KeyNotFoundException();
+            }
 
             _dbContext.Remove(dbUser);
             await _dbContext.SaveChangesAsync();

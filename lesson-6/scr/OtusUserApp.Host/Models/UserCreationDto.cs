@@ -8,11 +8,13 @@ namespace OtusUserApp.Host.Models
     /// </summary>
     public class UserCreationDto: UserParamsDto
     {
+        /// <inheritdoc />
         public UserCreationDto()
         {
             
         }
 
+        /// <inheritdoc />
         public UserCreationDto(User user) : base(user)
         {
             UserName = user.UserName;
@@ -24,6 +26,7 @@ namespace OtusUserApp.Host.Models
         [MaxLength(256)]
         public string UserName { get; set; }
 
+        /// <inheritdoc />
         public override User ConvertToUser()
         {
             var user = base.ConvertToUser();

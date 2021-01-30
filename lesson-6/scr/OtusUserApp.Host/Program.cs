@@ -12,8 +12,15 @@ using host = Microsoft.Extensions.Hosting.Host;
 
 namespace OtusUserApp.Host
 {
+    /// <summary>
+    /// The main class of program
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// The start function
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -31,6 +38,11 @@ namespace OtusUserApp.Host
             host.Run();
         }
 
+        /// <summary>
+        /// Создание хоста приложения
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
@@ -43,6 +55,11 @@ namespace OtusUserApp.Host
             var logger = serviceProvider.GetService<ILogger<Program>>();
             var configuration = serviceProvider.GetService<IConfiguration>();
             var appSettings = serviceProvider.GetService<IAppSettings>();
+            if (appSettings == null)
+            {
+                return;
+            }
+            
             var allConfiguration = configuration.AsEnumerable().Concat(new[]
                 {
                     new KeyValuePair<string, string>(nameof(appSettings.UsersDbConnectionString),
@@ -52,7 +69,10 @@ namespace OtusUserApp.Host
 
             var resString = string.Join("\n", allConfiguration);
 
-            logger.LogInformation($"Application IConfiguration contains:\n{resString}");
+            const string logErrorInfo = "Application IConfiguration contains:\n{0}";
+            
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+            logger.LogInformation(string.Format(logErrorInfo, resString));
         }
     }
 }

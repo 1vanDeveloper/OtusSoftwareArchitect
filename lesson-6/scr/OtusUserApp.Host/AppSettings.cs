@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Microsoft.Extensions.Configuration;
-using OtusUserApp.Host;
 using OtusUserApp.Host.Extensions;
 
 namespace OtusUserApp.Host
@@ -10,9 +9,9 @@ namespace OtusUserApp.Host
     {
         public AppSettings(IConfiguration configuration)
         {
-            //UsersDbConnectionString = GetDbConnectionString(configuration); 
+            UsersDbConnectionString = GetDbConnectionString(configuration); 
 
-            UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
+            //UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
         }
 
         public string UsersDbConnectionString { get; }
@@ -23,7 +22,7 @@ namespace OtusUserApp.Host
             var dbDatabase = configuration.GetValueOrThrow<string>("USERS_PG_DATABASE");
             var dbUsername = configuration.GetValueOrThrow<string>("USERS_PG_USERNAME");
             var dbPassword = configuration.GetValueOrThrow<string>("USERS_PG_PASSWORD");
-            var useSSL = configuration.GetValueOrThrow<bool>("USE_SSL_PG_CONNECTION");
+            var useSsl = configuration.GetValueOrThrow<bool>("USE_SSL_PG_CONNECTION");
 
             var dbPort = configuration.GetValueOrThrow<string>("USERS_PG_PORT");
 
@@ -39,7 +38,7 @@ namespace OtusUserApp.Host
             connectionStringBuilder.Append($"Database={dbDatabase};");
             connectionStringBuilder.Append($"Username={dbUsername};");
             connectionStringBuilder.Append($"Password=\"{dbPassword}\";");
-            if (useSSL)
+            if (useSsl)
             {
                 connectionStringBuilder.Append("SslMode=Require;");
             }

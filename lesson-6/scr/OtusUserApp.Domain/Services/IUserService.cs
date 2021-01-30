@@ -12,8 +12,8 @@ namespace OtusUserApp.Domain.Services
 
         Task<User> GetUserAsync(long userId);
 
-        Task<bool> TryUpdateUserAsync(User user);
+        Task UpdateUserAsync(User user);
 
-        Task<bool> TryRemoveUserAsync(long userId);
+        Task RemoveUserAsync(long userId);
     }
 }

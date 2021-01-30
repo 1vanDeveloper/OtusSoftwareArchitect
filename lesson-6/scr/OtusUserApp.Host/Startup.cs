@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +25,14 @@ namespace OtusUserApp.Host
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var appSettings = new AppSettings(Configuration);
+            
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddControllers(cfg => { cfg.Filters.Add(new ValidateModelAttribute()); })
                 .AddNewtonsoftJson();
 
-            services.AddDomainServices(string.Empty);
+            services.AddDomainServices(appSettings.UsersDbConnectionString);
+            
             services.AddSwaggerGen(c =>
             {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

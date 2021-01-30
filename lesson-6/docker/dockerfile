@@ -2,17 +2,17 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /build
 
 # copy csproj and restore as distinct layers
-COPY scr/otusapp.blank/otusapp.blank.csproj ./otusapp.blank/otusapp.blank.csproj.csproj
-RUN dotnet restore otusapp.blank/otusapp.blank.csproj.csproj
+COPY scr/OtusUserApp.Domain/OtusUserApp.Domain.csproj ./OtusUserApp.Domain/OtusUserApp.Domain.csproj
+COPY scr/OtusUserApp.Host/OtusUserApp.Host.csproj ./OtusUserApp.Host/OtusUserApp.Host.csproj
+RUN dotnet restore OtusUserApp.Host/OtusUserApp.Host.csproj
 
 # copy everything else and build app
 COPY scr ./
-RUN dotnet publish otusapp.blank/otusapp.blank.csproj -c release -o /app --no-restore
+RUN dotnet publish OtusUserApp.Host/OtusUserApp.Host.csproj -c release -o /app --no-restore
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal
 WORKDIR /app
 COPY --from=build /app ./
 
-ENTRYPOINT ["dotnet", "otusapp.blank.dll"]
-CMD ["--port=8000"]
+ENTRYPOINT ["dotnet", "OtusUserApp.Host.dll"]

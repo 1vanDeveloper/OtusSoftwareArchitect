@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using OtusUserApp.Domain.Services;
 using OtusUserApp.Host.Models;
 
@@ -17,13 +16,12 @@ namespace OtusUserApp.Host.Controllers
     [Route("user")]
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
-        
-        public UserController(ILogger<UserController> logger, IUserService userService)
+
+        /// <inheritdoc />
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace OtusUserApp.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserDto>> GetUserAsync(long userId)
         {
-            if (userId == default)
+            if (userId <= 0)
             {
                 return BadRequest(new ErrorDto
                 {
@@ -93,7 +91,7 @@ namespace OtusUserApp.Host.Controllers
                 var dbUser = await _userService.GetUserAsync(userId);
                 return Ok(new UserDto(dbUser));
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return new NotFoundResult();
             }
@@ -123,7 +121,7 @@ namespace OtusUserApp.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> UpdateUserAsync(long userId, [FromBody] UserParamsDto user)
         {
-            if (user == default || userId == default)
+            if (user == default || userId <= 0)
             {
                 return BadRequest(new ErrorDto
                 {
@@ -140,7 +138,7 @@ namespace OtusUserApp.Host.Controllers
                 await _userService.UpdateUserAsync(dbUser);
                 return Ok();
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return new NotFoundResult();
             }
@@ -169,7 +167,7 @@ namespace OtusUserApp.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> RemoveUserAsync(long userId)
         {
-            if (userId == default)
+            if (userId <= 0)
             {
                 return BadRequest(new ErrorDto
                 {
@@ -183,7 +181,7 @@ namespace OtusUserApp.Host.Controllers
                 await _userService.RemoveUserAsync(userId);
                 return Ok();
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return new NotFoundResult();
             }

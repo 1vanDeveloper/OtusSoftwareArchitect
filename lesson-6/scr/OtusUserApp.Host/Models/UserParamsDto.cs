@@ -4,7 +4,7 @@ using OtusUserApp.Domain.Models;
 namespace OtusUserApp.Host.Models
 {
     /// <summary>
-    /// Класс передачи информации о пользователе по REST API
+    /// Класс передачи изменяемых параметров о пользователе
     /// </summary>
     public class UserParamsDto
     {
@@ -15,18 +15,11 @@ namespace OtusUserApp.Host.Models
         
         public UserParamsDto(User user)
         {
-            UserName = user.UserName;
             FirstName = user.FirstName;
             LastName = user.LastName;
             Email = user.Email;
             Phone = user.Phone;
         }
-        
-        /// <summary>
-        /// Логин
-        /// </summary>
-        [MaxLength(256)]
-        public string UserName { get; set; }
         
         /// <summary>
         /// Имя
@@ -58,7 +51,6 @@ namespace OtusUserApp.Host.Models
         {
             return new User
             {
-                UserName = UserName,
                 FirstName = FirstName,
                 LastName = LastName,
                 Email = Email,

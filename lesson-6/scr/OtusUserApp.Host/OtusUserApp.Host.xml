@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OtusUserApp.Host</name>
+    </assembly>
+    <members>
+        <member name="T:OtusUserApp.Host.AppSettings">
+            <inheritdoc />
+        </member>
+        <member name="T:OtusUserApp.Host.Attributes.ValidateModelAttribute">
+            <summary>
+                Атрибут валидации моделей.
+            </summary>
+        </member>
+        <member name="T:OtusUserApp.Host.Controllers.HealthController">
+            <summary>
+            Health check
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.HealthController.GetHealthCheck">
+            <summary>
+            Проверка готовности сервиса 
+            </summary>
+            <returns></returns>
+            <response code="200"> Сервис готов к работе </response>
+        </member>
+        <member name="T:OtusUserApp.Host.Controllers.IndexController">
+            <summary>
+            Health check
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.IndexController.Index">
+            <summary>
+            Возвращает информацию о приложении
+            </summary>
+            <returns></returns>
+            <response code="200"> Сервис доступен </response>
+        </member>
+        <member name="T:OtusUserApp.Host.Controllers.UserController">
+            <summary>
+            Контроллер управления пользоватеями
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.UserController.#ctor(OtusUserApp.Domain.Services.IUserService)">
+            <inheritdoc />
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.UserController.CreateUserAsync(OtusUserApp.Host.Models.UserCreationDto)">
+            <summary>
+                Создание пользователя.
+            </summary>
+            <param name="user"> параметры нового пользователя </param>
+            <returns> новый пользователь </returns>
+            <response code="200"> Пользователь успешно создан </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.UserController.GetUserAsync(System.Int64)">
+            <summary>
+                Получение пользователя.
+            </summary>
+            <param name="userId"> идентификатор пользователя </param>
+            <returns> пользователь </returns>
+            <response code="200"> Пользователь успешно найден </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.UserController.UpdateUserAsync(System.Int64,OtusUserApp.Host.Models.UserParamsDto)">
+            <summary>
+                Редактирование параметров пользователя.
+            </summary>
+            <param name="userId"> идентификатор пользователя </param>
+            <param name="user"> параметры пользователя </param>
+            <returns> результат выполнения операции. </returns>
+            <response code="200"> Пользователь успешно отредактирован </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:OtusUserApp.Host.Controllers.UserController.RemoveUserAsync(System.Int64)">
+            <summary>
+                Удаление пользователя.
+            </summary>
+            <param name="userId"> идентификатор пользователя </param>
+            <returns> результат выполнения операции. </returns>
+            <response code="200"> Пользователь успешно удален </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="T:OtusUserApp.Host.Extensions.ConfigurationExtensions">
+            <summary>
+            Класс расширений для <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Extensions.ConfigurationExtensions.GetValueOrThrow``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="key"> Наименование ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:OtusUserApp.Host.IAppSettings">
+            <summary>
+            Настройки приложения.
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.IAppSettings.UsersDbConnectionString">
+            <summary>
+            Строка подключения к БД пользователей
+            </summary>
+        </member>
+        <member name="T:OtusUserApp.Host.Middlewares.ExceptionHandlerMiddleware">
+            <summary>
+                Мидлвара для перехвата ошибок.
+            </summary>
+        </member>
+        <member name="T:OtusUserApp.Host.Middlewares.ExceptionHandlerMiddlewareExtension">
+            <summary>
+            Класс расширения для <see cref="T:OtusUserApp.Host.Middlewares.ExceptionHandlerMiddleware"/>.
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Middlewares.ExceptionHandlerMiddlewareExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Добавление <see cref="T:OtusUserApp.Host.Middlewares.ExceptionHandlerMiddleware"/> в пайплайн приложения.
+            </summary>
+            <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
+            <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
+        </member>
+        <member name="T:OtusUserApp.Host.Models.ErrorDto">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.ErrorDto.Code">
+            <summary>
+            Код
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.ErrorDto.Message">
+            <summary>
+            Сообщение
+            </summary>
+        </member>
+        <member name="T:OtusUserApp.Host.Models.HealthCheck">
+            <summary>
+            Статус готовности
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.HealthCheck.Status">
+            <summary>
+            Статус
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.HealthCheck.#ctor(System.String)">
+            <summary>
+            Конструктор
+            </summary>
+            <param name="status"></param>
+        </member>
+        <member name="T:OtusUserApp.Host.Models.UserCreationDto">
+            <summary>
+            Класс входных параметров для создания пользователя
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserCreationDto.#ctor">
+            <inheritdoc />
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserCreationDto.#ctor(OtusUserApp.Domain.Models.User)">
+            <inheritdoc />
+        </member>
+        <member name="P:OtusUserApp.Host.Models.UserCreationDto.UserName">
+            <summary>
+            Логин
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserCreationDto.ConvertToUser">
+            <inheritdoc />
+        </member>
+        <member name="T:OtusUserApp.Host.Models.UserDto">
+            <summary>
+            Полная информация о пользователе
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserDto.#ctor">
+            <inheritdoc />
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserDto.#ctor(OtusUserApp.Domain.Models.User)">
+            <inheritdoc />
+        </member>
+        <member name="P:OtusUserApp.Host.Models.UserDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserDto.ConvertToUser">
+            <inheritdoc />
+        </member>
+        <member name="T:OtusUserApp.Host.Models.UserParamsDto">
+            <summary>
+            Класс передачи изменяемых параметров о пользователе
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserParamsDto.#ctor">
+            <summary>
+            Constructor for deserializing
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserParamsDto.#ctor(OtusUserApp.Domain.Models.User)">
+            <summary>
+            Constructor for <see cref="T:OtusUserApp.Domain.Models.User"/> to UserParamsDto converting
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.UserParamsDto.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.UserParamsDto.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.UserParamsDto.Email">
+            <summary>
+            Почта
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.UserParamsDto.Phone">
+            <summary>
+            Телефон
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.UserParamsDto.ConvertToUser">
+            <summary>
+            Конвертация в <see cref="T:OtusUserApp.Domain.Models.User"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OtusUserApp.Host.Models.VersionDto">
+            <summary>
+            Описание версии приложения
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.Models.VersionDto.Version">
+            <summary>
+            Версия
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Models.VersionDto.#ctor(System.String)">
+            <summary>
+            Конструктор
+            </summary>
+            <param name="version"></param>
+        </member>
+        <member name="T:OtusUserApp.Host.Program">
+            <summary>
+            The main class of program
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Program.Main(System.String[])">
+            <summary>
+            The start function
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:OtusUserApp.Host.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Создание хоста приложения
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OtusUserApp.Host.Startup">
+            <summary>
+            Bootstrap class
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:OtusUserApp.Host.Startup.Configuration">
+            <summary>
+            Configuration info
+            </summary>
+        </member>
+        <member name="M:OtusUserApp.Host.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:OtusUserApp.Host.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

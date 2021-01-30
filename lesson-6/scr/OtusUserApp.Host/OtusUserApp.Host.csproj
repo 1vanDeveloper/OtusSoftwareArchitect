@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Git\Github\OtusSoftwareArchitect\lesson-6\scr\OtusUserApp.Host\OtusUserApp.Host.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="Controllers\" />
   </ItemGroup>
@@ -26,6 +30,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OtusUserApp.Domain\OtusUserApp.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="OtusUserApp.Host.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

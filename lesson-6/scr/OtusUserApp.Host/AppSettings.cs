@@ -10,12 +10,14 @@ namespace OtusUserApp.Host
         public AppSettings(IConfiguration configuration)
         {
             UsersDbConnectionString = GetDbConnectionString(configuration); 
-
+            IsMigrationService = configuration.GetValue<bool>("MIGRATION_MODE");
             //UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
         }
 
         public string UsersDbConnectionString { get; }
-        
+
+        public bool IsMigrationService { get; }
+
         private static string GetDbConnectionString(IConfiguration configuration)
         {
             var dbHost = configuration.GetValueOrThrow<string>("USERS_PG_HOST");

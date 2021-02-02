@@ -25,13 +25,14 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        
+
         "USERS_PG_HOST": "localhost",
         "USERS_PG_PORT": "7654",
         "USERS_PG_DATABASE": "otus-users",
         "USERS_PG_USERNAME": "postgres",
         "USERS_PG_PASSWORD": "qweqwe123",
-        "USE_SSL_PG_CONNECTION": "false"
+        "USE_SSL_PG_CONNECTION": "false",
+        "MIGRATION_MODE": "false" 
       }
     }
   }

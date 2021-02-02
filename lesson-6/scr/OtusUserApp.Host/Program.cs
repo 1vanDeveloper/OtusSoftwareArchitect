@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,7 @@ namespace OtusUserApp.Host
         /// The start function
         /// </summary>
         /// <param name="args"></param>
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
             LogEnvironmentAndSettings(host.Services);
@@ -29,13 +30,23 @@ namespace OtusUserApp.Host
             using (var serviceScope = host.Services.GetService<IServiceScopeFactory>()?.CreateScope())
             {
                 var serviceProvider = serviceScope?.ServiceProvider;
-                var context = serviceProvider?.GetRequiredService<AppDbContext>();
-                context?.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
-                context?.Database.Migrate();
-                context?.Database.SetCommandTimeout(TimeSpan.FromSeconds(30));
+                var settings = serviceProvider?.GetRequiredService<IAppSettings>();
+                if (settings?.IsMigrationService ?? false)
+                {
+                    var context = serviceProvider?.GetRequiredService<AppDbContext>();
+                    if (context == null)
+                    {
+                        return;
+                    }
+
+                    context.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
+                    await context.Database.MigrateAsync();
+                    context.Database.SetCommandTimeout(TimeSpan.FromSeconds(30));
+                    return;
+                }
             }
 
-            host.Run();
+            await host.RunAsync();
         }
 
         /// <summary>

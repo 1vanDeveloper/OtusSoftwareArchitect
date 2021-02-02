@@ -17,7 +17,8 @@ services:
     - USERS_PG_USERNAME=postgres
     - USERS_PG_PASSWORD=qweqwe123
     - USE_SSL_PG_CONNECTION=false
-
+    - MIGRATION_MODE=false
+    
     ports:
     - 8000:80
     - 8001:443

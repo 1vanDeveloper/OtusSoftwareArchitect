@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -23,6 +24,11 @@ namespace OtusUserApp.Domain.Services
         /// <inheritdoc />
         public async Task<User> CreateUserAsync(User user)
         {
+            if (await _dbContext.Users.AnyAsync(u => u.UserName == user.UserName))
+            {
+                throw new Exception("This user name has already existed");
+            }
+            
             var createdUser = (await _dbContext.Users.AddAsync(user)).Entity;
             await _dbContext.SaveChangesAsync();
 

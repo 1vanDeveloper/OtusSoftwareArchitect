@@ -11,8 +11,8 @@ services:
     - ASPNETCORE_Kestrel__Certificates__Default__Password=qweqwe123
     - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     
-    - USERS_PG_HOST=db-dev
-    - USERS_PG_PORT=5432
+    - POSTGRESQL_SERVICE_HOST=db-dev
+    - POSTGRESQL_SERVICE_PORT=5432
     - USERS_PG_DATABASE=otus-users
     - USERS_PG_USERNAME=postgres
     - USERS_PG_PASSWORD=qweqwe123

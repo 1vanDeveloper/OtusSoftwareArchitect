@@ -1,0 +1,51 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+image:
+  repository: 1vandev/otus-app
+  tag: "v3"
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: arch.homework
+      paths:
+      - path: /otusapp/ivan-shpyakin($|/)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: otus-app-service
+            port:
+              number: 80
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 64Mi
+ 
+postgresql:
+  enabled: true
+  postgresqlUsername: myuser
+  postgresqlPassword: passwd
+  postgresqlDatabase: myapp
+  service:
+    port: "5432"
+
+externalPostgresql:
+  useSsl: false

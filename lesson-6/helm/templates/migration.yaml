@@ -1,0 +1,67 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+         app: migration-job
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: check-db-ready
+          image: postgres:latest
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "postgresql.fullname" . | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgresql.service.port | quote }}
+          command:
+            - sh
+            - "-c"
+            - |
+              until pg_isready -h $POSTGRES_HOST  -p  $POSTGRES_PORT; 
+              do echo waiting for database; sleep 2; done;
+      containers:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: USERS_PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: otus-app-secret
+                  key: USERS_PG_PASSWORD
+            - name: USERS_PG_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: otus-app-config
+                  key: USERS_PG_DATABASE
+            - name: USERS_PG_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: otus-app-config
+                  key: USERS_PG_USERNAME
+            - name: USE_SSL_PG_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: otus-app-config
+                  key: USE_SSL_PG_CONNECTION
+            - name: MIGRATION_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: otus-app-config
+                  key: MIGRATION_MODE_TRUE

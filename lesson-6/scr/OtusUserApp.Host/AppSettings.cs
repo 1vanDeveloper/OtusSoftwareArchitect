@@ -20,16 +20,14 @@ namespace OtusUserApp.Host
 
         private static string GetDbConnectionString(IConfiguration configuration)
         {
-            var dbHost = configuration.GetValueOrThrow<string>("USERS_PG_HOST");
+            var dbHost = configuration.GetValueOrThrowBySuffix<string>("POSTGRESQL_SERVICE_HOST");
+            var dbPort = configuration.GetValueOrThrowBySuffix<string>("POSTGRESQL_SERVICE_PORT");
             var dbDatabase = configuration.GetValueOrThrow<string>("USERS_PG_DATABASE");
             var dbUsername = configuration.GetValueOrThrow<string>("USERS_PG_USERNAME");
             var dbPassword = configuration.GetValueOrThrow<string>("USERS_PG_PASSWORD");
             var useSsl = configuration.GetValueOrThrow<bool>("USE_SSL_PG_CONNECTION");
 
-            var dbPort = configuration.GetValueOrThrow<string>("USERS_PG_PORT");
-
             var connectionStringBuilder = new StringBuilder();
-
             connectionStringBuilder.Append($"Host={dbHost};");
 
             if (!string.IsNullOrWhiteSpace(dbPort))

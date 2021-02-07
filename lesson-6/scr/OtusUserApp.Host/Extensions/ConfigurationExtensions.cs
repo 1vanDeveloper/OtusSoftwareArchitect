@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace OtusUserApp.Host.Extensions
@@ -27,6 +29,26 @@ namespace OtusUserApp.Host.Extensions
 
             throw new Exception(
                 $"'{key}' should be defined in app configuration (environment or appsettings).");
+        }
+        
+        /// <summary>
+        /// Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+        /// </summary>
+        /// <param name="configuration"> Конфигурация приложения. </param>
+        /// <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+        /// <typeparam name="T"> Тип значения. </typeparam>
+        /// <returns> Значение. </returns>
+        /// <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        public static T GetValueOrThrowBySuffix<T>(this IConfiguration configuration, string suffix)
+        {
+            var section = configuration.AsEnumerable().FirstOrDefault(p => p.Key.EndsWith(suffix));
+            if ((section.Key?.EndsWith(suffix) ?? false) && !string.IsNullOrWhiteSpace(section.Value))
+            {
+                return configuration.GetValue<T>(section.Key);
+            }
+
+            throw new Exception(
+                $"'The key with suffix {suffix}' should be defined in app configuration (environment or appsettings).");
         }
     }
 }

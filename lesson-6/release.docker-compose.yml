@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  otus-user-app:
+    container_name: otus-user-app
+    build: 
+      context: .
+      dockerfile: docker/dockerfile
+
+

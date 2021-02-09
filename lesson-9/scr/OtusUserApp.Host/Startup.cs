@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using OtusUserApp.Host.Attributes;
 using OtusUserApp.Host.Middlewares;
 using OtusUserApp.Domain;
+using Prometheus;
+using Prometheus.SystemMetrics;
 
 namespace OtusUserApp.Host
 {
@@ -53,6 +55,8 @@ namespace OtusUserApp.Host
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+            
+            services.AddSystemMetrics();
         }
 
         /// <summary>
@@ -79,12 +83,14 @@ namespace OtusUserApp.Host
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseHttpMetrics();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapMetrics();
             });
         }
     }

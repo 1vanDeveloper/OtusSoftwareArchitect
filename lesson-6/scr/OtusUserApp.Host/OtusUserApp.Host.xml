@@ -103,6 +103,16 @@
             <returns> Значение. </returns>
             <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
         </member>
+        <member name="M:OtusUserApp.Host.Extensions.ConfigurationExtensions.GetValueOrThrowBySuffix``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
         <member name="T:OtusUserApp.Host.IAppSettings">
             <summary>
             Настройки приложения.
@@ -111,6 +121,11 @@
         <member name="P:OtusUserApp.Host.IAppSettings.UsersDbConnectionString">
             <summary>
             Строка подключения к БД пользователей
+            </summary>
+        </member>
+        <member name="P:OtusUserApp.Host.IAppSettings.IsMigrationService">
+            <summary>
+            Флаг указывает режим запуска сервиса
             </summary>
         </member>
         <member name="T:OtusUserApp.Host.Middlewares.ExceptionHandlerMiddleware">

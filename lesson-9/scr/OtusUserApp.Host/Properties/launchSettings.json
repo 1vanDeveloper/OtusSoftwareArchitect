@@ -26,8 +26,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
 
-        "USERS_PG_HOST": "localhost",
-        "USERS_PG_PORT": "7654",
+        "POSTGRESQL_SERVICE_HOST": "localhost",
+        "POSTGRESQL_SERVICE_PORT": "7654",
         "USERS_PG_DATABASE": "otus-users",
         "USERS_PG_USERNAME": "postgres",
         "USERS_PG_PASSWORD": "qweqwe123",

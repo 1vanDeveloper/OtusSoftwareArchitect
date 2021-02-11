@@ -23,7 +23,7 @@ namespace OtusUserApp.Host.Controllers
         [ProducesResponseType(typeof(VersionDto), StatusCodes.Status200OK)]
         public IActionResult Index()
         {
-            return Ok(new VersionDto("3"));
+            return Ok(new VersionDto("4"));
         }
     }
 }

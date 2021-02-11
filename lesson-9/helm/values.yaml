@@ -49,3 +49,7 @@ postgresql:
 
 externalPostgresql:
   useSsl: false
+
+metrics:
+  serviceMonitor:
+    enabled: true

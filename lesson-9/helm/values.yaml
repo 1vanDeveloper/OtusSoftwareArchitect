@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   repository: 1vandev/otus-app
-  tag: "v3"
+  tag: "v4"
   pullPolicy: Always
 
 service:

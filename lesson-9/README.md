@@ -1,35 +1,26 @@
 # Домашнее задание (Занятие № 9)
 ## Prometheus. Grafana
 
-1. В папке `helm` располагается чарт запуска приложения, в т.ч. Deployment, Service, Ingress, ConfigMap, Secret. Также чарт содержит зависимость `postgresql` из репозитория `bitnami`
-Для установки чарта в папке `lesson-6` нужно выполнить команду:
-```shell
-helm install otus-app .\helm
-```
-где `otus-app` изменяемое название приложения.
+1. Сформирован дашборд в Графане, в котором были бы метрики с разбивкой по API методам:
+- Latency (response time) с квантилями по 0.5, 0.95, 0.99, max,
+- RPS,
+- Error Rate - количество 500ых ответов.
 
-При инсталляции чарта автоматически применяется миграция БД в виде `Job`.
+2. Добавлены в дашборд графики с метрикам в целом по сервису, взятые с nginx-ingress-controller:
+- Latency (response time) с квантилями по 0.5, 0.95, 0.99, max,
+- RPS,
+- Error Rate - количество 500ых ответов.
 
-2. Тесты Postman для проверки запроса можно открыть по ссылке (папка <b>lesson-6</b>):
-[https://www.getpostman.com/collections/b95a09271533990df0cc](https://www.getpostman.com/collections/b95a09271533990df0cc)
+3. Настроен алертинг в графане на Error Rate и Latency.
 
-3. Перед началом работы с запросами нужно изменить значение переменной `host`, на новое, которое можно получить по команде:
-```shell
-kubectl get ing
-```
+4. Используя существующие системные метрики из Kubernetes, добавлены на дашборд графики с метриками:
+- Потребление подами приложения памяти,
+- Потребление подами приолжения CPU.
 
-4. В сервисе доступны пробы:
-- "/" - корень сервиса. Возвращает:
-```json
-Status 200 OK
-{
-    "version": "3"
-}
-```
-- "/health" - адрес запроса готовности сервиса. Возвращает:
-```json
-Status 200 OK
-{
-    "status": "OK"
-}
-```
+5. Инструментирована база данных Postgres с помощью экспортера для Prometheus. Добавлены в общий Dashboard графики с метриками работы БД.
+
+###На выходе:
+0. Скриншот Dashboard с графиками в момент стресс-тестирования сервиса, после 5-10 минут нагрузки.
+[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.png)
+1. Json-дашборды.
+[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.json)

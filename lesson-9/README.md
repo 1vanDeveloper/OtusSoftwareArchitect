@@ -1,7 +1,7 @@
 # Домашнее задание (Занятие № 9)
 ## Prometheus. Grafana
 
-1. Сформирован дашборд в Графане, в котором были бы метрики с разбивкой по API методам:
+1. Сформирован дашборд в Графане, в котором созданы метрики с разбивкой по API методам:
 - Latency (response time) с квантилями по 0.5, 0.95, 0.99, max,
 - RPS,
 - Error Rate - количество 500ых ответов.
@@ -19,8 +19,8 @@
 
 5. Инструментирована база данных Postgres с помощью экспортера для Prometheus. Добавлены в общий Dashboard графики с метриками работы БД.
 
-###На выходе:
-0. Скриншот Dashboard с графиками в момент стресс-тестирования сервиса, после 5-10 минут нагрузки.
+### На выходе:
+1. Скриншот Dashboard с графиками в момент стресс-тестирования сервиса, после 5-10 минут нагрузки.
 [Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.png)
 1. Json-дашборды.
 [Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.json)

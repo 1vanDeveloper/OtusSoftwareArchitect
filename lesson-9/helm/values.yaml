@@ -22,7 +22,7 @@ ingress:
   hosts:
     - host: arch.homework
       paths:
-      - path: /otusapp/ivan-shpyakin($|/)(.*)
+      - path: /app($|/)(.*)
         pathType: Prefix
         backend:
           service:
@@ -36,8 +36,8 @@ ingress:
 
 resources:
   limits:
-    cpu: 500m
-    memory: 64Mi
+    cpu: 1000m
+    memory: 256Mi
  
 postgresql:
   enabled: true

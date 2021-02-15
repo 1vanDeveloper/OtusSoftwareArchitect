@@ -14,5 +14,4 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 # install ingress-controller and postgres exporter like helm application
 helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml --atomic
-helm install postgres-exporter prometheus-community/prometheus-postgres-exporter
 kubectl get all

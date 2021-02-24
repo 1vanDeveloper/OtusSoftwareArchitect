@@ -45,7 +45,7 @@ namespace Identity.Configuration
         /// <returns></returns>
         public static IEnumerable<ApiScope> GetScopes()
         {
-            return new ApiScope[]
+            return new[]
             {
                 new ApiScope("account", "Account Service")
             };

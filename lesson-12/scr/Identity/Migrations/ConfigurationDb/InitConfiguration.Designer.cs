@@ -11,7 +11,7 @@ namespace Identity.Migrations.ConfigurationDb
 {
     [DbContext(typeof(AppConfigurationDbContext))]
     [Migration("20210223082013_initConfiguration")]
-    partial class initConfiguration
+    partial class InitConfiguration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -3,12 +3,14 @@ using System;
 using Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Identity.Migrations.ConfigurationDb
 {
+    /// <inheritdoc />
     [DbContext(typeof(AppConfigurationDbContext))]
+    // ReSharper disable once PartialTypeWithSinglePart
+    // ReSharper disable once ArrangeTypeModifiers
     partial class AppConfigurationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

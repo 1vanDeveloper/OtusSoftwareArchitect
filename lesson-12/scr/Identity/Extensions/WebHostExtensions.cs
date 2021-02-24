@@ -13,7 +13,7 @@ namespace Identity.Extensions
     /// <summary>
     /// IWebHostExtensions helper
     /// </summary>
-    public static class IWebHostExtensions
+    public static class WebHostExtensions
     {
         /// <summary>
         /// Check Kubernetes runtime
@@ -47,7 +47,7 @@ namespace Identity.Extensions
         public static async Task<IWebHost> MigrateDbContextAsync<TContext>(this IWebHost webHost,
             Func<TContext, IServiceProvider, Task> seeder) where TContext : DbContext
         {
-            var underK8s = webHost.IsInKubernetes();
+            var underK8S = webHost.IsInKubernetes();
 
             using var scope = webHost.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -59,7 +59,7 @@ namespace Identity.Extensions
                 logger.LogInformation("Migrating database associated with context {DbContextName}",
                     typeof(TContext).Name);
 
-                if (underK8s)
+                if (underK8S)
                 {
                     await InvokeSeederAsync(seeder, context, services);
                 }
@@ -70,11 +70,11 @@ namespace Identity.Extensions
                         .WaitAndRetryAsync(
                             retryCount: retries,
                             sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                            onRetry: (exception, timeSpan, retry, ctx) =>
+                            onRetry: (exception, _, i, _) =>
                             {
                                 logger.LogWarning(exception,
-                                    "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}",
-                                    nameof(TContext), exception.GetType().Name, exception.Message, retry, retries);
+                                    "[{Prefix}] Exception {ExceptionType} with message {Message} detected on attempt {Retry} of {Retries}",
+                                    nameof(TContext), exception.GetType().Name, exception.Message, i, retries);
                             });
 
                     //if the sql server container is not created on run docker compose this
@@ -92,7 +92,7 @@ namespace Identity.Extensions
                 logger.LogError(ex,
                     "An error occurred while migrating the database used on context {DbContextName}",
                     typeof(TContext).Name);
-                if (underK8s)
+                if (underK8S)
                 {
                     throw; // Rethrow under k8s because we rely on k8s to re-run the pod
                 }

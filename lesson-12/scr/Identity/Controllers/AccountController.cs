@@ -8,7 +8,6 @@ using Identity.Services;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Services;
-using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +28,7 @@ namespace Identity.Controllers
     {
         private readonly ILoginService<ApplicationUser> _loginService;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IClientStore _clientStore;
+        //private readonly IClientStore _clientStore;
         private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -38,14 +37,14 @@ namespace Identity.Controllers
         public AccountController(
             ILoginService<ApplicationUser> loginService,
             IIdentityServerInteractionService interaction,
-            IClientStore clientStore,
+            //IClientStore clientStore,
             ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
             IConfiguration configuration)
         {
             _loginService = loginService;
             _interaction = interaction;
-            _clientStore = clientStore;
+            //_clientStore = clientStore;
             _logger = logger;
             _userManager = userManager;
             _configuration = configuration;
@@ -142,7 +141,7 @@ namespace Identity.Controllers
                 HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
                 // get context information (client name, post logout redirect URI and iframe for federated signout)
-                var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
+                await _interaction.GetLogoutContextAsync(model.LogoutId);
 
                 return Ok();
             }

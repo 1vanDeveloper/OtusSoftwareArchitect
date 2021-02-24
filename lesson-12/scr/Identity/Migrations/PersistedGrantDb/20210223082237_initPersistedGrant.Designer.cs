@@ -11,7 +11,7 @@ namespace Identity.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(AppPersistedGrantDbContext))]
     [Migration("20210223082237_initPersistedGrant")]
-    partial class initPersistedGrant
+    partial class InitPersistedGrant
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

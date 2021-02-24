@@ -47,7 +47,7 @@
             Account management controller
             </summary>
         </member>
-        <member name="M:Identity.Controllers.AccountController.#ctor(Identity.Services.ILoginService{Identity.Models.ApplicationUser},IdentityServer4.Services.IIdentityServerInteractionService,IdentityServer4.Stores.IClientStore,Microsoft.Extensions.Logging.ILogger{Identity.Controllers.AccountController},Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser},Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Identity.Controllers.AccountController.#ctor(Identity.Services.ILoginService{Identity.Models.ApplicationUser},IdentityServer4.Services.IIdentityServerInteractionService,Microsoft.Extensions.Logging.ILogger{Identity.Controllers.AccountController},Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser},Microsoft.Extensions.Configuration.IConfiguration)">
             <inheritdoc />
         </member>
         <member name="M:Identity.Controllers.AccountController.Login(Identity.Models.Account.LoginDto)">
@@ -180,26 +180,26 @@
             <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
             <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
         </member>
-        <member name="T:Identity.Extensions.IWebHostExtensions">
+        <member name="T:Identity.Extensions.WebHostExtensions">
             <summary>
             IWebHostExtensions helper
             </summary>
         </member>
-        <member name="M:Identity.Extensions.IWebHostExtensions.IsInKubernetes(Microsoft.AspNetCore.Hosting.IWebHost)">
+        <member name="M:Identity.Extensions.WebHostExtensions.IsInKubernetes(Microsoft.AspNetCore.Hosting.IWebHost)">
             <summary>
             Check Kubernetes runtime
             </summary>
             <param name="webHost"></param>
             <returns></returns>
         </member>
-        <member name="M:Identity.Extensions.IWebHostExtensions.IsInKubernetes(Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Identity.Extensions.WebHostExtensions.IsInKubernetes(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Check Kubernetes runtime
             </summary>
             <param name="cfg"></param>
             <returns></returns>
         </member>
-        <member name="M:Identity.Extensions.IWebHostExtensions.MigrateDbContextAsync``1(Microsoft.AspNetCore.Hosting.IWebHost,System.Func{``0,System.IServiceProvider,System.Threading.Tasks.Task})">
+        <member name="M:Identity.Extensions.WebHostExtensions.MigrateDbContextAsync``1(Microsoft.AspNetCore.Hosting.IWebHost,System.Func{``0,System.IServiceProvider,System.Threading.Tasks.Task})">
             <summary>
             Run Migration
             </summary>
@@ -243,40 +243,49 @@
                 Мидлвара для перехвата ошибок.
             </summary>
         </member>
-        <member name="T:Identity.Migrations.initial">
+        <member name="T:Identity.Migrations.Initial">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:Identity.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:Identity.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:Identity.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:Identity.Migrations.ConfigurationDb.initConfiguration">
+        <member name="T:Identity.Migrations.ApplicationDbContextModelSnapshot">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.ConfigurationDb.initConfiguration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="T:Identity.Migrations.ConfigurationDb.AppConfigurationDbContextModelSnapshot">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.ConfigurationDb.initConfiguration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="T:Identity.Migrations.ConfigurationDb.InitConfiguration">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.ConfigurationDb.initConfiguration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:Identity.Migrations.ConfigurationDb.InitConfiguration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:Identity.Migrations.PersistedGrantDb.initPersistedGrant">
+        <member name="M:Identity.Migrations.ConfigurationDb.InitConfiguration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.PersistedGrantDb.initPersistedGrant.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:Identity.Migrations.ConfigurationDb.InitConfiguration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.PersistedGrantDb.initPersistedGrant.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="T:Identity.Migrations.PersistedGrantDb.InitPersistedGrant">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Migrations.PersistedGrantDb.initPersistedGrant.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:Identity.Migrations.PersistedGrantDb.InitPersistedGrant.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.PersistedGrantDb.InitPersistedGrant.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.PersistedGrantDb.InitPersistedGrant.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Migrations.PersistedGrantDb.AppPersistedGrantDbContextModelSnapshot">
             <inheritdoc />
         </member>
         <member name="T:Identity.Models.Account.ForgotPasswordDto">

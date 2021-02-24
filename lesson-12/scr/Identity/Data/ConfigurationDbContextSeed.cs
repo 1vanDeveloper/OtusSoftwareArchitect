@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Identity.Configuration;
-using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.Extensions.Configuration;
 

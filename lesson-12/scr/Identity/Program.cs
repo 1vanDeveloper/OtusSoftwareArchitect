@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Identity.Data;
 using Identity.Extensions;
 using Identity.Settings;
-using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +18,7 @@ namespace Identity
     /// <summary>
     /// Main class
     /// </summary>
-    public class Program
+    public static class Program
     {
         private static readonly string Namespace = typeof(Startup).Namespace;
         private static readonly string AppName = Namespace.Contains('.') 
@@ -47,7 +46,7 @@ namespace Identity
                 if (settings?.IsMigrationService ?? false)
                 {
                     Log.Information("Start applying migrations ({ApplicationContext})...", AppName);
-                    await host.MigrateDbContextAsync<AppPersistedGrantDbContext>((_, __) => Task.CompletedTask);
+                    await host.MigrateDbContextAsync<AppPersistedGrantDbContext>((_, _) => Task.CompletedTask);
                     await host.MigrateDbContextAsync<ApplicationDbContext>((context, services) =>
                     {
                         var env = services.GetService<IWebHostEnvironment>();
@@ -55,7 +54,7 @@ namespace Identity
                         return new ApplicationDbContextSeed()
                             .SeedAsync(context, env, logger);
                     });
-                    await host.MigrateDbContextAsync<AppConfigurationDbContext>((context, services) => ConfigurationDbContextSeed.SeedAsync(context, configuration));
+                    await host.MigrateDbContextAsync<AppConfigurationDbContext>((context, _) => ConfigurationDbContextSeed.SeedAsync(context, configuration));
 
                     Log.Information("Finish applying migrations ({ApplicationContext})...", AppName);
                     if (settings.IsInKubernetes)
@@ -112,7 +111,6 @@ namespace Identity
         
         private static void LogEnvironmentAndSettings(IServiceProvider serviceProvider)
         {
-            var logger = serviceProvider.GetService<ILogger<Program>>();
             var configuration = serviceProvider.GetService<IConfiguration>();
             var appSettings = serviceProvider.GetService<IAppSettings>();
             if (appSettings == null)
@@ -132,7 +130,7 @@ namespace Identity
             const string logErrorInfo = "Application IConfiguration contains:\n{0}";
             
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-            logger.LogInformation(string.Format(logErrorInfo, resString));
+            Log.Information(string.Format(logErrorInfo, resString));
         }
     }
 }

@@ -31,13 +31,9 @@ namespace Identity.Data
 
             try
             {
-                var contentRootPath = env.ContentRootPath;
-                var webroot = env.WebRootPath;
-
                 if (!context.Users.Any())
                 {
-                    GetDefaultUser();
-
+                    await context.Users.AddRangeAsync(GetDefaultUser());
                     await context.SaveChangesAsync();
                 }
             }

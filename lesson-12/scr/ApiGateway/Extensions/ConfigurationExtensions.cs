@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 
-namespace Identity.Extensions
+namespace ApiGateway.Extensions
 {
     /// <summary>
     /// Класс расширений для <see cref="Microsoft.Extensions.Configuration.IConfiguration"/>.

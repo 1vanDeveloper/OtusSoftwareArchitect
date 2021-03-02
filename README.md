@@ -18,7 +18,7 @@
 #### Часть II
 10. Service mesh на примере Istio
 1. Авторизация и аутентификация в микросервисной архитектуре
-1. Backend for frontends. Apigateway
+1. [Backend for frontends. Apigateway](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-12)
 1. Асинхронный и синхронный API
 1. Event Driven Architecture
 1. Распределенные очереди сообщений на примере Kafka

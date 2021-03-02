@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Account.Host</name>
+    </assembly>
+    <members>
+        <member name="T:Account.Host.Attributes.ValidateModelAttribute">
+            <summary>
+                Атрибут валидации моделей.
+            </summary>
+        </member>
+        <member name="T:Account.Host.Controllers.AccountController">
+            <summary>
+            Контроллер управления пользоватеями
+            </summary>
+        </member>
+        <member name="M:Account.Host.Controllers.AccountController.#ctor(Account.Domain.Services.IUserService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Host.Controllers.AccountController.CreateUserAsync(Account.Host.Models.UserParamsDto)">
+            <summary>
+                Создание пользователя.
+            </summary>
+            <param name="user"> параметры нового пользователя </param>
+            <returns> новый пользователь </returns>
+            <response code="200"> Пользователь успешно создан </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:Account.Host.Controllers.AccountController.GetUserAsync(System.String)">
+            <summary>
+                Получение пользователя.
+            </summary>
+            <param name="userName"> логин пользователя </param>
+            <returns> пользователь </returns>
+            <response code="200"> Пользователь успешно найден </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:Account.Host.Controllers.AccountController.UpdateUserAsync(System.String,Account.Host.Models.UserParamsDto)">
+            <summary>
+                Редактирование параметров пользователя.
+            </summary>
+            <param name="userName"> логин пользователя </param>
+            <param name="user"> параметры пользователя </param>
+            <returns> результат выполнения операции. </returns>
+            <response code="200"> Пользователь успешно отредактирован </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:Account.Host.Controllers.AccountController.RemoveUserAsync(System.String)">
+            <summary>
+                Удаление пользователя.
+            </summary>
+            <param name="userName"> логин пользователя </param>
+            <returns> результат выполнения операции. </returns>
+            <response code="200"> Пользователь успешно удален </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="T:Account.Host.Controllers.IndexController">
+            <summary>
+            Version check
+            </summary>
+        </member>
+        <member name="M:Account.Host.Controllers.IndexController.Index">
+            <summary>
+            Возвращает информацию о приложении
+            </summary>
+            <returns></returns>
+            <response code="200"> Сервис доступен </response>
+        </member>
+        <member name="T:Account.Host.Extensions.ClaimExtensions">
+            <summary>
+            Класс расширений для <see cref="T:System.Security.Claims.Claim"/>.
+            </summary>
+        </member>
+        <member name="M:Account.Host.Extensions.ClaimExtensions.GetUserName(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">
+            <summary>
+            Получение логина пользователя.
+            </summary>
+            <param name="claims"> Claims. </param>
+            <returns> Значение claim'а. </returns>
+        </member>
+        <member name="T:Account.Host.Extensions.ConfigurationExtensions">
+            <summary>
+            Класс расширений для <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Account.Host.Extensions.ConfigurationExtensions.GetValueOrThrow``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="key"> Наименование ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="M:Account.Host.Extensions.ConfigurationExtensions.GetValueOrThrowBySuffix``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:Account.Host.Middlewares.ExceptionHandlerMiddleware">
+            <summary>
+                Мидлвара для перехвата ошибок.
+            </summary>
+        </member>
+        <member name="T:Account.Host.Middlewares.ExceptionHandlerMiddlewareExtension">
+            <summary>
+            Класс расширения для <see cref="T:Account.Host.Middlewares.ExceptionHandlerMiddleware"/>.
+            </summary>
+        </member>
+        <member name="M:Account.Host.Middlewares.ExceptionHandlerMiddlewareExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Добавление <see cref="T:Account.Host.Middlewares.ExceptionHandlerMiddleware"/> в пайплайн приложения.
+            </summary>
+            <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
+            <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
+        </member>
+        <member name="T:Account.Host.Models.ErrorDto">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="P:Account.Host.Models.ErrorDto.Code">
+            <summary>
+            Код
+            </summary>
+        </member>
+        <member name="P:Account.Host.Models.ErrorDto.Message">
+            <summary>
+            Сообщение
+            </summary>
+        </member>
+        <member name="T:Account.Host.Models.UserDto">
+            <summary>
+            Полная информация о пользователе
+            </summary>
+        </member>
+        <member name="M:Account.Host.Models.UserDto.#ctor">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Host.Models.UserDto.#ctor(Account.Domain.Models.User)">
+            <inheritdoc />
+        </member>
+        <member name="P:Account.Host.Models.UserDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="M:Account.Host.Models.UserDto.ConvertToUser">
+            <inheritdoc />
+        </member>
+        <member name="T:Account.Host.Models.UserParamsDto">
+            <summary>
+            Класс передачи изменяемых параметров о пользователе
+            </summary>
+        </member>
+        <member name="M:Account.Host.Models.UserParamsDto.#ctor">
+            <summary>
+            Constructor for deserializing
+            </summary>
+        </member>
+        <member name="M:Account.Host.Models.UserParamsDto.#ctor(Account.Domain.Models.User)">
+            <summary>
+            Constructor for <see cref="T:Account.Domain.Models.User"/> to UserParamsDto converting
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="P:Account.Host.Models.UserParamsDto.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:Account.Host.Models.UserParamsDto.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:Account.Host.Models.UserParamsDto.Email">
+            <summary>
+            Почта
+            </summary>
+        </member>
+        <member name="P:Account.Host.Models.UserParamsDto.Phone">
+            <summary>
+            Телефон
+            </summary>
+        </member>
+        <member name="M:Account.Host.Models.UserParamsDto.ConvertToUser">
+            <summary>
+            Конвертация в <see cref="T:Account.Domain.Models.User"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Account.Host.Models.VersionDto">
+            <summary>
+            Описание версии приложения
+            </summary>
+        </member>
+        <member name="P:Account.Host.Models.VersionDto.Version">
+            <summary>
+            Версия
+            </summary>
+        </member>
+        <member name="T:Account.Host.Program">
+            <summary>
+            The main class of program
+            </summary>
+        </member>
+        <member name="M:Account.Host.Program.Main(System.String[])">
+            <summary>
+            The start function
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Account.Host.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Создание хоста приложения
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Account.Host.Settings.AppSettings">
+            <inheritdoc />
+        </member>
+        <member name="T:Account.Host.Settings.IAppSettings">
+            <summary>
+            Настройки приложения.
+            </summary>
+        </member>
+        <member name="P:Account.Host.Settings.IAppSettings.UsersDbConnectionString">
+            <summary>
+            Строка подключения к БД пользователей
+            </summary>
+        </member>
+        <member name="P:Account.Host.Settings.IAppSettings.IsMigrationService">
+            <summary>
+            Флаг указывает режим запуска сервиса
+            </summary>
+        </member>
+        <member name="P:Account.Host.Settings.IAppSettings.AuthorityUrl">
+            <summary>
+            Адрес службы проверки прав пользователей
+            </summary>
+        </member>
+        <member name="T:Account.Host.Startup">
+            <summary>
+            Bootstrap class
+            </summary>
+        </member>
+        <member name="M:Account.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Account.Host.Startup.Configuration">
+            <summary>
+            Configuration info
+            </summary>
+        </member>
+        <member name="M:Account.Host.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Account.Host.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

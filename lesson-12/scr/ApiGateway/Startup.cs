@@ -31,7 +31,7 @@ namespace ApiGateway
                 .AddJwtBearer(authenticationProviderKey, x =>
                 {
                     x.Authority = settings.IdentityServerUrl;
-                    //x.RequireHttpsMetadata = false;
+                    x.RequireHttpsMetadata = false;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false

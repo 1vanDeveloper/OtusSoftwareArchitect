@@ -249,7 +249,7 @@
             Флаг указывает режим запуска сервиса
             </summary>
         </member>
-        <member name="P:Account.Host.Settings.IAppSettings.AuthorityUrl">
+        <member name="P:Account.Host.Settings.IAppSettings.IdentityServerUrl">
             <summary>
             Адрес службы проверки прав пользователей
             </summary>

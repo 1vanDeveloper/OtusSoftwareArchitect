@@ -18,6 +18,6 @@ namespace Account.Host.Settings
         /// <summary>
         /// Адрес службы проверки прав пользователей
         /// </summary>
-        string AuthorityUrl { get; }
+        string IdentityServerUrl { get; }
     }
 }

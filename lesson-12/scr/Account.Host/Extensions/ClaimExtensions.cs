@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using IdentityModel;
 
 namespace Account.Host.Extensions
 {
@@ -16,7 +17,7 @@ namespace Account.Host.Extensions
         /// <returns> Значение claim'а. </returns>
         public static string GetUserName(this IEnumerable<Claim> claims)
         {
-            var userIdClaim = claims.First(claim => claim.Type == "name");
+            var userIdClaim = claims.First(claim => claim.Type == JwtClaimTypes.PreferredUserName);
 
             return userIdClaim.Value;
         }

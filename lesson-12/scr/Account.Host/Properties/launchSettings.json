@@ -22,9 +22,19 @@
       "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:5003;http://localhost:5002",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+
+        "POSTGRESQL_SERVICE_HOST": "localhost",
+        "POSTGRESQL_SERVICE_PORT": "7654",
+        "USERS_PG_DATABASE": "otus-users1",
+        "USERS_PG_USERNAME": "postgres",
+        "USERS_PG_PASSWORD": "qweqwe123",
+        "USE_SSL_PG_CONNECTION": "false",
+        "MIGRATION_MODE": "false",
+        "ORCHESTRATOR_TYPE": "DEBUG",
+        "IDENTITY_SERVER_URL": "http://localhost:5000"
       }
     }
   }

@@ -1,5 +1,7 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,8 +13,12 @@ using Account.Host.Attributes;
 using Account.Host.Middlewares;
 using Account.Domain;
 using Account.Host.Settings;
+using IdentityModel.Client;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Prometheus;
 using Prometheus.SystemMetrics;
@@ -56,20 +62,20 @@ namespace Account.Host
 
             services.AddDomainServices(appSettings.UsersDbConnectionString);
             
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
-                {
-                    options.Authority = "https://localhost:5005";
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
-                });
-            
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "account"));
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireClaim("scope", "accountService");
+                });
             });
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = appSettings.IdentityServerUrl;
+                    options.RequireHttpsMetadata = false;
+                });
             
             services.AddSwaggerGen(c =>
             {
@@ -106,13 +112,12 @@ namespace Account.Host
 
             app.UseRouting();
             app.UseHttpMetrics();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireAuthorization("ApiScope");
                 endpoints.MapMetrics();
                 endpoints.MapHealthChecks("/readiness", new HealthCheckOptions
                 {

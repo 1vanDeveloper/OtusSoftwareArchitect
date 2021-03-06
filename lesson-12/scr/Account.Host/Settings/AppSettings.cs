@@ -11,7 +11,7 @@ namespace Account.Host.Settings
         {
             UsersDbConnectionString = GetDbConnectionString(configuration); 
             IsMigrationService = configuration.GetValue<bool>("MIGRATION_MODE");
-            AuthorityUrl = configuration.GetValue<string>("IDENTITY_URL");
+            IdentityServerUrl = configuration.GetValue<string>("IDENTITY_SERVER_URL");
             //UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
         }
 
@@ -19,7 +19,7 @@ namespace Account.Host.Settings
 
         public bool IsMigrationService { get; }
         
-        public string AuthorityUrl { get; }
+        public string IdentityServerUrl { get; }
 
         private static string GetDbConnectionString(IConfiguration configuration)
         {

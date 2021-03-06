@@ -50,23 +50,6 @@
         <member name="M:Identity.Controllers.AccountController.#ctor(Identity.Services.ILoginService{Identity.Models.ApplicationUser},IdentityServer4.Services.IIdentityServerInteractionService,Microsoft.Extensions.Logging.ILogger{Identity.Controllers.AccountController},Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser},Microsoft.Extensions.Configuration.IConfiguration)">
             <inheritdoc />
         </member>
-        <member name="M:Identity.Controllers.AccountController.Login(Identity.Models.Account.LoginDto)">
-            <summary>
-            Handle postback from username/password login
-            </summary>
-            <returns> Login result </returns>
-            <response code="200"> Success </response>
-            <response code="400"> Filed </response>
-            <response code="500"> Server errors </response>
-        </member>
-        <member name="M:Identity.Controllers.AccountController.Logout(Identity.Models.Account.LogoutDto)">
-            <summary>
-            Handle logout page postback
-            </summary>
-            <returns> Logout result </returns>
-            <response code="200"> Success </response>
-            <response code="500"> Server errors </response>
-        </member>
         <member name="M:Identity.Controllers.AccountController.Register(Identity.Models.Account.RegisterDto)">
             <summary>
             Register new account
@@ -288,41 +271,6 @@
         <member name="T:Identity.Migrations.PersistedGrantDb.AppPersistedGrantDbContextModelSnapshot">
             <inheritdoc />
         </member>
-        <member name="T:Identity.Models.Account.ForgotPasswordDto">
-            <summary>
-            Forgot password DTO-model
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.ForgotPasswordDto.Email">
-            <summary>
-            User email address
-            </summary>
-        </member>
-        <member name="T:Identity.Models.Account.LoginDto">
-            <summary>
-            Login DTO-model
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.LoginDto.Email">
-            <summary>
-            User email address
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.LoginDto.Password">
-            <summary>
-            User password
-            </summary>
-        </member>
-        <member name="T:Identity.Models.Account.LogoutDto">
-            <summary>
-            Logout DTO-model
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.LogoutDto.LogoutId">
-            <summary>
-            Id of session
-            </summary>
-        </member>
         <member name="T:Identity.Models.Account.RegisterDto">
             <summary>
             Register DTO-model
@@ -341,56 +289,6 @@
         <member name="P:Identity.Models.Account.RegisterDto.ConfirmPassword">
             <summary>
             User confirm password
-            </summary>
-        </member>
-        <member name="T:Identity.Models.Account.ResetPasswordDto">
-            <summary>
-            Reset password DTO-model
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.ResetPasswordDto.Email">
-            <summary>
-            User email address
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.ResetPasswordDto.Password">
-            <summary>
-            User password
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.ResetPasswordDto.ConfirmPassword">
-            <summary>
-            User confirm password
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.ResetPasswordDto.Code">
-            <summary>
-            Received code
-            </summary>
-        </member>
-        <member name="T:Identity.Models.Account.SendCodeDto">
-            <summary>
-            Send code DTO-model
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.SendCodeDto.Providers">
-            <summary>
-            Providers list
-            </summary>
-        </member>
-        <member name="T:Identity.Models.Account.VerifyCodeDto">
-            <summary>
-            Verify code DTO-model
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.VerifyCodeDto.Provider">
-            <summary>
-            Selected provider
-            </summary>
-        </member>
-        <member name="P:Identity.Models.Account.VerifyCodeDto.Code">
-            <summary>
-            Received code
             </summary>
         </member>
         <member name="T:Identity.Models.ApplicationUser">
@@ -427,6 +325,18 @@
             </summary>
             <param name="args"></param>
             <returns></returns>
+        </member>
+        <member name="T:Identity.Services.CustomResourceOwnerPasswordValidator">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.CustomResourceOwnerPasswordValidator.#ctor(Identity.Services.ILoginService{Identity.Models.ApplicationUser})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loginService"></param>
+        </member>
+        <member name="M:Identity.Services.CustomResourceOwnerPasswordValidator.ValidateAsync(IdentityServer4.Validation.ResourceOwnerPasswordValidationContext)">
+            <inheritdoc />
         </member>
         <member name="T:Identity.Services.EfLoginService">
             <inheritdoc />

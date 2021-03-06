@@ -9,11 +9,11 @@
 1. Основы работы с Docker
 1. Инфраструктурные паттерны
 1. Основы работы с Kubernetes (часть 1)
-1. [Основы работы с Kubernetes (часть 2)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-5) 
-1. [Основы работы с Kubernetes (часть 3)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-6) 
+1. [Основы работы с Kubernetes (часть 2)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-05) 
+1. [Основы работы с Kubernetes (часть 3)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-06) 
 1. Kubernetes. QA
 1. Мониторинг и алертинг
-1. [Prometheus. Grafana](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-9)
+1. [Prometheus. Grafana](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-09)
 
 #### Часть II
 10. Service mesh на примере Istio

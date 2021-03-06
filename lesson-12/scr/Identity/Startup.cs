@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Identity.Attributes;
@@ -10,7 +12,9 @@ using Identity.Models;
 using Identity.Services;
 using Identity.Settings;
 using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Prometheus;
 
 namespace Identity
@@ -66,18 +71,20 @@ namespace Identity
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
             
-            services.AddTransient<ILoginService<ApplicationUser>, EfLoginService>();
-            
             // Adds IdentityServer
             services.AddIdentityServer(x =>
                 {
-                    x.IssuerUri = "null";
+                    //x.IssuerUri = "null";
                     x.Authentication.CookieLifetime = TimeSpan.FromHours(2);
                 })
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore<AppConfigurationDbContext>(options => options.ConfigureDbContext = builder => DbContextOptions(builder, appSettings))
                 .AddOperationalStore<AppPersistedGrantDbContext>(options => options.ConfigureDbContext = builder => DbContextOptions(builder, appSettings))
-                .Services.AddTransient<IProfileService, ProfileService>();
+                .AddDeveloperSigningCredential()
+                
+                .AddResourceOwnerValidator<CustomResourceOwnerPasswordValidator>()
+                .AddProfileService<ProfileService>()
+                .Services.AddTransient<ILoginService<ApplicationUser>, EfLoginService>();;
             
             services.AddControllers(cfg => { cfg.Filters.Add(new ValidateModelAttribute()); })
                 .AddNewtonsoftJson();
@@ -91,7 +98,7 @@ namespace Identity
             // add CORS policy for non-IdentityServer endpoints
             services.AddCors(options =>
             {
-                options.AddPolicy("api", policy =>
+                options.AddPolicy("ApiScope", policy =>
                 {
                     policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
@@ -143,7 +150,7 @@ namespace Identity
                 await next();
             });
 
-            app.UseForwardedHeaders();
+            // app.UseForwardedHeaders();
             // Adds IdentityServer
             app.UseIdentityServer();
 
@@ -152,7 +159,9 @@ namespace Identity
             // To avoid this problem, the policy of cookies shold be in Lax mode.
             app.UseCookiePolicy(new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.Lax
+                MinimumSameSitePolicy = SameSiteMode.Lax,
+                HttpOnly = HttpOnlyPolicy.None,
+                Secure = CookieSecurePolicy.None
             });
             app.UseRouting();
             app.UseHttpMetrics();

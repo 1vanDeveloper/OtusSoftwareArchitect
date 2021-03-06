@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Identity.Configuration;
 using IdentityServer4.EntityFramework.Mappers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Identity.Data
@@ -19,44 +20,33 @@ namespace Identity.Data
         /// <returns></returns>
         public static async Task SeedAsync(AppConfigurationDbContext context, IConfiguration configuration)
         {
-
-            if (!context.Clients.Any())
+            context.IdentityResources.RemoveRange(await context.IdentityResources.ToArrayAsync());
+            foreach (var resource in Config.GetResources())
             {
-                foreach (var client in Config.GetClients())
-                {
-                    await context.Clients.AddAsync(client.ToEntity());
-                }
-                await context.SaveChangesAsync();
+                await context.IdentityResources.AddAsync(resource.ToEntity());
             }
+            await context.SaveChangesAsync();
 
-            if (!context.IdentityResources.Any())
+            context.ApiResources.RemoveRange(await context.ApiResources.ToArrayAsync());
+            foreach (var api in Config.GetApis())
             {
-                foreach (var resource in Config.GetResources())
-                {
-                    await context.IdentityResources.AddAsync(resource.ToEntity());
-                }
-                await context.SaveChangesAsync();
+                await context.ApiResources.AddAsync(api.ToEntity());
             }
-
-            if (!context.ApiResources.Any())
-            {
-                foreach (var api in Config.GetApis())
-                {
-                    await context.ApiResources.AddAsync(api.ToEntity());
-                }
-
-                await context.SaveChangesAsync();
-            }
+            await context.SaveChangesAsync();
             
-            if (!context.ApiScopes.Any())
+            context.ApiScopes.RemoveRange(await context.ApiScopes.ToArrayAsync());
+            foreach (var api in Config.GetScopes())
             {
-                foreach (var api in Config.GetScopes())
-                {
-                    await context.ApiScopes.AddAsync(api.ToEntity());
-                }
-
-                await context.SaveChangesAsync();
+                await context.ApiScopes.AddAsync(api.ToEntity());
             }
+            await context.SaveChangesAsync();
+            
+            context.Clients.RemoveRange(await context.Clients.ToArrayAsync());
+            foreach (var client in Config.GetClients())
+            {
+                await context.Clients.AddAsync(client.ToEntity());
+            }
+            await context.SaveChangesAsync();
         }
     }
 }

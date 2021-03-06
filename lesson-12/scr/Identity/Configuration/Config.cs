@@ -1,6 +1,7 @@
 using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using IdentityModel;
 
 namespace Identity.Configuration
 {
@@ -16,9 +17,12 @@ namespace Identity.Configuration
         /// <returns></returns>
         public static IEnumerable<ApiResource> GetApis()
         {
-            return new List<ApiResource>
+            return new List<ApiResource>()
             {
-                new ApiResource("account", "Account Service"),
+                new ApiResource("accountService", "Account Service")
+                {
+                    Scopes = { "accountService" }
+                },
             };
         }
 
@@ -32,10 +36,11 @@ namespace Identity.Configuration
         /// </remarks>
         public static IEnumerable<IdentityResource> GetResources()
         {
-            return new List<IdentityResource>
+            return new List<IdentityResource>()
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResources.Email()
             };
         }
 
@@ -45,9 +50,9 @@ namespace Identity.Configuration
         /// <returns></returns>
         public static IEnumerable<ApiScope> GetScopes()
         {
-            return new[]
+            return new ApiScope[]
             {
-                new ApiScope("account", "Account Service")
+                new ApiScope("accountService", "Account Service")
             };
         }
             
@@ -60,32 +65,49 @@ namespace Identity.Configuration
         {
             return new List<Client>
             {
-                // JavaScript Client
                 new Client
                 {
-                    ClientId = "js",
-                    ClientName = "Otus App SPA OpenId Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    RequireConsent = false,
-                    //AllowedCorsOrigins = {$"{clientsUrl["Spa"]}"},
+                    ClientId = "accountService",
+                    ClientName = "Account Service",
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                    AllowAccessTokensViaBrowser =true,
                     AllowedScopes =
+                    {
+                        //IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "accountService"
+                    }
+                },
+                
+                new Client
+                {
+                    ClientId = "postman",
+                    ClientName = "Postman",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    AccessTokenType = AccessTokenType.Jwt,
+                    AccessTokenLifetime = 3600,
+                    IdentityTokenLifetime = 3600,
+                    UpdateAccessTokenClaimsOnRefresh = true,
+                    SlidingRefreshTokenLifetime = 30,
+                    AllowOfflineAccess = true,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    AlwaysSendClientClaims = true,
+                    Enabled = true,
+                    AllowedScopes = new []
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,   
-                        "account"
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "accountService"
                     },
-                },
-                new Client
-                {
-                    ClientId = "account",
-                    ClientName = "Account Service",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    AllowedScopes =
+                    ClientSecrets = new []
                     {
-                        "account"
+                        new Secret
+                        {
+                            Value = "secret".ToSha256()
+                        }
                     }
                 }
             };

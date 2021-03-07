@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Account.Domain.Services;
 using Account.Host.Extensions;
 using Account.Host.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

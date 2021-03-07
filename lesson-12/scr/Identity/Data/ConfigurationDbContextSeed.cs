@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Identity.Configuration;
 using IdentityServer4.EntityFramework.Mappers;

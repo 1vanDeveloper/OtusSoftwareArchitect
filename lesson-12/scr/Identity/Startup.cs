@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Identity.Attributes;
@@ -11,8 +9,6 @@ using Identity.Extensions;
 using Identity.Models;
 using Identity.Services;
 using Identity.Settings;
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -25,7 +21,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Prometheus;
 
 namespace Identity
@@ -84,7 +79,7 @@ namespace Identity
                 
                 .AddResourceOwnerValidator<CustomResourceOwnerPasswordValidator>()
                 .AddProfileService<ProfileService>()
-                .Services.AddTransient<ILoginService<ApplicationUser>, EfLoginService>();;
+                .Services.AddTransient<ILoginService<ApplicationUser>, EfLoginService>();
             
             services.AddControllers(cfg => { cfg.Filters.Add(new ValidateModelAttribute()); })
                 .AddNewtonsoftJson();

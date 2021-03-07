@@ -1,7 +1,5 @@
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,13 +11,9 @@ using Account.Host.Attributes;
 using Account.Host.Middlewares;
 using Account.Domain;
 using Account.Host.Settings;
-using IdentityModel.Client;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using Prometheus;
 using Prometheus.SystemMetrics;
 

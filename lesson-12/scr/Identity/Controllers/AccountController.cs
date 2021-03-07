@@ -1,19 +1,12 @@
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Identity.Models;
 using Identity.Models.Account;
-using Identity.Services;
-using IdentityModel;
-using IdentityServer4;
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Identity.Controllers
@@ -26,25 +19,16 @@ namespace Identity.Controllers
     [Route("account")]
     public class AccountController : Controller
     {
-        private readonly ILoginService<ApplicationUser> _loginService;
-        private readonly IIdentityServerInteractionService _interaction;
-       private readonly ILogger<AccountController> _logger;
+        private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
 
         /// <inheritdoc />
         public AccountController(
-            ILoginService<ApplicationUser> loginService,
-            IIdentityServerInteractionService interaction,
             ILogger<AccountController> logger,
-            UserManager<ApplicationUser> userManager,
-            IConfiguration configuration)
+            UserManager<ApplicationUser> userManager)
         {
-            _loginService = loginService;
-            _interaction = interaction;
             _logger = logger;
             _userManager = userManager;
-            _configuration = configuration;
         }
         
         /// <summary>
@@ -62,28 +46,46 @@ namespace Identity.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register(RegisterDto model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ErrorDto
+                // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+                _logger.LogInformation($"Account registering is started: {model?.Email}");
+                
+                if (!ModelState.IsValid)
                 {
-                    Code = 400,
-                    Message = "Invalid input data."
-                });
-            }
-            
-            var user = new ApplicationUser
-            {
-                UserName = model.Email,
-                Email = model.Email,
-            };
-            
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Errors.Any())
-            {
-                return BadRequest(result);
-            }
+                    return BadRequest(new ErrorDto
+                    {
+                        Code = 400,
+                        Message = "Invalid input data."
+                    });
+                }
 
-            return Ok(result);
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Errors.Any())
+                {
+                    return BadRequest(result);
+                }
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = $"Account registering exception: {model?.Email} - {e.Message}";
+                // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+                _logger.LogError(error);
+                return BadRequest(error);
+            }
+            finally
+            {
+                // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+                _logger.LogInformation($"Account registering is ended: {model?.Email}");
+            }
         }
     }
 }

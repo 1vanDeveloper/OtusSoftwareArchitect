@@ -34,7 +34,7 @@ namespace Account.Host
                 var settings = serviceProvider?.GetRequiredService<IAppSettings>();
                 if (settings?.IsMigrationService ?? false)
                 {
-                    var context = serviceProvider?.GetRequiredService<AppDbContext>();
+                    var context = serviceProvider.GetRequiredService<AppDbContext>();
                     if (context == null)
                     {
                         return;

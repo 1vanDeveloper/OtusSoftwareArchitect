@@ -1,13 +1,16 @@
 using ApiGateway.Settings;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Kubernetes;
+using Prometheus;
 
 namespace ApiGateway
 {
@@ -32,6 +35,9 @@ namespace ApiGateway
                     options.Authority = appSettings.IdentityServerUrl;
                     options.RequireHttpsMetadata = false;
                 });
+            
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy());
 
             services.AddOcelot()
                 .AddKubernetes();
@@ -46,10 +52,20 @@ namespace ApiGateway
             }
 
             app.UseRouting();
+            app.UseHttpMetrics();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapMetrics();
+                endpoints.MapHealthChecks("/readiness", new HealthCheckOptions
+                {
+                    Predicate = _ => true
+                });
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
             });
 
             await app.UseOcelot();

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  USERS_PG_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
+  USERS_PG_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
+  USE_SSL_PG_CONNECTION: {{ .Values.externalPostgresql.useSsl | quote }}
+  MIGRATION_MODE_FALSE: "false"
+  MIGRATION_MODE_TRUE: "true"
+  ORCHESTRATOR_TYPE: "K8S"
+  IDENTITY_SERVER_URL: "http://identity.homework"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret
+type: Opaque
+data:
+  USERS_PG_PASSWORD: {{ .Values.postgresql.postgresqlPassword | b64enc }}
+  

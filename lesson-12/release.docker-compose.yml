@@ -1,10 +1,18 @@
 version: '3.7'
 
 services:
-  otus-user-app:
-    container_name: otus-user-app
+  account:
+    container_name: account
     build: 
       context: .
-      dockerfile: docker/dockerfile
-
-
+      dockerfile: docker/Account/dockerfile
+  gateway:
+    container_name: gateway
+    build: 
+      context: .
+      dockerfile: docker/ApiGateway/dockerfile
+  identity:
+    container_name: identity
+    build: 
+      context: .
+      dockerfile: docker/Identity/dockerfile

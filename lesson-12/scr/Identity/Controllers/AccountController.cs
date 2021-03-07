@@ -51,7 +51,7 @@ namespace Identity.Controllers
                 // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
                 _logger.LogInformation($"Account registering is started: {model?.Email}");
                 
-                if (!ModelState.IsValid)
+                if (!ModelState.IsValid || model == null)
                 {
                     return BadRequest(new ErrorDto
                     {

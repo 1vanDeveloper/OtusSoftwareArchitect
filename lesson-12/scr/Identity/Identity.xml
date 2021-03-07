@@ -47,7 +47,7 @@
             Account management controller
             </summary>
         </member>
-        <member name="M:Identity.Controllers.AccountController.#ctor(Identity.Services.ILoginService{Identity.Models.ApplicationUser},IdentityServer4.Services.IIdentityServerInteractionService,Microsoft.Extensions.Logging.ILogger{Identity.Controllers.AccountController},Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser},Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Identity.Controllers.AccountController.#ctor(Microsoft.Extensions.Logging.ILogger{Identity.Controllers.AccountController},Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser})">
             <inheritdoc />
         </member>
         <member name="M:Identity.Controllers.AccountController.Register(Identity.Models.Account.RegisterDto)">

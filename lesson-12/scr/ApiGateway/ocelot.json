@@ -1,24 +1,21 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/values",
-      "DownstreamScheme": "http",
-      "UpstreamPathTemplate": "/values",
-      "ServiceName": "accountservice",
-      "ServiceNamespace": "otus-namespace",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
-      }
-    },
-    {
       "DownstreamPathTemplate": "/account/{everything}",
       "DownstreamScheme": "http",
-      "UpstreamPathTemplate": "api/v1/auth/{everything}",
-      "ServiceName": "identityservice",
-      "ServiceNamespace": "otus-namespace",
-      "UpstreamHttpMethod": [ "POST" ]
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
     }
   ]
 }

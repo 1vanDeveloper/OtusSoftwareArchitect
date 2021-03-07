@@ -1,4 +1,5 @@
 using ApiGateway.Settings;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,23 +24,17 @@ namespace ApiGateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settings = new AppSettings(Configuration);
-            var authenticationProviderKey = "IdentityApiKey";
-
+            var appSettings = new AppSettings(Configuration);
+            
             // NUGET - Microsoft.AspNetCore.Authentication.JwtBearer
-            services.AddAuthentication()
-                .AddJwtBearer(authenticationProviderKey, x =>
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
                 {
-                    x.Authority = settings.IdentityServerUrl;
-                    x.RequireHttpsMetadata = false;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
+                    options.Authority = appSettings.IdentityServerUrl;
+                    options.RequireHttpsMetadata = false;
                 });
 
-            services.AddOcelot()
-                .AddKubernetes();
+            services.AddOcelot();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

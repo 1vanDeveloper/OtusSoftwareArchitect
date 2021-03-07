@@ -4,6 +4,8 @@
 
 replicaCount: 2
 
+appname: account
+
 image:
   repository: 1vandev/account
   tag: "v1"
@@ -20,7 +22,7 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: account.homework
+    - host: account.arch.homework
       paths:
       - path: /($|/)(.*)
         pathType: Prefix
@@ -36,8 +38,11 @@ ingress:
 
 resources:
   limits:
-    cpu: 1000m
-    memory: 256Mi
+    cpu: 250m
+    memory: 128Mi
+  requests:
+    cpu: 250m
+    memory: 128Mi
  
 postgresql:
   enabled: true
@@ -50,6 +55,15 @@ postgresql:
     enabled: true
     serviceMonitor:
       enabled: true
+  resources:
+    limits:
+      cpu: 250m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  persistence:
+    size: 2Gi
 
 externalPostgresql:
   useSsl: false

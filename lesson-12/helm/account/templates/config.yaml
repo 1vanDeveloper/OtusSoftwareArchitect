@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config
+  name: "{{ include "helm.fullname" . }}-config"
 data:
   USERS_PG_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
   USERS_PG_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
@@ -9,13 +9,13 @@ data:
   MIGRATION_MODE_FALSE: "false"
   MIGRATION_MODE_TRUE: "true"
   ORCHESTRATOR_TYPE: "K8S"
-  IDENTITY_SERVER_URL: "http://identity.homework"
+  IDENTITY_SERVER_URL: "http://identity.arch.homework"
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret
+  name: "{{ include "helm.fullname" . }}-secret"
 type: Opaque
 data:
   USERS_PG_PASSWORD: {{ .Values.postgresql.postgresqlPassword | b64enc }}

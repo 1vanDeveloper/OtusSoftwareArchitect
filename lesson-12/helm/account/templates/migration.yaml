@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: migration-job
+  name: "{{ include "helm.fullname" . }}-migration-job"
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-         app: migration-job
+         app: "{{ include "helm.fullname" . }}-migration-job"
     spec:
       restartPolicy: Never
       initContainers:
@@ -42,35 +42,35 @@ spec:
             - name: USERS_PG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret
+                  name: "{{ include "helm.fullname" . }}-secret"
                   key: USERS_PG_PASSWORD
             - name: USERS_PG_DATABASE
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: USERS_PG_DATABASE
             - name: USERS_PG_USERNAME
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: USERS_PG_USERNAME
             - name: USE_SSL_PG_CONNECTION
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: USE_SSL_PG_CONNECTION
             - name: MIGRATION_MODE
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: MIGRATION_MODE_TRUE
             - name: ORCHESTRATOR_TYPE
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: ORCHESTRATOR_TYPE
             - name: IDENTITY_SERVER_URL
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: IDENTITY_SERVER_URL

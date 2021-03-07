@@ -57,35 +57,35 @@ spec:
             - name: USERS_PG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret
+                  name: "{{ include "helm.fullname" . }}-secret"
                   key: USERS_PG_PASSWORD
             - name: USERS_PG_DATABASE
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: USERS_PG_DATABASE
             - name: USERS_PG_USERNAME
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: USERS_PG_USERNAME
             - name: USE_SSL_PG_CONNECTION
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: USE_SSL_PG_CONNECTION
             - name: MIGRATION_MODE
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: MIGRATION_MODE_FALSE
             - name: ORCHESTRATOR_TYPE
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: ORCHESTRATOR_TYPE
             - name: IDENTITY_SERVER_URL
               valueFrom:
                 configMapKeyRef:
-                  name: config
+                  name: "{{ include "helm.fullname" . }}-config"
                   key: IDENTITY_SERVER_URL

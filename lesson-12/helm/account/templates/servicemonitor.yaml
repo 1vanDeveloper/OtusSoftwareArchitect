@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "helm.fullname" . }}
+  name: "{{ include "helm.fullname" . }}-monitor"
   labels:
     {{- include "helm.labels" . | nindent 4 }}
 spec:

@@ -19,12 +19,12 @@ ingress:
   enabled: true
   annotations:
     # kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: account.arch.homework
       paths:
-      - path: /($|/)(.*)
+      - path: /(.*)
         pathType: Prefix
         backend:
           service:

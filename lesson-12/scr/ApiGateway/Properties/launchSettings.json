@@ -26,7 +26,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         
-        "IDENTITY_SERVER_URL": "http://localhost:5000"
+        "IDENTITY_SERVER_URL": "http://localhost:5000",
+        "ORCHESTRATOR_TYPE": "DEBUG"
       }
     }
   }

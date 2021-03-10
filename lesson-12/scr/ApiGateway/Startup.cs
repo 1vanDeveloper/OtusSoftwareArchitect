@@ -39,8 +39,15 @@ namespace ApiGateway
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
-            services.AddOcelot()
-                .AddKubernetes();
+            if (appSettings.IsInKubernetes)
+            {
+                services.AddOcelot()
+                    .AddKubernetes();
+            }
+            else
+            {
+                services.AddOcelot();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,5 +9,10 @@ namespace ApiGateway.Settings
         /// Identity server URL
         /// </summary>
         string IdentityServerUrl { get; }
+        
+        /// <summary>
+        /// Флаг запуска в оркестраторе
+        /// </summary>
+        bool IsInKubernetes { get; }
     }
 }

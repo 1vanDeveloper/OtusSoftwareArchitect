@@ -11,5 +11,4 @@ kind: ConfigMap
 metadata:
   name: "{{ include "helm.fullname" . }}-files-config"
 data:
-  ocelot.json: |-
-    {{ .Files.Get "gatewayConfig/ocelot.json" }}
+{{ (.Files.Glob "gatewayConfig/*").AsConfig | indent 2 }}

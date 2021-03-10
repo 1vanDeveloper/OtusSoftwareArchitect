@@ -63,7 +63,7 @@ namespace ApiGateway
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("Configuration/ocelot.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             return builder.Build();

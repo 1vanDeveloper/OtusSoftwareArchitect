@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "helm.fullname" . }}-dep"
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "helm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/sh", "-c", "cat /app/ocelot.json" ]
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 6
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /readiness
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: IDENTITY_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ include "helm.fullname" . }}-config"
+                  key: IDENTITY_SERVER_URL
+      volumes:
+        - name: config-volume
+          configMap:
+          # Provide the name of the ConfigMap containing the files you want
+          # to add to the container
+          name: "{{ include "helm.fullname" . }}-files-config"
+      restartPolicy: Never

@@ -1,0 +1,45 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/account/register",
+      "DownstreamScheme": "http",
+      "ServiceName": "identity.arch.homework",
+      "Priority": 1,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account/register",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/account/{everything}",
+      "DownstreamScheme": "http",
+      "ServiceName": "account.arch.homework",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/account",
+      "DownstreamScheme": "http",
+      "ServiceName": "account.arch.homework",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Namespace": "monitoring",
+      "Type": "kube"
+    }
+  }
+}

@@ -20,10 +20,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: [ "/bin/sh", "-c", "cat /app/ocelot.json" ]
           volumeMounts:
           - name: config-volume
-            mountPath: /app
+            mountPath: /app/Configuration
           ports:
             - name: http
               containerPort: 80
@@ -52,7 +51,6 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-          # Provide the name of the ConfigMap containing the files you want
-          # to add to the container
-          name: "{{ include "helm.fullname" . }}-files-config"
-      restartPolicy: Never
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: "{{ include "helm.fullname" . }}-files-config"

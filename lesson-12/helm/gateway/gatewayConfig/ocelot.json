@@ -3,7 +3,12 @@
     {
       "DownstreamPathTemplate": "/account/register",
       "DownstreamScheme": "http",
-      "ServiceName": "identity.arch.homework",
+      "DownstreamHostAndPorts": [
+        {
+            "Host": "identity.arch.homework",
+            "Port": 80
+        }
+      ],
       "Priority": 1,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account/register",
@@ -12,7 +17,12 @@
     {
       "DownstreamPathTemplate": "/account/{everything}",
       "DownstreamScheme": "http",
-      "ServiceName": "account.arch.homework",
+      "DownstreamHostAndPorts": [
+        {
+            "Host": "account.arch.homework",
+            "Port": 80
+        }
+      ],
       "Priority": 0,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account/{everything}",
@@ -24,8 +34,13 @@
     },
     {
       "DownstreamPathTemplate": "/account",
-      "DownstreamScheme": "http",
-      "ServiceName": "account.arch.homework",
+      "DownstreamScheme": "http",      
+      "DownstreamHostAndPorts": [
+        {
+            "Host": "account.arch.homework",
+            "Port": 80
+        }
+      ],
       "Priority": 0,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account",
@@ -35,11 +50,5 @@
         "AllowedScopes": [ "accountService" ]
       }
     }
-  ],
-  "GlobalConfiguration": {
-    "ServiceDiscoveryProvider": {
-      "Namespace": "monitoring",
-      "Type": "kube"
-    }
-  }
+  ]
 }

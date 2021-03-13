@@ -9,6 +9,7 @@ namespace ApiGateway.Settings
         public AppSettings(IConfiguration configuration)
         {
             IdentityServerUrl = configuration.GetValueOrThrow<string>("IDENTITY_SERVER_URL");
+            UsePodServiceAccount = configuration.GetValueOrThrow<bool>("USE_POD_SERVICE_ACCOUNT");
             IsInKubernetes = IsInKube(configuration);
         }
 
@@ -16,6 +17,8 @@ namespace ApiGateway.Settings
         
         public bool IsInKubernetes { get; }
         
+        public bool UsePodServiceAccount { get; }
+
         /// <summary>
         /// Check Kubernetes runtime
         /// </summary>

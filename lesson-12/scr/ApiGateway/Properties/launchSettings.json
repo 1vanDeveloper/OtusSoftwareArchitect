@@ -27,7 +27,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         
         "IDENTITY_SERVER_URL": "http://localhost:5000",
-        "ORCHESTRATOR_TYPE": "DEBUG"
+        "ORCHESTRATOR_TYPE": "DEBUG",
+        "USE_POD_SERVICE_ACCOUNT": "true"
       }
     }
   }

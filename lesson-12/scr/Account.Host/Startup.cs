@@ -69,6 +69,7 @@ namespace Account.Host
                 {
                     options.Authority = appSettings.IdentityServerUrl;
                     options.RequireHttpsMetadata = false;
+                    options.SupportedTokens = SupportedTokens.Both;
                 });
             
             services.AddSwaggerGen(c =>

@@ -9,7 +9,7 @@ data:
   MIGRATION_MODE_FALSE: "false"
   MIGRATION_MODE_TRUE: "true"
   ORCHESTRATOR_TYPE: "K8S"
-  IDENTITY_SERVER_URL: "http://identity.arch.homework"
+  IDENTITY_SERVER_URL: "http://identity-service"
 
 ---
 apiVersion: v1

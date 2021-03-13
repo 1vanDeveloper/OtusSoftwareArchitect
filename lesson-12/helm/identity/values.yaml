@@ -2,17 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 2
+replicaCount: 1
 
 appname: identity
 
 image:
   repository: 1vandev/identity
-  tag: "v1"
+  tag: "v2"
   pullPolicy: Always
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 80
 
 ingress:

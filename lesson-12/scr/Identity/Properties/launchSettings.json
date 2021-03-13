@@ -33,7 +33,8 @@
         "USERS_PG_PASSWORD": "qweqwe123",
         "USE_SSL_PG_CONNECTION": "false",
         "MIGRATION_MODE": "true",
-        "ORCHESTRATOR_TYPE": "DEBUG"
+        "ORCHESTRATOR_TYPE": "DEBUG",
+        "IDENTITY_SERVER_URL": "http://localhost:5000"
       }
     }
   }

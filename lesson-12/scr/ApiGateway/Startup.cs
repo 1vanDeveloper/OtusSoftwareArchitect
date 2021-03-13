@@ -1,3 +1,4 @@
+using ApiGateway.Extensions;
 using ApiGateway.Settings;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Provider.Kubernetes;
 using Prometheus;
 
 namespace ApiGateway
@@ -34,6 +34,7 @@ namespace ApiGateway
                 {
                     options.Authority = appSettings.IdentityServerUrl;
                     options.RequireHttpsMetadata = false;
+                    options.SupportedTokens = SupportedTokens.Both;
                 });
             
             services.AddHealthChecks()
@@ -42,7 +43,7 @@ namespace ApiGateway
             if (appSettings.IsInKubernetes)
             {
                 services.AddOcelot()
-                    .AddKubernetes();
+                    .AddKubernetesFixed(appSettings.UsePodServiceAccount);
             }
             else
             {

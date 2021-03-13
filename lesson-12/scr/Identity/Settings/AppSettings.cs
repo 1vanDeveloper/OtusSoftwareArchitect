@@ -9,12 +9,15 @@ namespace Identity.Settings
     {
         public AppSettings(IConfiguration configuration)
         {
+            IdentityServerUrl = configuration.GetValueOrThrow<string>("IDENTITY_SERVER_URL");
             ConnectionString = GetDbConnectionString(configuration); 
             IsMigrationService = configuration.GetValueOrThrow<bool>("MIGRATION_MODE");
             IsInKubernetes = configuration.IsInKubernetes();
             //ConnectionString = "Host=localhost;Port=7654;Database=otus-identity;Username=postgres;Password=\"qweqwe123\";"; 
         }
 
+        public string IdentityServerUrl { get; }
+        
         public string ConnectionString { get; }
 
         public bool IsMigrationService { get; }

@@ -69,7 +69,7 @@ namespace Identity
             // Adds IdentityServer
             services.AddIdentityServer(x =>
                 {
-                    //x.IssuerUri = "null";
+                    x.IssuerUri = appSettings.IdentityServerUrl;
                     x.Authentication.CookieLifetime = TimeSpan.FromHours(2);
                 })
                 .AddAspNetIdentity<ApplicationUser>()

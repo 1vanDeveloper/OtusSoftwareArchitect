@@ -6,6 +6,11 @@ namespace Identity.Settings
     internal interface IAppSettings
     {
         /// <summary>
+        /// Identity server URL for Jwt Issuer Token 
+        /// </summary>
+        string IdentityServerUrl { get; }
+        
+        /// <summary>
         /// Строка подключения к БД
         /// </summary>
         string ConnectionString { get; }

@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   repository: 1vandev/gateway
-  tag: "v2"
+  tag: "v4"
   pullPolicy: Always
 
 service:

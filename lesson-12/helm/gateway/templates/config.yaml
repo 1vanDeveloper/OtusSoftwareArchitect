@@ -3,7 +3,9 @@ kind: ConfigMap
 metadata:
   name: "{{ include "helm.fullname" . }}-config"
 data:
-  IDENTITY_SERVER_URL: "http://identity.arch.homework"
+  IDENTITY_SERVER_URL: "http://identity-service"
+  ORCHESTRATOR_TYPE: "K8S"
+  USE_POD_SERVICE_ACCOUNT: "true"
 
 ---
 apiVersion: v1

@@ -48,6 +48,16 @@ spec:
                 configMapKeyRef:
                   name: "{{ include "helm.fullname" . }}-config"
                   key: IDENTITY_SERVER_URL
+            - name: ORCHESTRATOR_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ include "helm.fullname" . }}-config"
+                  key: ORCHESTRATOR_TYPE
+            - name: USE_POD_SERVICE_ACCOUNT
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ include "helm.fullname" . }}-config"
+                  key: USE_POD_SERVICE_ACCOUNT
       volumes:
         - name: config-volume
           configMap:

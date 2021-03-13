@@ -3,26 +3,23 @@
     {
       "DownstreamPathTemplate": "/account/register",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-            "Host": "identity.arch.homework",
-            "Port": 80
-        }
-      ],
-      "Priority": 1,
+      "ServiceName": "identity-service",
       "RouteIsCaseSensitive": false,
-      "UpstreamPathTemplate": "/api/account/register",
+      "UpstreamPathTemplate": "/api/register",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/connect/token",
+      "DownstreamScheme": "http",
+      "ServiceName": "identity-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/token",
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
       "DownstreamPathTemplate": "/account/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-            "Host": "account.arch.homework",
-            "Port": 80
-        }
-      ],
+      "ServiceName": "account-service",
       "Priority": 0,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account/{everything}",
@@ -34,13 +31,8 @@
     },
     {
       "DownstreamPathTemplate": "/account",
-      "DownstreamScheme": "http",      
-      "DownstreamHostAndPorts": [
-        {
-            "Host": "account.arch.homework",
-            "Port": 80
-        }
-      ],
+      "DownstreamScheme": "http",
+      "ServiceName": "account-service",
       "Priority": 0,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account",
@@ -50,5 +42,11 @@
         "AllowedScopes": [ "accountService" ]
       }
     }
-  ]
+  ],
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Namespace": "monitoring",
+      "Type": "kube"
+    }
+  }
 }

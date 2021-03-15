@@ -45,7 +45,7 @@
   ],
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
-      "Namespace": "monitoring",
+      "Namespace": "otus-services",
       "Type": "kube"
     }
   }

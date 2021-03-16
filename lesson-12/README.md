@@ -1,26 +1,24 @@
-# Домашнее задание (Занятие № 9)
-## Prometheus. Grafana
+# Домашнее задание (Занятие № 12)
+## Backend for frontends. Apigateway
 
-1. Сформирован дашборд в Графане, в котором созданы метрики с разбивкой по API методам:
-- Latency (response time) с квантилями по 0.5, 0.95, 0.99, max,
-- RPS,
-- Error Rate - количество 500ых ответов.
+1. Архитектурное решение и схема отправки запросов представлена на картинке ниже.
+![](img/diagram.png)
 
-2. Добавлены в дашборд графики с метрикам в целом по сервису, взятые с nginx-ingress-controller:
-- Latency (response time) с квантилями по 0.5, 0.95, 0.99, max,
-- RPS,
-- Error Rate - количество 500ых ответов.
+2. Установку приложения можно осуществить одним из двух способов:
+- Полная установка с настройкой Prometheus, Grafana и Ingress. В этом случае создается `namespace otus-services`, в котором должно находится приложение, т.к. на него настроен Gateway. Для установки нужно выполнить скрипт, находясь в директории `lesson-12`:
+```shell
+lesson-12 > ./install.sh
+```
 
-3. Настроен алертинг в графане на Error Rate и Latency.
+- Установка только бизнес-сервисов из helm-чартов, для этого руками нужно создать `namespace otus-services`. Для установки нужно выполнить скрипт, находясь в директории `lesson-12/helm`:
+```shell
+lesson-12/helm > ./install.sh
+```
 
-4. Используя существующие системные метрики из Kubernetes, добавлены на дашборд графики с метриками:
-- Потребление подами приложения памяти,
-- Потребление подами приолжения CPU.
+Для работы Gateway во время установки чартов выполняется настройка [Permissive RBAC Permissions](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#permissive-rbac-permissions).
 
-5. Инструментирована база данных Postgres с помощью экспортера для Prometheus. Добавлены в общий Dashboard графики с метриками работы БД.
-
-### На выходе:
-1. Скриншот Dashboard с графиками в момент стресс-тестирования сервиса, после 5-10 минут нагрузки.
-[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.png)
-1. Json-дашборды.
-[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.json)
+3. После того, как все сервисы будут установлены и запущены можно выполнить тесты Postman, выполнив команду:
+```shell
+lesson-12 > newman run Otus.postman_collection.json
+```
+Переменная `{{baseUrl}}` настроена на домен `arch.homework`.

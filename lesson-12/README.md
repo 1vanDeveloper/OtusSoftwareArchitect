@@ -19,6 +19,6 @@ lesson-12/helm > ./install.sh
 
 3. После того, как все сервисы будут установлены и запущены можно выполнить тесты Postman, выполнив команду:
 ```shell
-lesson-12 > newman run Otus.postman_collection.json
+lesson-12 > newman run tests/Otus.postman_collection.json
 ```
 Переменная `{{baseUrl}}` настроена на домен `arch.homework`.

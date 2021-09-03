@@ -1,0 +1,52 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/account/register",
+      "DownstreamScheme": "http",
+      "ServiceName": "identity-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/register",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/connect/token",
+      "DownstreamScheme": "http",
+      "ServiceName": "identity-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/token",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/account/{everything}",
+      "DownstreamScheme": "http",
+      "ServiceName": "account-service",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/account",
+      "DownstreamScheme": "http",
+      "ServiceName": "account-service",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Namespace": "otus-services",
+      "Type": "kube"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+kubectl port-forward service/prom-kube-prometheus-stack-prometheus 9090

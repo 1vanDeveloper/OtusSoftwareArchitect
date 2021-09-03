@@ -1,0 +1,73 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+appname: identity
+
+image:
+  repository: 1vandev/identity
+  tag: "v2"
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: identity.arch.homework
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: identity-service
+            port:
+              number: 80
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 500m
+    memory: 256Mi
+ 
+postgresql:
+  enabled: true
+  postgresqlUsername: myuser
+  postgresqlPassword: passwd
+  postgresqlDatabase: identitydb
+  service:
+    port: "5432"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    limits:
+      cpu: 250m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  persistence:
+    size: 2Gi
+
+externalPostgresql:
+  useSsl: false
+
+metrics:
+  serviceMonitor:
+    enabled: true

@@ -1,0 +1,469 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Identity</name>
+    </assembly>
+    <members>
+        <member name="T:Identity.Attributes.ValidateModelAttribute">
+            <summary>
+                Атрибут валидации моделей.
+            </summary>
+        </member>
+        <member name="T:Identity.Configuration.Config">
+            <summary>
+            Defined in your system configurations
+            </summary>
+        </member>
+        <member name="M:Identity.Configuration.Config.GetApis">
+            <summary>
+            Api resource configurations define in your system
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Configuration.Config.GetResources">
+            <summary>
+            Identity resources configurations define in your system
+            </summary>
+            <returns></returns>
+            <remarks>
+            Identity resources are data like user ID, name, or email address of a user
+            see: http://docs.identityserver.io/en/release/configuration/resources.html
+            </remarks>
+        </member>
+        <member name="M:Identity.Configuration.Config.GetScopes">
+            <summary>
+            Api scopes configurations define in your system
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Configuration.Config.GetClients">
+            <summary>
+            Client want to access resources (aka scopes)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Controllers.AccountController">
+            <summary>
+            Account management controller
+            </summary>
+        </member>
+        <member name="M:Identity.Controllers.AccountController.#ctor(Microsoft.Extensions.Logging.ILogger{Identity.Controllers.AccountController},Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser})">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Controllers.AccountController.Register(Identity.Models.Account.RegisterDto)">
+            <summary>
+            Register new account
+            </summary>
+            <param name="model"></param>
+            <returns> Register result </returns>
+            <response code="200"> Success </response>
+            <response code="400"> Filed </response>
+            <response code="500"> Server errors </response>
+        </member>
+        <member name="T:Identity.Data.AppConfigurationDbContext">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.AppConfigurationDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Identity.Data.AppConfigurationDbContext},IdentityServer4.EntityFramework.Options.ConfigurationStoreOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.AppConfigurationDbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.AppConfigurationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Data.ApplicationDbContext">
+            <summary>
+            Application DB context
+            </summary>
+        </member>
+        <member name="M:Identity.Data.ApplicationDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Identity.Data.ApplicationDbContext})">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.ApplicationDbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Data.ApplicationDbContextSeed">
+            <summary>
+            Config params for <see cref="T:Identity.Data.ApplicationDbContext"/>
+            </summary>
+        </member>
+        <member name="M:Identity.Data.ApplicationDbContextSeed.SeedAsync(Identity.Data.ApplicationDbContext,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{Identity.Data.ApplicationDbContextSeed},System.Nullable{System.Int32})">
+            <summary>
+            Save params
+            </summary>
+            <param name="context"></param>
+            <param name="env"></param>
+            <param name="logger"></param>
+            <param name="retry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Data.AppPersistedGrantDbContext">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.AppPersistedGrantDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Identity.Data.AppPersistedGrantDbContext},IdentityServer4.EntityFramework.Options.OperationalStoreOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.AppPersistedGrantDbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Data.AppPersistedGrantDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Data.ConfigurationDbContextSeed">
+            <summary>
+            Config params for <see cref="T:Identity.Data.AppConfigurationDbContext"/>
+            </summary>
+        </member>
+        <member name="M:Identity.Data.ConfigurationDbContextSeed.SeedAsync(Identity.Data.AppConfigurationDbContext,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Save params
+            </summary>
+            <param name="context"></param>
+            <param name="configuration"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Extensions.ConfigurationExtensions">
+            <summary>
+            Класс расширений для <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Identity.Extensions.ConfigurationExtensions.GetValueOrThrow``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="key"> Наименование ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="M:Identity.Extensions.ConfigurationExtensions.GetValueOrThrowBySuffix``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:Identity.Extensions.ExceptionHandlerMiddlewareExtension">
+            <summary>
+            Класс расширения для <see cref="T:Identity.Middlewares.ExceptionHandlerMiddleware"/>.
+            </summary>
+        </member>
+        <member name="M:Identity.Extensions.ExceptionHandlerMiddlewareExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Добавление <see cref="T:Identity.Middlewares.ExceptionHandlerMiddleware"/> в пайплайн приложения.
+            </summary>
+            <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
+            <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
+        </member>
+        <member name="T:Identity.Extensions.WebHostExtensions">
+            <summary>
+            IWebHostExtensions helper
+            </summary>
+        </member>
+        <member name="M:Identity.Extensions.WebHostExtensions.IsInKubernetes(Microsoft.AspNetCore.Hosting.IWebHost)">
+            <summary>
+            Check Kubernetes runtime
+            </summary>
+            <param name="webHost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.WebHostExtensions.IsInKubernetes(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Check Kubernetes runtime
+            </summary>
+            <param name="cfg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.WebHostExtensions.MigrateDbContextAsync``1(Microsoft.AspNetCore.Hosting.IWebHost,System.Func{``0,System.IServiceProvider,System.Threading.Tasks.Task})">
+            <summary>
+            Run Migration
+            </summary>
+            <param name="webHost"></param>
+            <param name="seeder"></param>
+            <typeparam name="TContext"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Factories.ApplicationDbContextFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Factories.ApplicationDbContextFactory.CreateDbContext(System.String[])">
+            <summary>
+            Create <see cref="T:Identity.Data.ApplicationDbContext"/>
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Factories.ConfigurationDbContextFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Factories.ConfigurationDbContextFactory.CreateDbContext(System.String[])">
+            <summary>
+            Create <see cref="T:Identity.Data.AppConfigurationDbContext"/>
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Factories.PersistedGrantDbContextFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Factories.PersistedGrantDbContextFactory.CreateDbContext(System.String[])">
+            <summary>
+            Create <see cref="T:IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext"/>
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Middlewares.ExceptionHandlerMiddleware">
+            <summary>
+                Мидлвара для перехвата ошибок.
+            </summary>
+        </member>
+        <member name="T:Identity.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Migrations.ApplicationDbContextModelSnapshot">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Migrations.ConfigurationDb.AppConfigurationDbContextModelSnapshot">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Migrations.ConfigurationDb.InitConfiguration">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.ConfigurationDb.InitConfiguration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.ConfigurationDb.InitConfiguration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.ConfigurationDb.InitConfiguration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Migrations.PersistedGrantDb.InitPersistedGrant">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.PersistedGrantDb.InitPersistedGrant.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.PersistedGrantDb.InitPersistedGrant.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Migrations.PersistedGrantDb.InitPersistedGrant.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Migrations.PersistedGrantDb.AppPersistedGrantDbContextModelSnapshot">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Models.Account.RegisterDto">
+            <summary>
+            Register DTO-model
+            </summary>
+        </member>
+        <member name="P:Identity.Models.Account.RegisterDto.Email">
+            <summary>
+            User email address
+            </summary>
+        </member>
+        <member name="P:Identity.Models.Account.RegisterDto.Password">
+            <summary>
+            User password
+            </summary>
+        </member>
+        <member name="P:Identity.Models.Account.RegisterDto.ConfirmPassword">
+            <summary>
+            User confirm password
+            </summary>
+        </member>
+        <member name="T:Identity.Models.ApplicationUser">
+            <summary>
+            Identity User
+            </summary>
+            <remarks>
+            Add profile data for application users by adding properties to the ApplicationUser class
+            </remarks>
+        </member>
+        <member name="T:Identity.Models.ErrorDto">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="P:Identity.Models.ErrorDto.Code">
+            <summary>
+            Код
+            </summary>
+        </member>
+        <member name="P:Identity.Models.ErrorDto.Message">
+            <summary>
+            Сообщение
+            </summary>
+        </member>
+        <member name="T:Identity.Program">
+            <summary>
+            Main class
+            </summary>
+        </member>
+        <member name="M:Identity.Program.Main(System.String[])">
+            <summary>
+            Main function
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Services.CustomResourceOwnerPasswordValidator">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.CustomResourceOwnerPasswordValidator.#ctor(Identity.Services.ILoginService{Identity.Models.ApplicationUser})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loginService"></param>
+        </member>
+        <member name="M:Identity.Services.CustomResourceOwnerPasswordValidator.ValidateAsync(IdentityServer4.Validation.ResourceOwnerPasswordValidationContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Services.EfLoginService">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.EfLoginService.#ctor(Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser},Microsoft.AspNetCore.Identity.SignInManager{Identity.Models.ApplicationUser})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+        </member>
+        <member name="M:Identity.Services.EfLoginService.FindByUsername(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.EfLoginService.ValidateCredentials(Identity.Models.ApplicationUser,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.EfLoginService.SignIn(Identity.Models.ApplicationUser)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.EfLoginService.SignInAsync(Identity.Models.ApplicationUser,Microsoft.AspNetCore.Authentication.AuthenticationProperties,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Services.ILoginService`1">
+            <summary>
+            Login service
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Identity.Services.ILoginService`1.ValidateCredentials(`0,System.String)">
+            <summary>
+            Validate user login and password
+            </summary>
+            <param name="user"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Services.ILoginService`1.FindByUsername(System.String)">
+            <summary>
+            Find user by name
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Services.ILoginService`1.SignIn(`0)">
+            <summary>
+            Sign in
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Services.ILoginService`1.SignInAsync(`0,Microsoft.AspNetCore.Authentication.AuthenticationProperties,System.String)">
+            <summary>
+            Sign in async
+            </summary>
+            <param name="user"></param>
+            <param name="properties"></param>
+            <param name="authenticationMethod"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Identity.Services.ProfileService">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.ProfileService.#ctor(Microsoft.AspNetCore.Identity.UserManager{Identity.Models.ApplicationUser})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="userManager"></param>
+        </member>
+        <member name="M:Identity.Services.ProfileService.GetProfileDataAsync(IdentityServer4.Models.ProfileDataRequestContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:Identity.Services.ProfileService.IsActiveAsync(IdentityServer4.Models.IsActiveContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Settings.AppSettings">
+            <inheritdoc />
+        </member>
+        <member name="T:Identity.Settings.IAppSettings">
+            <summary>
+            Настройки приложения.
+            </summary>
+        </member>
+        <member name="P:Identity.Settings.IAppSettings.ConnectionString">
+            <summary>
+            Строка подключения к БД
+            </summary>
+        </member>
+        <member name="P:Identity.Settings.IAppSettings.IsMigrationService">
+            <summary>
+            Флаг указывает режим запуска сервиса
+            </summary>
+        </member>
+        <member name="P:Identity.Settings.IAppSettings.IsInKubernetes">
+            <summary>
+            Флаг запуска в оркестраторе
+            </summary>
+        </member>
+        <member name="T:Identity.Startup">
+            <summary>
+            Startup class
+            </summary>
+        </member>
+        <member name="M:Identity.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Identity.Startup.Configuration">
+            <summary>
+            Configuration settings
+            </summary>
+        </member>
+        <member name="M:Identity.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

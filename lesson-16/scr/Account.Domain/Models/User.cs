@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Account.Domain.Models
 {
     /// <summary>
     /// Класс пользователя
     /// </summary>
+    
+    [Index(nameof(UserName), IsUnique = true)]
     public class User
     {
         /// <summary>

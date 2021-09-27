@@ -54,7 +54,7 @@ namespace Account.Host
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
-            services.AddDomainServices(appSettings.UsersDbConnectionString);
+            services.AddAccountDomainServices(appSettings.UsersDbConnectionString);
             
             services.AddAuthorization(options =>
             {

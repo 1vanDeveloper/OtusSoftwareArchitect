@@ -15,7 +15,7 @@ namespace Account.Domain
         /// <param name="services"></param>
         /// <param name="connectionString"></param>
         /// <returns></returns>
-        public static IServiceCollection AddDomainServices(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddAccountDomainServices(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<IUserService, UserService>();

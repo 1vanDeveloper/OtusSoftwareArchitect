@@ -23,22 +23,13 @@
             Класс инициализации сервисов домена
             </summary>
         </member>
-        <member name="M:Account.Domain.DomainServicesExtension.AddDomainServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+        <member name="M:Account.Domain.DomainServicesExtension.AddAccountDomainServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
             <summary>
             Инициализации сервисов домена
             </summary>
             <param name="services"></param>
             <param name="connectionString"></param>
             <returns></returns>
-        </member>
-        <member name="T:Account.Domain.Migrations.Initial">
-            <inheritdoc />
-        </member>
-        <member name="M:Account.Domain.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Account.Domain.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
         </member>
         <member name="T:Account.Domain.Models.User">
             <summary>

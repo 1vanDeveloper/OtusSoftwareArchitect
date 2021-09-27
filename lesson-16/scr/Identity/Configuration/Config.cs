@@ -23,6 +23,10 @@ namespace Identity.Configuration
                 {
                     Scopes = { "accountService" }
                 },
+                new ApiResource("standardService", "Standard Service")
+                {
+                    Scopes = { "standardService" }
+                },
             };
         }
 
@@ -52,7 +56,8 @@ namespace Identity.Configuration
         {
             return new[]
             {
-                new ApiScope("accountService", "Account Service")
+                new ApiScope("accountService", "Account Service"),
+                new ApiScope("standardService", "Standard Service")
             };
         }
             
@@ -70,12 +75,26 @@ namespace Identity.Configuration
                     ClientId = "accountService",
                     ClientName = "Account Service",
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    AllowAccessTokensViaBrowser =true,
+                    AllowAccessTokensViaBrowser = true,
                     AllowedScopes =
                     {
                         //IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "accountService"
+                    }
+                },
+                
+                new Client
+                {
+                    ClientId = "standardService",
+                    ClientName = "Standard Service",
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                    AllowAccessTokensViaBrowser = true,
+                    AllowedScopes =
+                    {
+                        //IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "standardService"
                     }
                 },
                 
@@ -100,7 +119,8 @@ namespace Identity.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "accountService"
+                        "accountService",
+                        "standardService"
                     },
                     ClientSecrets = new []
                     {

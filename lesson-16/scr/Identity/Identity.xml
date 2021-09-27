@@ -420,6 +420,11 @@
             Настройки приложения.
             </summary>
         </member>
+        <member name="P:Identity.Settings.IAppSettings.IdentityServerUrl">
+            <summary>
+            Identity server URL for Jwt Issuer Token 
+            </summary>
+        </member>
         <member name="P:Identity.Settings.IAppSettings.ConnectionString">
             <summary>
             Строка подключения к БД

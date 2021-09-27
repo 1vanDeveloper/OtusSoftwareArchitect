@@ -31,6 +31,15 @@
             <param name="connectionString"></param>
             <returns></returns>
         </member>
+        <member name="T:Account.Domain.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Domain.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Domain.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:Account.Domain.Models.User">
             <summary>
             Класс пользователя

@@ -16,6 +16,11 @@ namespace Billing.Domain
         /// CashTransaction table
         /// </summary>
         public DbSet<CashTransaction> CashTransactions { get; set; }
+        
+        /// <summary>
+        /// NotificationEvent table
+        /// </summary>
+        public DbSet<NotificationEvent> NotificationEvents { get; set; }
 
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder builder)

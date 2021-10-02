@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Billing.Domain.Services
 {
     /// <inheritdoc cref="ICashTransactionService"/> 
-    public class CashTransactionService: ICashTransactionService
+    internal class CashTransactionService: ICashTransactionService
     {
         private readonly AppDbContext _dbContext;
         

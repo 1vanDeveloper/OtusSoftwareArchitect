@@ -17,7 +17,8 @@ namespace Billing.Domain
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<ICashTransactionService, CashTransactionService>();
-
+            services.AddScoped<INotificationEventService, NotificationEventService>();
+            
             return services;
         }
     }

@@ -1,9 +1,14 @@
 using System;
 using System.IO;
 using System.Reflection;
+using Autofac;
 using Billing.Domain;
 using Billing.Host.Attributes;
+using Billing.Host.BackgroundServices;
+using Billing.Host.Models.Events;
 using Billing.Host.Settings;
+using EventBus;
+using EventBus.Abstractions;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -13,9 +18,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Ocelot.Errors.Middleware;
 using Prometheus;
 using Prometheus.SystemMetrics;
+using RabbitMQ.Client;
 
 namespace Billing.Host
 {
@@ -76,6 +83,9 @@ namespace Billing.Host
                 c.IncludeXmlComments(xmlPath);
             });
             
+            RegisterEventBus(services, appSettings);
+            services.AddHostedService<NotificationService>();
+            
             services.AddSystemMetrics();
         }
 
@@ -120,6 +130,46 @@ namespace Billing.Host
                     Predicate = r => r.Name.Contains("self")
                 });
             });
+
+            ConfigureEventBus(app);
+        }
+
+        private static void RegisterEventBus(IServiceCollection services, IAppSettings settings)
+        {
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+
+                var factory = new ConnectionFactory()
+                {
+                    HostName = settings.EventBusConnection,
+                    DispatchConsumersAsync = true
+                };
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
+            });
+
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+            {
+                var subscriptionClientName = settings.QueueName;
+
+                var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                var eventBusSubscriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                return new EventBusRabbitMQ(rabbitMqPersistentConnection, logger, iLifetimeScope,
+                    eventBusSubscriptionsManager, subscriptionClientName);
+            });
+            
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
+        
+        private static void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+            eventBus.Subscribe<BillingEvent, BillingEventHandler>();
         }
     }
 }

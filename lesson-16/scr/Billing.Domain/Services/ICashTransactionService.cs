@@ -20,5 +20,10 @@ namespace Billing.Domain.Services
         /// Получение операции
         /// </summary>
         Task<List<CashTransaction>> GetCashTransactionAsync(long userId, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Получение текущего состояния счета
+        /// </summary>
+        Task<decimal> GetTotalAmountAsync(long userId, CancellationToken cancellationToken);
     }
 }

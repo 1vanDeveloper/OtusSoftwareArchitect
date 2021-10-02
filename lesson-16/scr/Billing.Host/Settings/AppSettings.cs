@@ -9,10 +9,14 @@ namespace Billing.Host.Settings
     {
         public AppSettings(IConfiguration configuration)
         {
-            //UsersDbConnectionString = GetDbConnectionString(configuration); 
-            //IsMigrationService = configuration.GetValue<bool>("MIGRATION_MODE");
-            //IdentityServerUrl = configuration.GetValue<string>("IDENTITY_SERVER_URL");
-            UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
+            UsersDbConnectionString = GetDbConnectionString(configuration); 
+            IsMigrationService = configuration.GetValue<bool>("MIGRATION_MODE");
+            IdentityServerUrl = configuration.GetValue<string>("IDENTITY_SERVER_URL");
+            AccountServiceUrl = configuration.GetValue<string>("ACCOUNT_SERVICE_URL");
+            
+            EventBusConnection = configuration.GetValue<string>("EVENT_BUS_CONNECTION");
+            QueueName = configuration.GetValue<string>("QUEUE_NAME");
+            //UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
         }
 
         public string UsersDbConnectionString { get; }
@@ -20,6 +24,12 @@ namespace Billing.Host.Settings
         public bool IsMigrationService { get; }
         
         public string IdentityServerUrl { get; }
+        
+        public string AccountServiceUrl { get; }
+
+        public string EventBusConnection { get; }
+        
+        public string QueueName { get; }
 
         private static string GetDbConnectionString(IConfiguration configuration)
         {

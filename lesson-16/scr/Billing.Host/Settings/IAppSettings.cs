@@ -19,5 +19,20 @@ namespace Billing.Host.Settings
         /// Адрес службы проверки прав пользователей
         /// </summary>
         string IdentityServerUrl { get; }
+        
+        /// <summary>
+        /// Адрес службы информации пользователей
+        /// </summary>
+        string AccountServiceUrl { get; }
+        
+        /// <summary>
+        /// Строка подключения к Rabbit MQ
+        /// </summary>
+        string EventBusConnection { get; }
+        
+        /// <summary>
+        /// Очередь для публикации
+        /// </summary>
+        string QueueName { get; }
     }
 }

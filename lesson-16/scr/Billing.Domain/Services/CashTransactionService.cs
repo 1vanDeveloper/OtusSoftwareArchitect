@@ -12,13 +12,15 @@ namespace Billing.Domain.Services
     internal class CashTransactionService: ICashTransactionService
     {
         private readonly AppDbContext _dbContext;
-        
+        private readonly INotificationEventService _notificationEventService;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public CashTransactionService(AppDbContext dbContext)
+        public CashTransactionService(AppDbContext dbContext, INotificationEventService notificationEventService)
         {
             _dbContext = dbContext;
+            _notificationEventService = notificationEventService;
         }
 
         public async Task<CashTransaction> CreateCashTransactionAsync(CashTransaction cashTransaction, CancellationToken cancellationToken)
@@ -30,6 +32,9 @@ namespace Billing.Domain.Services
                 CashTransactionType.Credit => await PayAsync(cashTransaction, cancellationToken),
                 _ => throw new ArgumentOutOfRangeException()
             };
+            await _notificationEventService.CreateNotificationEventAsync(result.OperationId, result.Description,
+                cancellationToken);
+            
             await tran.CommitAsync(cancellationToken);
 
             return result;
@@ -38,6 +43,21 @@ namespace Billing.Domain.Services
         public Task<List<CashTransaction>> GetCashTransactionAsync(long userId, CancellationToken cancellationToken)
         {
             return _dbContext.CashTransactions.AsNoTracking().Where(ct => ct.UserId == userId).ToListAsync(cancellationToken);
+        }
+
+        public async Task<decimal> GetTotalAmountAsync(long userId, CancellationToken cancellationToken)
+        {
+            var debitSum = await _dbContext.CashTransactions
+                .Where(ct =>
+                    ct.UserId == userId && ct.Type == CashTransactionType.Debit && !ct.IsCanceled)
+                .SumAsync(ct => ct.Amount, cancellationToken);
+            
+            var creditSum = await _dbContext.CashTransactions
+                .Where(ct =>
+                    ct.UserId == userId && ct.Type == CashTransactionType.Credit && !ct.IsCanceled)
+                .SumAsync(ct => ct.Amount, cancellationToken);
+
+            return creditSum - debitSum;
         }
 
         /// <summary>
@@ -69,32 +89,24 @@ namespace Billing.Domain.Services
         {
             if (cashTransaction.Id != 0)
             {
-                throw new Exception("Операция уже существует");
+                throw new ArgumentException("Операция уже существует");
             }
             
             if (cashTransaction.UserId == 0)
             {
-                throw new Exception("Пользователь не указан");
+                throw new ArgumentException("Пользователь не указан");
             }
 
             if (cashTransaction.Type != CashTransactionType.Credit)
             {
-                throw new Exception("Операция не является списанием");
+                throw new ArgumentException("Операция не является списанием");
             }
 
-            var debitSum = await _dbContext.CashTransactions
-                .Where(ct =>
-                    ct.UserId == cashTransaction.UserId && ct.Type == CashTransactionType.Debit && !ct.IsCanceled)
-                .SumAsync(ct => ct.Amount, cancellationToken);
-            
-            var creditSum = await _dbContext.CashTransactions
-                .Where(ct =>
-                    ct.UserId == cashTransaction.UserId && ct.Type == CashTransactionType.Credit && !ct.IsCanceled)
-                .SumAsync(ct => ct.Amount, cancellationToken);
+            var totalAmount = await GetTotalAmountAsync(cashTransaction.UserId, cancellationToken);
 
-            if (debitSum < creditSum + cashTransaction.Amount)
+            if (totalAmount <  cashTransaction.Amount)
             {
-                throw new Exception("Недостаточно средств на счете");
+                throw new ArgumentException("Недостаточно средств на счете");
             }
             
             var createdCashTransaction = (await _dbContext.CashTransactions.AddAsync(cashTransaction, cancellationToken)).Entity;

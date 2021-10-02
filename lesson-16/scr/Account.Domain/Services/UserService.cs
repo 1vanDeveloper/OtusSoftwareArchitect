@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Account.Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,23 +22,23 @@ namespace Account.Domain.Services
         }
         
         /// <inheritdoc />
-        public async Task<User> CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user, CancellationToken cancellationToken)
         {
-            if (await _dbContext.Users.AnyAsync(u => u.UserName == user.UserName))
+            if (await _dbContext.Users.AnyAsync(u => u.UserName == user.UserName, cancellationToken))
             {
                 throw new Exception("This user name has already existed");
             }
             
-            var createdUser = (await _dbContext.Users.AddAsync(user)).Entity;
-            await _dbContext.SaveChangesAsync();
+            var createdUser = (await _dbContext.Users.AddAsync(user, cancellationToken)).Entity;
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return createdUser;
         }
 
         /// <inheritdoc />
-        public async Task<User> GetUserAsync(string userName)
+        public async Task<User> GetUserAsync(string userName, CancellationToken cancellationToken)
         {
-            var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName);
+            var dbUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName, cancellationToken);
             if (dbUser == null)
             {
                 throw new KeyNotFoundException();
@@ -47,10 +48,10 @@ namespace Account.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user, CancellationToken cancellationToken)
         {
             var dbUser = await _dbContext.Users
-                .SingleOrDefaultAsync(g => g.Id == user.Id);
+                .SingleOrDefaultAsync(g => g.Id == user.Id, cancellationToken);
             if (dbUser == null)
             {
                 throw new KeyNotFoundException();
@@ -63,21 +64,21 @@ namespace Account.Domain.Services
 
             _dbContext.Update(dbUser);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         /// <inheritdoc />
-        public async Task RemoveUserAsync(string userName)
+        public async Task RemoveUserAsync(string userName, CancellationToken cancellationToken)
         {
             var dbUser = await _dbContext.Users
-                .SingleOrDefaultAsync(g => g.UserName == userName);
+                .SingleOrDefaultAsync(g => g.UserName == userName, cancellationToken);
             if (dbUser == null)
             {
                 throw new KeyNotFoundException();
             }
 
             _dbContext.Remove(dbUser);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

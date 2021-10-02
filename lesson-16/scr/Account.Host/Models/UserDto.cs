@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Account.Domain.Models;
 
 namespace Account.Host.Models
@@ -5,6 +6,7 @@ namespace Account.Host.Models
     /// <summary>
     /// Полная информация о пользователе
     /// </summary>
+    [DataContract]
     public record UserDto: UserParamsDto
     {
         /// <inheritdoc />
@@ -22,6 +24,7 @@ namespace Account.Host.Models
         /// <summary>
         /// Идентификатор
         /// </summary>
+        [DataMember]
         public long Id { get; init; }
 
         /// <inheritdoc />

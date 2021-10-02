@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Account.Domain.Models;
 
@@ -11,29 +12,21 @@ namespace Account.Domain.Services
         /// <summary>
         /// Создание пользователя
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        Task<User> CreateUserAsync(User user);
+        Task<User> CreateUserAsync(User user, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получение пользователя
         /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        Task<User> GetUserAsync(string userName);
+        Task<User> GetUserAsync(string userName, CancellationToken cancellationToken);
 
         /// <summary>
         /// Обновление параметров пользователя
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        Task UpdateUserAsync(User user);
+        Task UpdateUserAsync(User user, CancellationToken cancellationToken);
 
         /// <summary>
         /// Удаление пользователя
         /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        Task RemoveUserAsync(string userName);
+        Task RemoveUserAsync(string userName, CancellationToken cancellationToken);
     }
 }

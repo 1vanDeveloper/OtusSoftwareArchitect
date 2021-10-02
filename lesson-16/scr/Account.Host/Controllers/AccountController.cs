@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Account.Domain.Services;
 using Account.Host.Extensions;
@@ -31,6 +32,7 @@ namespace Account.Host.Controllers
         ///     Создание пользователя.
         /// </summary>
         /// <param name="user"> параметры нового пользователя </param>
+        /// <param name="cancellationToken"></param>
         /// <returns> новый пользователь </returns>
         /// <response code="200"> Пользователь успешно создан </response>
         /// <response code="400"> Неверные входные данные. </response>
@@ -39,7 +41,7 @@ namespace Account.Host.Controllers
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDto>> CreateUserAsync([FromBody] UserParamsDto user)
+        public async Task<ActionResult<UserDto>> CreateUserAsync([FromBody] UserParamsDto user, CancellationToken cancellationToken)
         {
             var userName = HttpContext.User.Claims.GetUserName();
             if (user == new UserDto())
@@ -56,7 +58,7 @@ namespace Account.Host.Controllers
                 var newUser = user.ConvertToUser();
                 newUser.UserName = userName;
                 
-                var dbUser = await _userService.CreateUserAsync(newUser);
+                var dbUser = await _userService.CreateUserAsync(newUser, cancellationToken);
                 return Ok(new UserDto(dbUser));
             }
             catch (Exception e)
@@ -72,6 +74,7 @@ namespace Account.Host.Controllers
         ///     Получение пользователя.
         /// </summary>
         /// <param name="userName"> логин пользователя </param>
+        /// <param name="cancellationToken"></param>
         /// <returns> пользователь </returns>
         /// <response code="200"> Пользователь успешно найден </response>
         /// <response code="400"> Неверные входные данные. </response>
@@ -82,7 +85,7 @@ namespace Account.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDto>> GetUserAsync(string userName)
+        public async Task<ActionResult<UserDto>> GetUserAsync(string userName, CancellationToken cancellationToken)
         {
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (currentUserName != userName)
@@ -101,7 +104,7 @@ namespace Account.Host.Controllers
 
             try
             {
-                var dbUser = await _userService.GetUserAsync(userName);
+                var dbUser = await _userService.GetUserAsync(userName, cancellationToken);
                 return Ok(new UserDto(dbUser));
             }
             catch (KeyNotFoundException)
@@ -122,6 +125,7 @@ namespace Account.Host.Controllers
         /// </summary>
         /// <param name="userName"> логин пользователя </param>
         /// <param name="user"> параметры пользователя </param>
+        /// <param name="cancellationToken"></param>
         /// <returns> результат выполнения операции. </returns>
         /// <response code="200"> Пользователь успешно отредактирован </response>
         /// <response code="400"> Неверные входные данные. </response>
@@ -132,7 +136,7 @@ namespace Account.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> UpdateUserAsync(string userName, [FromBody] UserParamsDto user)
+        public async Task<ActionResult> UpdateUserAsync(string userName, [FromBody] UserParamsDto user, CancellationToken cancellationToken)
         {
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (currentUserName != userName)
@@ -152,11 +156,11 @@ namespace Account.Host.Controllers
             try
             {
                 var dbUser = user.ConvertToUser();
-                var oldDbUser = await _userService.GetUserAsync(userName);
+                var oldDbUser = await _userService.GetUserAsync(userName, cancellationToken);
                 dbUser.Id = oldDbUser.Id;
                 dbUser.UserName = oldDbUser.UserName;
                 
-                await _userService.UpdateUserAsync(dbUser);
+                await _userService.UpdateUserAsync(dbUser, cancellationToken);
                 return Ok();
             }
             catch (KeyNotFoundException)
@@ -171,11 +175,12 @@ namespace Account.Host.Controllers
                 };
             }
         }
-        
+
         /// <summary>
         ///     Удаление пользователя.
         /// </summary>
         /// <param name="userName"> логин пользователя </param>
+        /// <param name="cancellationToken"></param>
         /// <returns> результат выполнения операции. </returns>
         /// <response code="200"> Пользователь успешно удален </response>
         /// <response code="400"> Неверные входные данные. </response>
@@ -186,7 +191,7 @@ namespace Account.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> RemoveUserAsync(string userName)
+        public async Task<ActionResult> RemoveUserAsync(string userName, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -199,7 +204,7 @@ namespace Account.Host.Controllers
 
             try
             {
-                await _userService.RemoveUserAsync(userName);
+                await _userService.RemoveUserAsync(userName, cancellationToken);
                 return Ok();
             }
             catch (KeyNotFoundException)

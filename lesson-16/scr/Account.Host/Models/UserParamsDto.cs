@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using Account.Domain.Models;
 
 namespace Account.Host.Models
@@ -6,6 +7,7 @@ namespace Account.Host.Models
     /// <summary>
     /// Класс передачи изменяемых параметров о пользователе
     /// </summary>
+    [DataContract]
     public record UserParamsDto
     {
         /// <summary>
@@ -31,23 +33,27 @@ namespace Account.Host.Models
         /// <summary>
         /// Имя
         /// </summary>
+        [DataMember]
         public string FirstName { get; init; }
         
         /// <summary>
         /// Фамилия
         /// </summary>
+        [DataMember] 
         public string LastName { get; init; }
         
         /// <summary>
         /// Почта
         /// </summary>
         [EmailAddress]
+        [DataMember]
         public string Email { get; init; }
         
         /// <summary>
         /// Телефон
         /// </summary>
         [Phone]
+        [DataMember]
         public string Phone { get; init; }
 
         /// <summary>

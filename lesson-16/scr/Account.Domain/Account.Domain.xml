@@ -71,33 +71,25 @@
             Сервис управления записями пользователей
             </summary>
         </member>
-        <member name="M:Account.Domain.Services.IUserService.CreateUserAsync(Account.Domain.Models.User)">
+        <member name="M:Account.Domain.Services.IUserService.CreateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
             <summary>
             Создание пользователя
             </summary>
-            <param name="user"></param>
-            <returns></returns>
         </member>
-        <member name="M:Account.Domain.Services.IUserService.GetUserAsync(System.String)">
+        <member name="M:Account.Domain.Services.IUserService.GetUserAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Получение пользователя
             </summary>
-            <param name="userName"></param>
-            <returns></returns>
         </member>
-        <member name="M:Account.Domain.Services.IUserService.UpdateUserAsync(Account.Domain.Models.User)">
+        <member name="M:Account.Domain.Services.IUserService.UpdateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
             <summary>
             Обновление параметров пользователя
             </summary>
-            <param name="user"></param>
-            <returns></returns>
         </member>
-        <member name="M:Account.Domain.Services.IUserService.RemoveUserAsync(System.String)">
+        <member name="M:Account.Domain.Services.IUserService.RemoveUserAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Удаление пользователя
             </summary>
-            <param name="userName"></param>
-            <returns></returns>
         </member>
         <member name="T:Account.Domain.Services.UserService">
             <inheritdoc cref="T:Account.Domain.Services.IUserService"/>
@@ -108,16 +100,16 @@
             </summary>
             <param name="dbContext"></param>
         </member>
-        <member name="M:Account.Domain.Services.UserService.CreateUserAsync(Account.Domain.Models.User)">
+        <member name="M:Account.Domain.Services.UserService.CreateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Account.Domain.Services.UserService.GetUserAsync(System.String)">
+        <member name="M:Account.Domain.Services.UserService.GetUserAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Account.Domain.Services.UserService.UpdateUserAsync(Account.Domain.Models.User)">
+        <member name="M:Account.Domain.Services.UserService.UpdateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Account.Domain.Services.UserService.RemoveUserAsync(System.String)">
+        <member name="M:Account.Domain.Services.UserService.RemoveUserAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
     </members>

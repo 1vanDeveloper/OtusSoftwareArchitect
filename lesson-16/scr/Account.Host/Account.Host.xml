@@ -17,44 +17,48 @@
         <member name="M:Account.Host.Controllers.AccountController.#ctor(Account.Domain.Services.IUserService)">
             <inheritdoc />
         </member>
-        <member name="M:Account.Host.Controllers.AccountController.CreateUserAsync(Account.Host.Models.UserParamsDto)">
+        <member name="M:Account.Host.Controllers.AccountController.CreateUserAsync(Account.Host.Models.UserParamsDto,System.Threading.CancellationToken)">
             <summary>
                 Создание пользователя.
             </summary>
             <param name="user"> параметры нового пользователя </param>
+            <param name="cancellationToken"></param>
             <returns> новый пользователь </returns>
             <response code="200"> Пользователь успешно создан </response>
             <response code="400"> Неверные входные данные. </response>
             <response code="500"> Ошибка сервера. </response>
         </member>
-        <member name="M:Account.Host.Controllers.AccountController.GetUserAsync(System.String)">
+        <member name="M:Account.Host.Controllers.AccountController.GetUserAsync(System.String,System.Threading.CancellationToken)">
             <summary>
                 Получение пользователя.
             </summary>
             <param name="userName"> логин пользователя </param>
+            <param name="cancellationToken"></param>
             <returns> пользователь </returns>
             <response code="200"> Пользователь успешно найден </response>
             <response code="400"> Неверные входные данные. </response>
             <response code="404"> Не найден пользователь. </response>
             <response code="500"> Ошибка сервера. </response>
         </member>
-        <member name="M:Account.Host.Controllers.AccountController.UpdateUserAsync(System.String,Account.Host.Models.UserParamsDto)">
+        <member name="M:Account.Host.Controllers.AccountController.UpdateUserAsync(System.String,Account.Host.Models.UserParamsDto,System.Threading.CancellationToken)">
             <summary>
                 Редактирование параметров пользователя.
             </summary>
             <param name="userName"> логин пользователя </param>
             <param name="user"> параметры пользователя </param>
+            <param name="cancellationToken"></param>
             <returns> результат выполнения операции. </returns>
             <response code="200"> Пользователь успешно отредактирован </response>
             <response code="400"> Неверные входные данные. </response>
             <response code="404"> Не найден пользователь. </response>
             <response code="500"> Ошибка сервера. </response>
         </member>
-        <member name="M:Account.Host.Controllers.AccountController.RemoveUserAsync(System.String)">
+        <member name="M:Account.Host.Controllers.AccountController.RemoveUserAsync(System.String,System.Threading.CancellationToken)">
             <summary>
                 Удаление пользователя.
             </summary>
             <param name="userName"> логин пользователя </param>
+            <param name="cancellationToken"></param>
             <returns> результат выполнения операции. </returns>
             <response code="200"> Пользователь успешно удален </response>
             <response code="400"> Неверные входные данные. </response>
@@ -72,6 +76,26 @@
             </summary>
             <returns></returns>
             <response code="200"> Сервис доступен </response>
+        </member>
+        <member name="T:Account.Host.Controllers.InternalAccountController">
+            <summary>
+            Контроллер управления пользоватеями
+            </summary>
+        </member>
+        <member name="M:Account.Host.Controllers.InternalAccountController.#ctor(Account.Domain.Services.IUserService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Host.Controllers.InternalAccountController.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+                Получение пользователя.
+            </summary>
+            <param name="userName"> логин пользователя </param>
+            <param name="cancellationToken"></param>
+            <returns> пользователь </returns>
+            <response code="200"> Пользователь успешно найден </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="404"> Не найден пользователь. </response>
+            <response code="500"> Ошибка сервера. </response>
         </member>
         <member name="T:Account.Host.Extensions.ClaimExtensions">
             <summary>

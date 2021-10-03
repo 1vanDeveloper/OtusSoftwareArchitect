@@ -41,6 +41,32 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "accountService" ]
       }
+    },
+    {
+      "DownstreamPathTemplate": "/public/put-money",
+      "DownstreamScheme": "http",
+      "ServiceName": "billing-service",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/billing/put-money",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/check-money",
+      "DownstreamScheme": "http",
+      "ServiceName": "billing-service",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/billing/check-money",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
     }
   ],
   "GlobalConfiguration": {

@@ -6,6 +6,11 @@ services:
     build: 
       context: .
       dockerfile: docker/Account/dockerfile
+  billing:
+    container_name: billing
+    build: 
+      context: .
+      dockerfile: docker/Billing/dockerfile
   gateway:
     container_name: gateway
     build: 

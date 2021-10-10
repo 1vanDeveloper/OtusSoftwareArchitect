@@ -2,8 +2,10 @@
 sudo kubectl config set-context --current --namespace=otus-services
 
 # install services
+sudo helm install rabbitmq -f ./rabbit/values.yaml bitnami/rabbitmq
 sudo helm install identity ./identity
 sudo helm install account ./account
+sudo helm install billing ./billing
 sudo helm install gateway ./gateway
 
 # add for gateway service discovery https://ocelot.readthedocs.io/en/latest/features/kubernetes.html

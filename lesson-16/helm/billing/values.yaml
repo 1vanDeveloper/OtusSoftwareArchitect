@@ -48,7 +48,7 @@ postgresql:
   enabled: true
   postgresqlUsername: myuser
   postgresqlPassword: passwd
-  postgresqlDatabase: accountdb
+  postgresqlDatabase: billingdb
   service:
     port: "5432"
   metrics:

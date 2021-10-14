@@ -1,10 +1,12 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Authentication;
 using Autofac;
 using Billing.Domain;
 using Billing.Host.Attributes;
 using Billing.Host.BackgroundServices;
+using Billing.Host.Middlewares;
 using Billing.Host.Models.Events;
 using Billing.Host.Settings;
 using EventBus;
@@ -19,7 +21,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Ocelot.Errors.Middleware;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using RabbitMQ.Client;
@@ -83,6 +84,8 @@ namespace Billing.Host
                 c.IncludeXmlComments(xmlPath);
             });
             
+            services.AddDataProtection();
+            
             RegisterEventBus(services, appSettings);
             services.AddHostedService<NotificationService>();
             
@@ -143,7 +146,10 @@ namespace Billing.Host
                 var factory = new ConnectionFactory()
                 {
                     HostName = settings.EventBusConnection,
-                    DispatchConsumersAsync = true
+                    DispatchConsumersAsync = true,
+                    AmqpUriSslProtocols = SslProtocols.None,
+                    UserName = settings.EventBusUserName,
+                    Password = settings.EventBusPassword
                 };
 
                 return new DefaultRabbitMQPersistentConnection(factory, logger);

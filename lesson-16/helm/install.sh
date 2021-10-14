@@ -1,15 +1,18 @@
 # need for gateway configuration
-sudo kubectl config set-context --current --namespace=otus-services
+# kubectl create namespace otus-services
+kubectl config set-context --current --namespace=otus-services
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
 
 # install services
-sudo helm install rabbitmq -f ./rabbit/values.yaml bitnami/rabbitmq
-sudo helm install identity ./identity
-sudo helm install account ./account
-sudo helm install billing ./billing
-sudo helm install gateway ./gateway
+helm install rabbitmq-service bitnami/rabbitmq -f ./rabbit/values.yaml
+helm install identity ./identity
+helm install billing ./billing
+helm install account ./account
+helm install gateway ./gateway
 
 # add for gateway service discovery https://ocelot.readthedocs.io/en/latest/features/kubernetes.html
-sudo kubectl create clusterrolebinding permissive-binding \
+kubectl create clusterrolebinding permissive-binding \
   --clusterrole=cluster-admin \
   --user=admin \
   --user=kubelet \

@@ -18,7 +18,7 @@ namespace EventBus
         IConnection _connection;
         bool _disposed;
 
-        object sync_root = new object();
+        readonly object _syncRoot = new object();
 
         public DefaultRabbitMQPersistentConnection(IConnectionFactory connectionFactory, ILogger<DefaultRabbitMQPersistentConnection> logger, int retryCount = 5)
         {
@@ -27,13 +27,7 @@ namespace EventBus
             _retryCount = retryCount;
         }
 
-        public bool IsConnected
-        {
-            get
-            {
-                return _connection != null && _connection.IsOpen && !_disposed;
-            }
-        }
+        public bool IsConnected => _connection is {IsOpen: true} && !_disposed;
 
         public IModel CreateModel()
         {
@@ -53,7 +47,7 @@ namespace EventBus
 
             try
             {
-                _connection.Dispose();
+                _connection?.Dispose();
             }
             catch (IOException ex)
             {
@@ -65,7 +59,7 @@ namespace EventBus
         {
             _logger.LogInformation("RabbitMQ Client is trying to connect");
 
-            lock (sync_root)
+            lock (_syncRoot)
             {
                 var policy = Policy.Handle<SocketException>()
                     .Or<BrokerUnreachableException>()

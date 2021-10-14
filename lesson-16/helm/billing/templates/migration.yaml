@@ -39,21 +39,21 @@ spec:
               containerPort: 80
               protocol: TCP
           env:
-            - name: USERS_PG_PASSWORD
+            - name: CASH_TRANSACTIONS_PG_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: "{{ include "helm.fullname" . }}-secret"
-                  key: USERS_PG_PASSWORD
-            - name: USERS_PG_DATABASE
+                  key: CASH_TRANSACTIONS_PG_PASSWORD
+            - name: CASH_TRANSACTIONS_PG_DATABASE
               valueFrom:
                 configMapKeyRef:
                   name: "{{ include "helm.fullname" . }}-config"
-                  key: USERS_PG_DATABASE
-            - name: USERS_PG_USERNAME
+                  key: CASH_TRANSACTIONS_PG_DATABASE
+            - name: CASH_TRANSACTIONS_PG_USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: "{{ include "helm.fullname" . }}-config"
-                  key: USERS_PG_USERNAME
+                  key: CASH_TRANSACTIONS_PG_USERNAME
             - name: USE_SSL_PG_CONNECTION
               valueFrom:
                 configMapKeyRef:

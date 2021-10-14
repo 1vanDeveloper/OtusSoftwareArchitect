@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using Billing.Domain;
 using Billing.Host.Settings;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,7 @@ namespace Billing.Host
         /// <returns></returns>
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

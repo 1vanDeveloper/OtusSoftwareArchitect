@@ -31,6 +31,16 @@ namespace Billing.Host.Settings
         string EventBusConnection { get; }
         
         /// <summary>
+        /// Rabbit MQ User
+        /// </summary>
+        string EventBusUserName { get; }
+        
+        /// <summary>
+        /// Rabbit MQ Password
+        /// </summary>
+        string EventBusPassword { get; }
+        
+        /// <summary>
         /// Очередь для публикации
         /// </summary>
         string QueueName { get; }

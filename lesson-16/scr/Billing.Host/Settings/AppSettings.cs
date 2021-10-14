@@ -15,6 +15,8 @@ namespace Billing.Host.Settings
             AccountServiceUrl = configuration.GetValue<string>("ACCOUNT_SERVICE_URL");
             
             EventBusConnection = configuration.GetValue<string>("EVENT_BUS_CONNECTION");
+            EventBusUserName = configuration.GetValue<string>("EVENT_BUS_USERNAME");
+            EventBusPassword = configuration.GetValue<string>("EVENT_BUS_PASSWORD");
             QueueName = configuration.GetValue<string>("QUEUE_NAME");
             //UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
         }
@@ -29,6 +31,10 @@ namespace Billing.Host.Settings
 
         public string EventBusConnection { get; }
         
+        public string EventBusUserName { get; }
+        
+        public string EventBusPassword { get; }
+
         public string QueueName { get; }
 
         private static string GetDbConnectionString(IConfiguration configuration)

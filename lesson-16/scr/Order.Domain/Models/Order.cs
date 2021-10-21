@@ -2,13 +2,13 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Billing.Domain.Models
+namespace Order.Domain.Models
 {
     /// <summary>
-    /// Касcовая операция
+    /// Заказ
     /// </summary>
     [Index(nameof(OperationId), IsUnique = true)]
-    public class CashTransaction
+    public class Order
     {
         /// <summary>
         /// Идентификатор
@@ -27,24 +27,19 @@ namespace Billing.Domain.Models
         public DateTime Timestamp { get; set; }
         
         /// <summary>
-        /// Тип операции
+        /// Состояние заказа
         /// </summary>
-        public CashTransactionType Type { get; set; }
+        public OrderState State { get; set; }
         
         /// <summary>
-        /// Сумма операции 
+        /// Сумма заказа 
         /// </summary>
         public decimal Amount { get; set; }
         
         /// <summary>
-        /// Описание операции
+        /// Описание заказа
         /// </summary>
         public string Description { get; set; }
-        
-        /// <summary>
-        /// Отменена
-        /// </summary>
-        public bool IsCanceled { get; set; }
         
         /// <summary>
         /// Уникльный идентификатор операции

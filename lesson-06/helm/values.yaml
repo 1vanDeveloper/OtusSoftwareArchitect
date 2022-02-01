@@ -36,8 +36,11 @@ ingress:
 
 resources:
   limits:
-    cpu: 500m
-    memory: 64Mi
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
  
 postgresql:
   enabled: true
@@ -46,6 +49,15 @@ postgresql:
   postgresqlDatabase: myapp
   service:
     port: "5432"
+  resources:
+    limits:
+      cpu: 125m
+      memory: 128Mi
+    requests:
+      cpu: 125m
+      memory: 128Mi
+  persistence:
+    size: 1Gi
 
 externalPostgresql:
   useSsl: false

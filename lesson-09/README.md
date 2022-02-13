@@ -21,6 +21,6 @@
 
 ### На выходе:
 1. Скриншот Dashboard с графиками в момент стресс-тестирования сервиса, после 5-10 минут нагрузки.
-![Dashboard с графиками](results/practise-scheme.png)
+![Dashboard с графиками](results/grafana-dashboard.png)
 1. Json-дашборды.
 [Ссылка](results/grafana-dashboard.json)

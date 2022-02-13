@@ -21,6 +21,6 @@
 
 ### На выходе:
 1. Скриншот Dashboard с графиками в момент стресс-тестирования сервиса, после 5-10 минут нагрузки.
-[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.png)
+![Dashboard с графиками](results/practise-scheme.png)results/grafana-dashboard.png)
 1. Json-дашборды.
-[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-9/results/grafana-dashboard.json)
+[Ссылка](https://raw.githubusercontent.com/1vanDeveloper/OtusSoftwareArchitect/main/lesson-09/results/grafana-dashboard.json)

@@ -18,7 +18,7 @@ service:
 ingress:
   enabled: true
   annotations:
-    # kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -38,7 +38,7 @@ ingress:
 
 resources:
   limits:
-    cpu: 500m
+    cpu: 250m
     memory: 256Mi
   requests:
     cpu: 250m
@@ -63,7 +63,7 @@ postgresql:
       cpu: 250m
       memory: 256Mi
   persistence:
-    size: 2Gi
+    size: 1Gi
 
 externalPostgresql:
   useSsl: false

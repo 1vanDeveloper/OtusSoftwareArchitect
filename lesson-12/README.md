@@ -2,6 +2,7 @@
 ## Backend for frontends. Apigateway
 
 1. Архитектурное решение и схема отправки запросов представлена на картинке ниже.
+
 ![](img/diagram.png)
 
 2. Установку приложения можно осуществить одним из двух способов:
@@ -19,6 +20,6 @@ lesson-12/helm > ./install.sh
 
 3. После того, как все сервисы будут установлены и запущены можно выполнить тесты Postman, выполнив команду:
 ```shell
-lesson-12 > newman run tests/Otus.postman_collection.json
+lesson-12 > newman run tests/otus.postman_collection.json
 ```
 Переменная `{{baseUrl}}` настроена на домен `arch.homework`.

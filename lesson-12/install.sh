@@ -1,7 +1,8 @@
-cd prometheus
-sudo ./install.sh
+cd prometheus || exit
+./install.sh
+# shellcheck disable=SC2103
 cd ..
-cd helm
-sudo ./install.sh
+cd helm || exit
+./install.sh
 cd ..
-sudo kubectl get all
+kubectl get all

@@ -14,6 +14,8 @@ helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 # install ingress-controller and postgres exporter like helm application
+# shellcheck disable=SC2046
 helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml --skip-crds #--atomic
+kubectl patch svc nginx-ingress-nginx-controller -n otus-services -p "{\"spec\": {\"type\": \"LoadBalancer\", \"externalIPs\":[\"$(minikube ip)\"]}}"
 
 sleep 30s

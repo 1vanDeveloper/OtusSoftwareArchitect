@@ -48,8 +48,8 @@ namespace Account.Host.Controllers
             {
                 return NotFound(new ErrorDto
                 {
-                    Code = 404,
-                    Message = "Unrecognized user name"
+                    Code = 400,
+                    Message = "Empty user name"
                 });
             }
 
@@ -60,7 +60,11 @@ namespace Account.Host.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return new NotFoundResult();
+                return NotFound(new ErrorDto
+                {
+                    Code = 404,
+                    Message = $"Unrecognized user name {userName}"
+                });
             }
             catch (Exception e)
             {

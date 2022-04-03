@@ -8,6 +8,7 @@ using Billing.Host.Attributes;
 using Billing.Host.BackgroundServices;
 using Billing.Host.Middlewares;
 using Billing.Host.Models.Events;
+using Billing.Host.Services;
 using Billing.Host.Settings;
 using EventBus;
 using EventBus.Abstractions;
@@ -60,6 +61,7 @@ namespace Billing.Host
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
             services.AddBillingDomainServices(appSettings.UsersDbConnectionString);
+            services.AddSingleton<IInternalHttpService, InternalHttpService>();
             
             services.AddAuthorization(options =>
             {

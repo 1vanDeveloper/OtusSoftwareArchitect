@@ -54,6 +54,7 @@ namespace Billing.Host.Services
             using var client = new HttpClient();
             var response = await client.GetAsync(url, cancellationToken);
             var result = await response.Content.ReadAsStringAsync(cancellationToken);
+            _logger.LogInformation($"Get user by {url} {response.StatusCode}: {result}");
 
             return JsonConvert.DeserializeObject<UserDto>(result);
         }

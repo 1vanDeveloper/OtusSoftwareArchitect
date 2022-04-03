@@ -47,10 +47,10 @@ namespace Billing.Host.Controllers
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (string.IsNullOrWhiteSpace(currentUserName))
             {
-                return NotFound(new ErrorDto
+                return BadRequest(new ErrorDto
                 {
-                    Code = 404,
-                    Message = "Unrecognized user name"
+                    Code = 400,
+                    Message = "Empty user name"
                 });
             }
 
@@ -62,7 +62,7 @@ namespace Billing.Host.Controllers
                     return NotFound(new ErrorDto
                     {
                         Code = 404,
-                        Message = "Unrecognized user name"
+                        Message = $"Unrecognized user name {currentUserName}"
                     });
                 }
                 
@@ -101,7 +101,7 @@ namespace Billing.Host.Controllers
         /// <response code="200"> Состояние счета </response>
         /// <response code="400"> Неверные входные данные. </response>
         /// <response code="500"> Ошибка сервера. </response>
-        [HttpPost("check-money")]
+        [HttpGet("check-money")]
         [ProducesResponseType(typeof(MoneyResultDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
@@ -110,10 +110,10 @@ namespace Billing.Host.Controllers
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (string.IsNullOrWhiteSpace(currentUserName))
             {
-                return NotFound(new ErrorDto
+                return BadRequest(new ErrorDto
                 {
-                    Code = 404,
-                    Message = "Unrecognized user name"
+                    Code = 400,
+                    Message = "Empty user name"
                 });
             }
 
@@ -125,7 +125,7 @@ namespace Billing.Host.Controllers
                     return NotFound(new ErrorDto
                     {
                         Code = 404,
-                        Message = "Unrecognized user name"
+                        Message = $"Unrecognized user name {currentUserName}"
                     });
                 }
                 

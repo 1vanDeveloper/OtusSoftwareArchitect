@@ -87,21 +87,21 @@ namespace Account.Host.Controllers
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserDto>> GetUserAsync(string userName, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return NotFound(new ErrorDto
+                {
+                    Code = 404,
+                    Message = "Empty user name"
+                });
+            }
+            
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (currentUserName != userName)
             {
                 return Forbid();
             }
             
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                return NotFound(new ErrorDto
-                {
-                    Code = 404,
-                    Message = "Unrecognized user name"
-                });
-            }
-
             try
             {
                 var dbUser = await _userService.GetUserAsync(userName, cancellationToken);
@@ -109,7 +109,11 @@ namespace Account.Host.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return new NotFoundResult();
+                return NotFound(new ErrorDto
+                {
+                    Code = 404,
+                    Message = $"Unrecognized user name {userName}"
+                });
             }
             catch (Exception e)
             {

@@ -57,7 +57,7 @@ namespace Billing.Domain.Services
                     ct.UserId == userId && ct.Type == CashTransactionType.Credit && !ct.IsCanceled)
                 .SumAsync(ct => ct.Amount, cancellationToken);
 
-            return creditSum - debitSum;
+            return debitSum - creditSum;
         }
 
         /// <summary>

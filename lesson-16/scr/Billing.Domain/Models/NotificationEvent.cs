@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Billing.Domain.Models
 {
     /// <summary>
-    /// Касовая операция
+    /// Кассовая операция
     /// </summary>
     [Index(nameof(OperationId), IsUnique = true)]
     public class NotificationEvent

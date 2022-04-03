@@ -2,18 +2,17 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /build
 
 # copy csproj and restore as distinct layers
-COPY scr/EventBus/EventBus.csproj ./EventBus/EventBus.csproj
-COPY scr/Billing.Domain/Billing.Domain.csproj ./Billing.Domain/Billing.Domain.csproj
-COPY scr/Billing.Host/Billing.Host.csproj ./Billing.Host/Billing.Host.csproj
-RUN dotnet restore Billing.Host/Billing.Host.csproj
+COPY scr/Account.Domain/Account.Domain.csproj ./Account.Domain/Account.Domain.csproj
+COPY scr/Account.Host/Account.Host.csproj ./Account.Host/Account.Host.csproj
+RUN dotnet restore Account.Host/Account.Host.csproj
 
 # copy everything else and build app
 COPY scr ./
-RUN dotnet publish Billing.Host/Billing.Host.csproj -c release -o /app --no-restore
+RUN dotnet publish Account.Host/Account.Host.csproj -c release -o /app --no-restore
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal
 WORKDIR /app
 COPY --from=build /app ./
 
-ENTRYPOINT ["dotnet", "Billing.Host.dll"]
+ENTRYPOINT ["dotnet", "Account.Host.dll"]

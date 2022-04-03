@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Order.Domain.Models;
 
 namespace Order.Domain.Services
@@ -22,7 +23,24 @@ namespace Order.Domain.Services
         
         public async Task<Models.Order> MakeOrderAsync(Models.Order order, CancellationToken cancellationToken)
         {
-            var createdOrder = await CreateOrderAsync(order, cancellationToken);
+            Models.Order createdOrder;
+            if (order.Id == 0)
+            {
+                createdOrder = await CreateOrderAsync(order, cancellationToken);
+            }
+            else
+            {
+                createdOrder = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == order.Id, cancellationToken);
+                if (createdOrder.UserId != order.UserId)
+                {
+                    throw new Exception("Заказ принадлежит другому пользователю");
+                }
+
+                if (createdOrder.State != OrderState.Unpaid)
+                {
+                    throw new Exception("Заказ не может быть оплачен");
+                }
+            }
 
             var (result, message) = await _billingService.BuyAsync(createdOrder.UserId, createdOrder.Amount,
                 createdOrder.Description, createdOrder.OperationId, cancellationToken);

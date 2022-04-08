@@ -9,6 +9,7 @@ helm install rabbitmq-service bitnami/rabbitmq -f ./rabbit/values.yaml
 helm install identity ./identity
 helm install billing ./billing
 helm install account ./account
+helm install order ./order
 helm install gateway ./gateway
 
 # add for gateway service discovery https://ocelot.readthedocs.io/en/latest/features/kubernetes.html

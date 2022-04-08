@@ -21,6 +21,7 @@ namespace Billing.Host.Controllers
     {
         private readonly ICashTransactionService _cashTransactionService;
 
+        /// <inheritdoc />
         public InternalController(ICashTransactionService cashTransactionService)
         {
             _cashTransactionService = cashTransactionService;

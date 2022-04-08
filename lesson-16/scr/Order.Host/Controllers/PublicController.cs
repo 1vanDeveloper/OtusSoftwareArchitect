@@ -1,15 +1,15 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Billing.Domain.Services;
-using Billing.Host.Extensions;
-using Billing.Host.Models;
-using Billing.Host.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Order.Domain.Services;
+using Order.Host.Extensions;
+using Order.Host.Models;
+using Order.Host.Services;
 
-namespace Billing.Host.Controllers
+namespace Order.Host.Controllers
 {
     /// <summary>
     /// Внешний API
@@ -20,29 +20,29 @@ namespace Billing.Host.Controllers
     [Produces("application/json")]
     public class PublicController : Controller
     {
-        private readonly ICashTransactionService _cashTransactionService;
         private readonly IInternalHttpService _internalHttpService;
+        private readonly IOrderService _orderService;
 
-        public PublicController(ICashTransactionService cashTransactionService, IInternalHttpService internalHttpService)
+        public PublicController(IInternalHttpService internalHttpService, IOrderService orderService)
         {
-            _cashTransactionService = cashTransactionService;
             _internalHttpService = internalHttpService;
+            _orderService = orderService;
         }
 
         /// <summary>
-        ///     Пополнение счета
+        ///     Формирование заказа
         /// </summary>
-        /// <param name="putMoneyParams"> параметры пополнения </param>
+        /// <param name="makeOrderParams"> параметры заказа </param>
         /// <param name="cancellationToken"></param>
-        /// <returns> результат пополнения со счета </returns>
-        /// <response code="200"> Пополнение совершено </response>
+        /// <returns> результат формирования заказа </returns>
+        /// <response code="200"> Формирование совершено </response>
         /// <response code="400"> Неверные входные данные. </response>
         /// <response code="500"> Ошибка сервера. </response>
-        [HttpPost("put-money")]
-        [ProducesResponseType(typeof(MoneyResultDto), StatusCodes.Status200OK)]
+        [HttpPost("make-order")]
+        [ProducesResponseType(typeof(MakeOrderResultDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> PutMoneyAsync([FromBody] PutMoneyParamsDto putMoneyParams, CancellationToken cancellationToken)
+        public async Task<ActionResult> MakeOrderAsync([FromBody] MakeOrderParamsDto makeOrderParams, CancellationToken cancellationToken)
         {
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (string.IsNullOrWhiteSpace(currentUserName))
@@ -65,17 +65,10 @@ namespace Billing.Host.Controllers
                         Message = $"Unrecognized user name {currentUserName}"
                     });
                 }
-                
-                await _cashTransactionService
-                    .CreateCashTransactionAsync(putMoneyParams.ToCashTransaction(user.Id), cancellationToken);
 
-                var totalAmount = await _cashTransactionService.GetTotalAmountAsync(user.Id, cancellationToken);
+                var result = await _orderService.MakeOrderAsync(makeOrderParams.ToOrder(user.Id), cancellationToken);
                 
-                return Ok(new MoneyResultDto
-                {
-                    OperationId = putMoneyParams.OperationId,
-                    TotalAmount = totalAmount
-                });
+                return Ok(result.ToMakeOrderResult());
             }
             catch (ArgumentException e)
             {
@@ -94,18 +87,18 @@ namespace Billing.Host.Controllers
         }
         
         /// <summary>
-        ///     Проверка счета
+        ///     Получение всех заказов пользователя
         /// </summary>
         /// <param name="cancellationToken"></param>
-        /// <returns> состояние счета </returns>
-        /// <response code="200"> Состояние счета </response>
+        /// <returns> список всех заказов пользователя </returns>
+        /// <response code="200"> Список сформирован </response>
         /// <response code="400"> Неверные входные данные. </response>
         /// <response code="500"> Ошибка сервера. </response>
-        [HttpGet("check-money")]
-        [ProducesResponseType(typeof(MoneyResultDto), StatusCodes.Status200OK)]
+        [HttpGet("get-orders")]
+        [ProducesResponseType(typeof(GetOrdersResultDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> CheckMoneyAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult> GetOrdersAsync(CancellationToken cancellationToken)
         {
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (string.IsNullOrWhiteSpace(currentUserName))
@@ -128,13 +121,10 @@ namespace Billing.Host.Controllers
                         Message = $"Unrecognized user name {currentUserName}"
                     });
                 }
+
+                var result = await _orderService.GetOrdersAsync(user.Id, cancellationToken);
                 
-                var totalAmount = await _cashTransactionService.GetTotalAmountAsync(user.Id, cancellationToken);
-                
-                return Ok(new MoneyResultDto
-                {
-                    TotalAmount = totalAmount
-                });
+                return Ok(result.ToGetOrdersResultDto());
             }
             catch (ArgumentException e)
             {

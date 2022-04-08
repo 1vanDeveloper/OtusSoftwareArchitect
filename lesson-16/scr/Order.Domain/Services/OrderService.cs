@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,8 @@ namespace Order.Domain.Services
                     throw new Exception("Заказ не может быть оплачен");
                 }
             }
+            
+            order.Timestamp = DateTime.Now;
 
             var (result, message) = await _billingService.BuyAsync(createdOrder.UserId, createdOrder.Amount,
                 createdOrder.Description, createdOrder.OperationId, cancellationToken);
@@ -53,6 +57,11 @@ namespace Order.Domain.Services
             createdOrder.State = OrderState.Paid;
             await _dbContext.SaveChangesAsync(cancellationToken);
             return createdOrder;
+        }
+
+        public Task<List<Models.Order>> GetOrdersAsync(long userId, CancellationToken cancellationToken)
+        {
+            return _dbContext.Orders.Where(o => o.UserId == userId).ToListAsync(cancellationToken);
         }
 
         private async Task<Models.Order> CreateOrderAsync(Models.Order order, CancellationToken cancellationToken)

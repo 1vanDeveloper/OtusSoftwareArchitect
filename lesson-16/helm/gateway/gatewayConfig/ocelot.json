@@ -65,6 +65,30 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
       }
+    },
+    {
+      "DownstreamPathTemplate": "/public/make-order",
+      "DownstreamScheme": "http",
+      "ServiceName": "order-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/order/make-order",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/get-orders",
+      "DownstreamScheme": "http",
+      "ServiceName": "order-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/order/get-orders",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
     }
   ],
   "GlobalConfiguration": {

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Order.Domain.Models;
 
 namespace Order.Domain
 {

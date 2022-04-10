@@ -76,10 +76,10 @@ namespace Order.Domain.Services
                 throw new Exception("Заказ в неверном статусе");
             }
 
-            var createdOrder = (await _dbContext.Orders.AddAsync(order, cancellationToken)).Entity;
+            await _dbContext.Orders.AddAsync(order, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return createdOrder;
+            return await _dbContext.Orders.FirstOrDefaultAsync(o => o.OperationId == order.OperationId, cancellationToken);;
         }
     }
 }

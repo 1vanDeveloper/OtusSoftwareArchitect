@@ -19,6 +19,7 @@ namespace Order.Host.Models
         /// <summary>
         /// Описание операции
         /// </summary>
+        [DataMember]
         public string Description { get; set; }
         
         /// <summary>

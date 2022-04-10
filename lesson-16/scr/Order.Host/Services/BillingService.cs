@@ -50,6 +50,7 @@ namespace Order.Host.Services
                     OperationId = operationId,
                     UserId = userId
                 };
+                
                 result = await InternalBuyAsync(url, buyParams, cancellationToken);
             }
 
@@ -60,10 +61,14 @@ namespace Order.Host.Services
             return result;
         }
 
-        private static async Task<(bool result, string message)> InternalBuyAsync(string url, BuyParamsDto paramsDto, CancellationToken cancellationToken)
+        private async Task<(bool result, string message)> InternalBuyAsync(string url, BuyParamsDto paramsDto, CancellationToken cancellationToken)
         {
             using var client = new HttpClient();
-            var content = new StringContent(JsonConvert.SerializeObject(paramsDto), Encoding.UTF8, "application/json");
+            var body = JsonConvert.SerializeObject(paramsDto);
+            var content = new StringContent(body, Encoding.UTF8, "application/json");
+            
+            _logger.LogInformation($"Request body: {body}");
+            
             var response = await client.PostAsync(url,  content, cancellationToken);
             if (response.StatusCode == HttpStatusCode.OK)
             {

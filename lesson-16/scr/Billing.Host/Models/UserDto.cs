@@ -12,27 +12,32 @@ namespace Billing.Host.Models
         /// <summary>
         /// Идентификатор
         /// </summary>
+        [DataMember]
         public long Id { get; init; }
 
         /// <summary>
         /// Имя
         /// </summary>
+        [DataMember]
         public string FirstName { get; init; }
         
         /// <summary>
         /// Фамилия
         /// </summary>
+        [DataMember]
         public string LastName { get; init; }
         
         /// <summary>
         /// Почта
         /// </summary>
+        [DataMember]
         [EmailAddress]
         public string Email { get; init; }
         
         /// <summary>
         /// Телефон
         /// </summary>
+        [DataMember]
         [Phone]
         public string Phone { get; init; }
     }

@@ -31,6 +31,9 @@
             Внутренний API для взаимодействия между сервисами
             </summary>
         </member>
+        <member name="M:Billing.Host.Controllers.InternalController.#ctor(Billing.Domain.Services.ICashTransactionService)">
+            <inheritdoc />
+        </member>
         <member name="M:Billing.Host.Controllers.InternalController.BuyAsync(Billing.Host.Models.BuyParamsDto,System.Threading.CancellationToken)">
             <summary>
                 Совершение покупки
@@ -44,7 +47,7 @@
         </member>
         <member name="T:Billing.Host.Controllers.PublicController">
             <summary>
-            Внутренний API для взаимодействия между сервисами
+            Внешний API
             </summary>
         </member>
         <member name="M:Billing.Host.Controllers.PublicController.PutMoneyAsync(Billing.Host.Models.PutMoneyParamsDto,System.Threading.CancellationToken)">

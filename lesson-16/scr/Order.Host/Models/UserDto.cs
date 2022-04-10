@@ -12,11 +12,13 @@ namespace Order.Host.Models
         /// <summary>
         /// Идентификатор
         /// </summary>
+        [DataMember]
         public long Id { get; init; }
 
         /// <summary>
         /// Имя
         /// </summary>
+        [DataMember]
         public string FirstName { get; init; }
         
         /// <summary>
@@ -27,12 +29,14 @@ namespace Order.Host.Models
         /// <summary>
         /// Почта
         /// </summary>
+        [DataMember]
         [EmailAddress]
         public string Email { get; init; }
         
         /// <summary>
         /// Телефон
         /// </summary>
+        [DataMember]
         [Phone]
         public string Phone { get; init; }
     }

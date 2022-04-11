@@ -11,6 +11,7 @@ helm install billing ./billing
 helm install account ./account
 helm install order ./order
 helm install gateway ./gateway
+helm install notification ./notification
 
 # add for gateway service discovery https://ocelot.readthedocs.io/en/latest/features/kubernetes.html
 kubectl create clusterrolebinding permissive-binding \

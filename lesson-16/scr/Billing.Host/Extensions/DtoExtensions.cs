@@ -4,8 +4,14 @@ using Billing.Host.Models;
 
 namespace Billing.Host.Extensions
 {
+    /// <summary>
+    /// Dto helper functions
+    /// </summary>
     public static class DtoExtensions
     {
+        /// <summary>
+        /// Convert to domain model
+        /// </summary>
         public static CashTransaction ToCashTransaction(this BuyParamsDto buyParams)
         {
             return new CashTransaction
@@ -19,6 +25,9 @@ namespace Billing.Host.Extensions
             };
         }
         
+        /// <summary>
+        /// Convert to domain model
+        /// </summary>
         public static CashTransaction ToCashTransaction(this PutMoneyParamsDto putMoneyParamsDto, long userId)
         {
             return new CashTransaction

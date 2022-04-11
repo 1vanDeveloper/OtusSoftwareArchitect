@@ -20,6 +20,9 @@ using Prometheus.SystemMetrics;
 
 namespace Order.Host
 {
+    /// <summary>
+    /// Startup
+    /// </summary>
     public class Startup
     {
         /// <summary>

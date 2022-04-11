@@ -89,6 +89,18 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
       }
+    },
+    {
+      "DownstreamPathTemplate": "/public/get-billing-events",
+      "DownstreamScheme": "http",
+      "ServiceName": "notification-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/notification/get-billing-events",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
     }
   ],
   "GlobalConfiguration": {

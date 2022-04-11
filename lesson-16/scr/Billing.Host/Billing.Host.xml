@@ -14,6 +14,12 @@
             Сервис отправки сообщений в очередь
             </summary>
         </member>
+        <member name="M:Billing.Host.BackgroundServices.NotificationService.#ctor(Microsoft.Extensions.Logging.ILogger{Billing.Host.BackgroundServices.NotificationService},Billing.Domain.Services.INotificationEventService,EventBus.Abstractions.IEventBus)">
+            <inheritdoc />
+        </member>
+        <member name="M:Billing.Host.BackgroundServices.NotificationService.ExecuteAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:Billing.Host.Controllers.IndexController">
             <summary>
             Version check
@@ -49,6 +55,9 @@
             <summary>
             Внешний API
             </summary>
+        </member>
+        <member name="M:Billing.Host.Controllers.PublicController.#ctor(Billing.Domain.Services.ICashTransactionService,Billing.Host.Services.IInternalHttpService)">
+            <inheritdoc />
         </member>
         <member name="M:Billing.Host.Controllers.PublicController.PutMoneyAsync(Billing.Host.Models.PutMoneyParamsDto,System.Threading.CancellationToken)">
             <summary>
@@ -107,6 +116,16 @@
             <typeparam name="T"> Тип значения. </typeparam>
             <returns> Значение. </returns>
             <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="M:Billing.Host.Extensions.DtoExtensions.ToCashTransaction(Billing.Host.Models.BuyParamsDto)">
+            <summary>
+            Convert to domain model
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Extensions.DtoExtensions.ToCashTransaction(Billing.Host.Models.PutMoneyParamsDto,System.Int64)">
+            <summary>
+            Convert to domain model
+            </summary>
         </member>
         <member name="T:Billing.Host.Middlewares.ExceptionHandlerMiddleware">
             <summary>
@@ -170,6 +189,9 @@
             Событие биллинга
             </summary>
         </member>
+        <member name="M:Billing.Host.Models.Events.BillingEvent.#ctor(Billing.Domain.Models.NotificationEvent)">
+            <inheritdoc />
+        </member>
         <member name="P:Billing.Host.Models.Events.BillingEvent.OperationId">
             <summary>
             Уникльный идентификатор операции
@@ -184,6 +206,15 @@
             <summary>
             Тело операции
             </summary>
+        </member>
+        <member name="T:Billing.Host.Models.Events.BillingEventHandler">
+            <inheritdoc />
+        </member>
+        <member name="M:Billing.Host.Models.Events.BillingEventHandler.#ctor(Billing.Domain.Services.INotificationEventService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="notificationEventService"></param>
         </member>
         <member name="T:Billing.Host.Models.PutMoneyParamsDto">
             <summary>
@@ -286,6 +317,14 @@
         <member name="T:Billing.Host.Services.InternalHttpService">
             <inheritdoc cref="T:Billing.Host.Services.IInternalHttpService"/>
         </member>
+        <member name="M:Billing.Host.Services.InternalHttpService.#ctor(Billing.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Billing.Host.Services.InternalHttpService})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Services.InternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:Billing.Host.Settings.AppSettings">
             <inheritdoc />
         </member>
@@ -332,6 +371,11 @@
         <member name="P:Billing.Host.Settings.IAppSettings.QueueName">
             <summary>
             Очередь для публикации
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Startup">
+            <summary>
+            Constructor
             </summary>
         </member>
         <member name="M:Billing.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">

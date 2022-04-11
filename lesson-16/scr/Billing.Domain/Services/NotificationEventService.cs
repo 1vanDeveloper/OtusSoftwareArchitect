@@ -20,7 +20,8 @@ namespace Billing.Domain.Services
             _dbContext = dbContext;
         }
         
-        public async Task CreateNotificationEventAsync(Guid operationId, string message, CancellationToken cancellationToken)
+        public async Task CreateNotificationEventAsync(Guid operationId, long userId, string message,
+            CancellationToken cancellationToken)
         {
             if (operationId == Guid.Empty)
             {
@@ -36,6 +37,7 @@ namespace Billing.Domain.Services
                 new NotificationEvent
                 {
                     OperationId = operationId,
+                    UserId = userId,
                     Message = message
                 }, cancellationToken);
             

@@ -26,6 +26,9 @@
             Внешний API
             </summary>
         </member>
+        <member name="M:Order.Host.Controllers.PublicController.#ctor(Order.Host.Services.IInternalHttpService,Order.Domain.Services.IOrderService)">
+            <inheritdoc />
+        </member>
         <member name="M:Order.Host.Controllers.PublicController.MakeOrderAsync(Order.Host.Models.MakeOrderParamsDto,System.Threading.CancellationToken)">
             <summary>
                 Формирование заказа
@@ -83,6 +86,31 @@
             <typeparam name="T"> Тип значения. </typeparam>
             <returns> Значение. </returns>
             <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:Order.Host.Extensions.DtoExtensions">
+            <summary>
+            Dto helper functions
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToOrder(Order.Host.Models.MakeOrderParamsDto,System.Int64)">
+            <summary>
+            Convert to domain model
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToMakeOrderResult(Order.Domain.Models.Order)">
+            <summary>
+            Convert to Dto model
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToGetOrdersResultDto(System.Collections.Generic.IList{Order.Domain.Models.Order})">
+            <summary>
+            Convert to Dto model
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToOrderResultDto(Order.Domain.Models.Order)">
+            <summary>
+            Convert to Dto model
+            </summary>
         </member>
         <member name="T:Order.Host.Middlewares.ExceptionHandlerMiddleware">
             <summary>
@@ -302,6 +330,14 @@
         <member name="T:Order.Host.Services.BillingService">
             <inheritdoc cref="T:Order.Domain.Services.IBillingService"/>
         </member>
+        <member name="M:Order.Host.Services.BillingService.#ctor(Order.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Order.Host.Services.BillingService})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Order.Host.Services.BillingService.BuyAsync(System.Int64,System.Decimal,System.String,System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:Order.Host.Services.IInternalHttpService">
             <summary>
             Сервис внутренних http-соединений
@@ -314,6 +350,14 @@
         </member>
         <member name="T:Order.Host.Services.InternalHttpService">
             <inheritdoc cref="T:Order.Host.Services.IInternalHttpService"/>
+        </member>
+        <member name="M:Order.Host.Services.InternalHttpService.#ctor(Order.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Order.Host.Services.InternalHttpService})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Order.Host.Services.InternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
         </member>
         <member name="T:Order.Host.Settings.AppSettings">
             <inheritdoc />
@@ -366,6 +410,11 @@
         <member name="P:Order.Host.Settings.IAppSettings.QueueName">
             <summary>
             Очередь для публикации
+            </summary>
+        </member>
+        <member name="T:Order.Host.Startup">
+            <summary>
+            Startup
             </summary>
         </member>
         <member name="M:Order.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">

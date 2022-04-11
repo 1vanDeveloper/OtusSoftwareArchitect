@@ -18,12 +18,16 @@ namespace Billing.Host.Services
         private readonly IAppSettings _appSettings;
         private readonly ILogger<InternalHttpService> _logger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public InternalHttpService(IAppSettings appSettings, ILogger<InternalHttpService> logger)
         {
             _appSettings = appSettings;
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public async Task<UserDto> GetUserAsync(string userName, CancellationToken cancellationToken)
         {
             var url = $"{_appSettings.AccountServiceUrl}/internal/account/{userName}";

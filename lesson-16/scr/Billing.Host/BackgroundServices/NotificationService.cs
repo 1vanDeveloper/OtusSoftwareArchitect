@@ -19,6 +19,7 @@ namespace Billing.Host.BackgroundServices
         private readonly INotificationEventService _notificationEventService;
         private readonly IEventBus _eventBus;
 
+        /// <inheritdoc />
         public NotificationService(ILogger<NotificationService> logger, 
             INotificationEventService notificationEventService, IEventBus eventBus)
         {
@@ -27,6 +28,7 @@ namespace Billing.Host.BackgroundServices
             _eventBus = eventBus;
         }
 
+        /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogDebug("NotificationService is starting");

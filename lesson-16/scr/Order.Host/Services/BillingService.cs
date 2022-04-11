@@ -20,12 +20,16 @@ namespace Order.Host.Services
         private readonly IAppSettings _appSettings;
         private readonly ILogger<BillingService> _logger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public BillingService(IAppSettings appSettings, ILogger<BillingService> logger)
         {
             _appSettings = appSettings;
             _logger = logger;
         }
-        
+
+        /// <inheritdoc />
         public async Task<(bool result, string message)> BuyAsync(long userId, decimal amount, string description, Guid operationId, CancellationToken cancellationToken)
         {
             var url = $"{_appSettings.BillingServiceUrl}/internal/buy/";

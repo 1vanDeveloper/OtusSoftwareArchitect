@@ -23,6 +23,7 @@ namespace Order.Host.Controllers
         private readonly IInternalHttpService _internalHttpService;
         private readonly IOrderService _orderService;
 
+        /// <inheritdoc />
         public PublicController(IInternalHttpService internalHttpService, IOrderService orderService)
         {
             _internalHttpService = internalHttpService;

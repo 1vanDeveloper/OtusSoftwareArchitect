@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Notification.Host</name>
+    </assembly>
+    <members>
+        <member name="T:Notification.Host.Attributes.ValidateModelAttribute">
+            <summary>
+                Атрибут валидации моделей.
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Controllers.IndexController">
+            <summary>
+            Version check
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Controllers.IndexController.Index">
+            <summary>
+            Возвращает информацию о приложении
+            </summary>
+            <returns></returns>
+            <response code="200"> Сервис доступен </response>
+        </member>
+        <member name="T:Notification.Host.Controllers.PublicController">
+            <summary>
+            Внешний API
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Controllers.PublicController.#ctor(Notification.Host.Services.IInternalHttpService,Notification.Domain.Services.INotificationEventService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Notification.Host.Controllers.PublicController.GetBillngEventsAsync(System.Threading.CancellationToken)">
+            <summary>
+                Получение всех сообщений по биллингу
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns> список </returns>
+            <response code="200"> Список </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="T:Notification.Host.Extensions.ClaimExtensions">
+            <summary>
+            Класс расширений для <see cref="T:System.Security.Claims.Claim"/>.
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Extensions.ClaimExtensions.GetUserName(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">
+            <summary>
+            Получение логина пользователя.
+            </summary>
+            <param name="claims"> Claims. </param>
+            <returns> Значение claim'а. </returns>
+        </member>
+        <member name="T:Notification.Host.Extensions.ConfigurationExtensions">
+            <summary>
+            Класс расширений для <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Extensions.ConfigurationExtensions.GetValueOrThrow``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="key"> Наименование ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="M:Notification.Host.Extensions.ConfigurationExtensions.GetValueOrThrowBySuffix``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:Notification.Host.Middlewares.ExceptionHandlerMiddleware">
+            <summary>
+                Мидлвара для перехвата ошибок.
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Middlewares.ExceptionHandlerMiddlewareExtension">
+            <summary>
+            Класс расширения для <see cref="T:Notification.Host.Middlewares.ExceptionHandlerMiddleware"/>.
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Middlewares.ExceptionHandlerMiddlewareExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Добавление <see cref="T:Notification.Host.Middlewares.ExceptionHandlerMiddleware"/> в пайплайн приложения.
+            </summary>
+            <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
+            <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
+        </member>
+        <member name="T:Notification.Host.Models.ErrorDto">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.ErrorDto.Code">
+            <summary>
+            Код
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.ErrorDto.Message">
+            <summary>
+            Сообщение
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Models.Events.BillingEvent">
+            <summary>
+            Событие биллинга
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.Events.BillingEvent.#ctor(Notification.Domain.Models.NotificationEvent)">
+            <inheritdoc />
+        </member>
+        <member name="P:Notification.Host.Models.Events.BillingEvent.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.Events.BillingEvent.UserId">
+            <summary>
+            Идентификатор пользователя
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.Events.BillingEvent.Message">
+            <summary>
+            Тело операции
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Models.Events.BillingEventHandler">
+            <inheritdoc />
+        </member>
+        <member name="M:Notification.Host.Models.Events.BillingEventHandler.#ctor(Notification.Domain.Services.INotificationEventService)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.Events.BillingEventHandler.Handle(Notification.Host.Models.Events.BillingEvent)">
+            <inheritdoc />
+        </member>
+        <member name="T:Notification.Host.Models.UserDto">
+            <summary>
+            Полная информация о пользователе
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.UserDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.UserDto.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.UserDto.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.UserDto.Email">
+            <summary>
+            Почта
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.UserDto.Phone">
+            <summary>
+            Телефон
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Models.VersionDto">
+            <summary>
+            Описание версии приложения
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Models.VersionDto.Version">
+            <summary>
+            Версия
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Program">
+            <summary>
+            The main class of program
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Program.Main(System.String[])">
+            <summary>
+            The start function
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Notification.Host.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Создание хоста приложения
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Notification.Host.Services.IInternalHttpService">
+            <summary>
+            Сервис внутренних http-соединений
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Services.IInternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получение информации о пользователе
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Services.InternalHttpService">
+            <inheritdoc cref="T:Notification.Host.Services.IInternalHttpService"/>
+        </member>
+        <member name="M:Notification.Host.Services.InternalHttpService.#ctor(Notification.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Notification.Host.Services.InternalHttpService})">
+            <summary>
+            Costructor
+            </summary>
+            <param name="appSettings"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Notification.Host.Services.InternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Notification.Host.Settings.AppSettings">
+            <inheritdoc />
+        </member>
+        <member name="T:Notification.Host.Settings.IAppSettings">
+            <summary>
+            Настройки приложения.
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.UsersDbConnectionString">
+            <summary>
+            Строка подключения к БД пользователей
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.IsMigrationService">
+            <summary>
+            Флаг указывает режим запуска сервиса
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.IdentityServerUrl">
+            <summary>
+            Адрес службы проверки прав пользователей
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.AccountServiceUrl">
+            <summary>
+            Адрес службы информации пользователей
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.EventBusConnection">
+            <summary>
+            Строка подключения к Rabbit MQ
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.EventBusUserName">
+            <summary>
+            Rabbit MQ User
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.EventBusPassword">
+            <summary>
+            Rabbit MQ Password
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.QueueName">
+            <summary>
+            Очередь для публикации
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Startup">
+            <summary>
+            Startup
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Notification.Host.Startup.Configuration">
+            <summary>
+            Configuration info
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Notification.Host.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

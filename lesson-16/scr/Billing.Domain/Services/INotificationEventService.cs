@@ -14,7 +14,7 @@ namespace Billing.Domain.Services
         /// <summary>
         /// Создание сообщения
         /// </summary>
-        Task CreateNotificationEventAsync(Guid operationId, string message, CancellationToken cancellationToken);
+        Task CreateNotificationEventAsync(Guid operationId, long userId, string message, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получение сообщений

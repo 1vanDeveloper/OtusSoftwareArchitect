@@ -32,7 +32,7 @@ namespace Billing.Domain.Services
                 CashTransactionType.Credit => await PayAsync(cashTransaction, cancellationToken),
                 _ => throw new ArgumentOutOfRangeException()
             };
-            await _notificationEventService.CreateNotificationEventAsync(result.OperationId, result.Description,
+            await _notificationEventService.CreateNotificationEventAsync(result.OperationId, result.UserId, result.Description,
                 cancellationToken);
             
             await tran.CommitAsync(cancellationToken);

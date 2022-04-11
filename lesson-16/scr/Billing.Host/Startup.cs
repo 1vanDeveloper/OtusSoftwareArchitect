@@ -28,6 +28,9 @@ using RabbitMQ.Client;
 
 namespace Billing.Host
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public class Startup
     {
         /// <summary>

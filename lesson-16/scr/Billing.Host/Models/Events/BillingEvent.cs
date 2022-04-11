@@ -13,6 +13,7 @@ namespace Billing.Host.Models.Events
     /// </summary>
     public class BillingEvent : IntegrationEvent
     {
+        /// <inheritdoc />
         public BillingEvent(NotificationEvent notificationEvent)
         {
             OperationId = notificationEvent.OperationId;
@@ -36,15 +37,21 @@ namespace Billing.Host.Models.Events
         public string Message { get; set; }
     }
 
+    /// <inheritdoc />
     public class BillingEventHandler : IIntegrationEventHandler<BillingEvent>
     {
         private readonly INotificationEventService _notificationEventService;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="notificationEventService"></param>
         public BillingEventHandler(INotificationEventService notificationEventService)
         {
             _notificationEventService = notificationEventService;
         }
-            
+
+        /// <inheritdoc />
         public Task Handle(BillingEvent @event)
         {
             return _notificationEventService.RemoveNotificationEventAsync(@event.OperationId, CancellationToken.None);

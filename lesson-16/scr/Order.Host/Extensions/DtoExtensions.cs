@@ -5,8 +5,14 @@ using Order.Host.Models;
 
 namespace Order.Host.Extensions
 {
+    /// <summary>
+    /// Dto helper functions
+    /// </summary>
     public static class DtoExtensions
     {
+        /// <summary>
+        /// Convert to domain model
+        /// </summary>
         public static Domain.Models.Order ToOrder(this MakeOrderParamsDto orderParams, long userId)
         {
             return new Domain.Models.Order
@@ -19,6 +25,9 @@ namespace Order.Host.Extensions
             };
         }
         
+        /// <summary>
+        /// Convert to Dto model
+        /// </summary>
         public static MakeOrderResultDto ToMakeOrderResult(this Domain.Models.Order order)
         {
             return new MakeOrderResultDto
@@ -32,6 +41,9 @@ namespace Order.Host.Extensions
             };
         }
         
+        /// <summary>
+        /// Convert to Dto model
+        /// </summary>
         public static GetOrdersResultDto ToGetOrdersResultDto(this IList<Domain.Models.Order> orders)
         {
             return new GetOrdersResultDto
@@ -40,6 +52,9 @@ namespace Order.Host.Extensions
             };
         }
 
+        /// <summary>
+        /// Convert to Dto model
+        /// </summary>
         private static GetOrderResultDto ToOrderResultDto(Domain.Models.Order order)
         {
             return new GetOrderResultDto

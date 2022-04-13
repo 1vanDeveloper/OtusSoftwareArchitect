@@ -17,9 +17,17 @@ namespace Billing.Domain.Services
         Task CreateNotificationEventAsync(Guid operationId, long userId, string message, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Получение сообщений
+        /// Получение сообщений на отправку
         /// </summary>
-        Task<List<NotificationEvent>> GetNotificationEventAsync(CancellationToken cancellationToken);
+        Task<List<NotificationEvent>> GetNewNotificationEventsAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Пометить сообщение как отправленое
+        /// </summary>
+        /// <param name="event"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task IsSentAsync(NotificationEvent @event, CancellationToken cancellationToken);
         
         /// <summary>
         /// Удаление сообщения

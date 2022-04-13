@@ -5,6 +5,8 @@ using Billing.Domain.Models;
 using Billing.Domain.Services;
 using EventBus.Abstractions;
 using EventBus.Events;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Billing.Host.Models.Events
 {
@@ -13,14 +15,6 @@ namespace Billing.Host.Models.Events
     /// </summary>
     public class BillingEvent : IntegrationEvent
     {
-        /// <inheritdoc />
-        public BillingEvent(NotificationEvent notificationEvent)
-        {
-            OperationId = notificationEvent.OperationId;
-            UserId = notificationEvent.UserId;
-            Message = notificationEvent.Message;
-        }
-        
         /// <summary>
         /// Уникльный идентификатор операции
         /// </summary>
@@ -35,25 +29,40 @@ namespace Billing.Host.Models.Events
         /// Тело операции
         /// </summary>
         public string Message { get; set; }
+        
+        /// <summary>
+        /// Convert
+        /// </summary>
+        public static BillingEvent Convert(NotificationEvent notificationEvent)
+        {
+            return new BillingEvent
+            {
+                OperationId = notificationEvent?.OperationId ?? default,
+                UserId = notificationEvent?.UserId ?? default,
+                Message = notificationEvent?.Message,
+            };
+        }
     }
 
     /// <inheritdoc />
     public class BillingEventHandler : IIntegrationEventHandler<BillingEvent>
     {
         private readonly INotificationEventService _notificationEventService;
+        private readonly ILogger<BillingEventHandler> _logger;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="notificationEventService"></param>
-        public BillingEventHandler(INotificationEventService notificationEventService)
+        public BillingEventHandler(INotificationEventService notificationEventService, ILogger<BillingEventHandler> logger)
         {
             _notificationEventService = notificationEventService;
+            _logger = logger;
         }
 
         /// <inheritdoc />
         public Task Handle(BillingEvent @event)
         {
+            _logger.LogInformation($"Get message {JsonConvert.SerializeObject(@event)}");
             return _notificationEventService.RemoveNotificationEventAsync(@event.OperationId, CancellationToken.None);
         }
     }

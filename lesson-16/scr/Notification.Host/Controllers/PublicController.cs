@@ -71,7 +71,7 @@ namespace Notification.Host.Controllers
                 
                 var events = await _notificationEventService.GetNotificationEventAsync(cancellationToken);
                 
-                return Ok(events.Select(e => new BillingEvent(e)).ToList());
+                return Ok(events.Select(BillingEvent.Convert).ToList());
             }
             catch (ArgumentException e)
             {

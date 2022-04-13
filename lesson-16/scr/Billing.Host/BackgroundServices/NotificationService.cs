@@ -7,6 +7,7 @@ using Billing.Host.Models.Events;
 using EventBus.Abstractions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Billing.Host.BackgroundServices
 {
@@ -31,21 +32,21 @@ namespace Billing.Host.BackgroundServices
         /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogDebug("NotificationService is starting");
+            _logger.LogInformation("NotificationService is starting");
 
             stoppingToken.Register(() =>
-                _logger.LogDebug("NotificationService background task is stopping"));
+                _logger.LogInformation("NotificationService background task is stopping"));
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogDebug("NotificationService task doing background work");
-
-                var events = await _notificationEventService.GetNotificationEventAsync(stoppingToken);
-                foreach (var @event in events.Select(e => new BillingEvent(e)))
+                var events = await _notificationEventService.GetNewNotificationEventsAsync(stoppingToken);
+                foreach (var @event in events)
                 {
                     try
                     {
-                        _eventBus.Publish(@event);
+                        _eventBus.Publish(BillingEvent.Convert(@event));
+                        await _notificationEventService.IsSentAsync(@event, stoppingToken);
+                        _logger.LogInformation($"NotificationService published {JsonConvert.SerializeObject(@event)}");
                     }
                     catch (Exception ex)
                     {
@@ -57,7 +58,7 @@ namespace Billing.Host.BackgroundServices
                 await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
             }
 
-            _logger.LogDebug("NotificationService background task is stopping");
+            _logger.LogInformation("NotificationService background task is stopping");
         }
     }
 }

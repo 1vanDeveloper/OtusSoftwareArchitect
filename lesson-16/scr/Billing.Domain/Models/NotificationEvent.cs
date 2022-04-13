@@ -30,5 +30,10 @@ namespace Billing.Domain.Models
         /// Тело операции
         /// </summary>
         public string Message { get; set; }
+        
+        /// <summary>
+        /// Сообщение отправелено
+        /// </summary>
+        public bool IsSent { get; set; }
     }
 }

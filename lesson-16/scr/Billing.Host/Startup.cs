@@ -144,7 +144,7 @@ namespace Billing.Host
 
         private static void RegisterEventBus(IServiceCollection services, IAppSettings settings)
         {
-            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            services.AddSingleton<IRabbitMQPersistentConnection, DefaultRabbitMQPersistentConnection>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
@@ -174,6 +174,8 @@ namespace Billing.Host
             });
             
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            
+            services.AddTransient<BillingEventHandler>();
         }
         
         private static void ConfigureEventBus(IApplicationBuilder app)

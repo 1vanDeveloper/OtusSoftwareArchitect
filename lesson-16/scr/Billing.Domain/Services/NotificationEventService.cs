@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Billing.Domain.Models;
@@ -44,9 +45,16 @@ namespace Billing.Domain.Services
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<List<NotificationEvent>> GetNotificationEventAsync(CancellationToken cancellationToken)
+        public Task<List<NotificationEvent>> GetNewNotificationEventsAsync(CancellationToken cancellationToken)
         {
-            return _dbContext.NotificationEvents.AsNoTracking().ToListAsync(cancellationToken);
+            return _dbContext.NotificationEvents.Where(s => !s.IsSent).ToListAsync(cancellationToken);
+        }
+
+        public async Task IsSentAsync(NotificationEvent @event, CancellationToken cancellationToken)
+        {
+            @event.IsSent = true;
+            _dbContext.NotificationEvents.Update(@event);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task RemoveNotificationEventAsync(Guid operationId, CancellationToken cancellationToken)

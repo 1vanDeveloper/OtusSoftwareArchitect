@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0a204794-1c8e-4c3c-b5cb-b51571f2a4ef",
+		"_postman_id": "c19b4b42-bb24-4213-960c-9f366d6c5229",
 		"name": "Otus Copy",
 		"description": "Homework",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -10,7 +10,7 @@
 			"name": "lesson-16",
 			"item": [
 				{
-					"name": "Register User 1",
+					"name": "Register User",
 					"event": [
 						{
 							"listen": "test",
@@ -75,7 +75,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Token User 1",
+					"name": "Get Token User",
 					"event": [
 						{
 							"listen": "test",
@@ -130,7 +130,8 @@
 								{
 									"key": "scope",
 									"value": "accountService",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "username",
@@ -159,7 +160,7 @@
 					"response": []
 				},
 				{
-					"name": "Create User 1",
+					"name": "Create User",
 					"event": [
 						{
 							"listen": "test",
@@ -167,6 +168,15 @@
 								"exec": [
 									"pm.test(\"Respose status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Attributes is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).have.property('firstName', 'otus');",
+									"    pm.expect(jsonData).have.property('lastName', 'user');",
+									"    pm.expect(jsonData).have.property('email', pm.collectionVariables.get(\"usermail1\"));",
+									"    pm.expect(jsonData).have.property('phone', '8-777-777-77-77');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -214,7 +224,7 @@
 					"response": []
 				},
 				{
-					"name": "Edit User 1",
+					"name": "Get User",
 					"event": [
 						{
 							"listen": "test",
@@ -222,62 +232,15 @@
 								"exec": [
 									"pm.test(\"Respose status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							},
-							{
-								"key": "Host",
-								"value": "gateway.arch.homework",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"otus1\",\r\n    \"LastName\": \"user1\",\r\n    \"Email\": \"{{usermail1}}\",\r\n    \"Phone\": \"8-888-888-88-88\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://{{baseUrl}}/api/account/{{usermail1}}",
-							"protocol": "http",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"account",
-								"{{usermail1}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Respose status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Attributes is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).have.property('firstName', 'otus');",
+									"    pm.expect(jsonData).have.property('lastName', 'user');",
+									"    pm.expect(jsonData).have.property('email', pm.collectionVariables.get(\"usermail1\"));",
+									"    pm.expect(jsonData).have.property('phone', '8-777-777-77-77');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -314,7 +277,7 @@
 					"response": []
 				},
 				{
-					"name": "Register User 2",
+					"name": "Put Money",
 					"event": [
 						{
 							"listen": "test",
@@ -322,67 +285,35 @@
 								"exec": [
 									"pm.test(\"Respose status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Amount is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).have.property('totalAmount', parseInt(pm.collectionVariables.get(\"amount\")));",
+									"});",
+									"",
+									"pm.test(\"OperationId is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).have.property('operationId', pm.collectionVariables.get(\"put_money_operationId\"));",
 									"});"
 								],
 								"type": "text/javascript"
 							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"host": true
-						}
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "gateway.arch.homework"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"{{usermail2}}\",\r\n    \"password\": \"Qwe123@!!\",\r\n    \"confirmPassword\": \"Qwe123@!!\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
 						},
-						"url": {
-							"raw": "http://{{baseUrl}}/api/register",
-							"protocol": "http",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Token User 2",
-					"event": [
 						{
-							"listen": "test",
+							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if (pm.response.to.have.status(200))\r",
-									"{\r",
-									"    var resp = JSON.parse(responseBody)\r",
-									"    pm.collectionVariables.set(\"token\", resp[\"access_token\"])\r",
-									"    console.log(resp[\"token_type\"])\r",
-									"    console.log(resp[\"access_token\"])\r",
-									"}\r",
-									"\r",
-									"pm.test(\"Respose status code is 200\", () => {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
+									"pm.collectionVariables.set(\"put_money_operationId\", \"7ba60664-2f0a-4e47-bf0e-9569bc8fab\"+Math.floor((Math.random()*99)).toLocaleString('en-US', {",
+									"    minimumIntegerDigits: 2,",
+									"    useGrouping: false",
+									"  }))",
+									"pm.collectionVariables.set(\"buy_operationId\", \"7ba60664-2f0a-4e47-bf0e-9569bc8fab\"+Math.floor((Math.random()*99)).toLocaleString('en-US', {",
+									"    minimumIntegerDigits: 2,",
+									"    useGrouping: false",
+									"  }))"
 								],
 								"type": "text/javascript"
 							}
@@ -393,82 +324,6 @@
 					},
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "gateway.arch.homework"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "client_id",
-									"value": "postman",
-									"type": "text"
-								},
-								{
-									"key": "client_secret",
-									"value": "secret",
-									"type": "text"
-								},
-								{
-									"key": "grant_type",
-									"value": "password",
-									"type": "text"
-								},
-								{
-									"key": "scope",
-									"value": "accountService",
-									"type": "text"
-								},
-								{
-									"key": "username",
-									"value": "{{usermail2}}",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "Qwe123@!!",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://{{baseUrl}}/api/token",
-							"protocol": "http",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit User 1 by User 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Respose status code is 403\", () => {",
-									"    pm.response.to.have.status(403);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
@@ -483,7 +338,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FirstName\": \"otus1\",\r\n    \"LastName\": \"user1\",\r\n    \"Email\": \"{{usermail1}}\",\r\n    \"Phone\": \"8-888-888-88-88\"\r\n}",
+							"raw": "{\r\n    \"Amount\": {{amount}},\r\n    \"OperationId\": \"{{put_money_operationId}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -491,59 +346,417 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{baseUrl}}/api/account/{{usermail1}}",
+							"raw": "http://{{baseUrl}}/api/billing/put-money",
 							"protocol": "http",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"account",
-								"{{usermail1}}"
+								"billing",
+								"put-money"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get User 1 by User 2",
+					"name": "Put Money Retry",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Respose status code is 403\", () => {",
-									"    pm.response.to.have.status(403);",
+									"pm.test(\"Respose status code is 500\", () => {",
+									"    pm.response.to.have.status(500);",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
 							},
 							{
 								"key": "Host",
-								"type": "text",
-								"value": "gateway.arch.homework"
+								"value": "gateway.arch.homework",
+								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Amount\": {{amount}},\r\n    \"OperationId\": \"{{put_money_operationId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://{{baseUrl}}/api/account/{{usermail1}}",
+							"raw": "http://{{baseUrl}}/api/billing/put-money",
 							"protocol": "http",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"account",
-								"{{usermail1}}"
+								"billing",
+								"put-money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Money",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respose status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Amount is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).have.property('totalAmount', parseInt(pm.collectionVariables.get(\"amount\")));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "gateway.arch.homework",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/billing/check-money",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"billing",
+								"check-money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respose status code is 200\", () => {",
+									"    console.info(pm.response);",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Attributes is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).have.property('state', 1);",
+									"    pm.expect(jsonData).have.property('amount', parseInt(pm.collectionVariables.get(\"order_amount\")));",
+									"    pm.expect(jsonData).have.property('description', \"First order\");",
+									"    pm.expect(jsonData).have.property('operationId', pm.collectionVariables.get(\"buy_operationId\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"buy_operationId\", \"7ba60664-2f0a-4e47-bf0e-9569bc8fab\"+Math.floor((Math.random()*99)).toLocaleString('en-US', {",
+									"    minimumIntegerDigits: 2,",
+									"    useGrouping: false",
+									"  }))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "gateway.arch.homework",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Description\": \"First order\",\r\n    \"Amount\": {{order_amount}},\r\n    \"OperationId\": \"{{buy_operationId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/order/make-order",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"make-order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Order Retry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respose status code is 500\", () => {",
+									"    console.info(pm.response);",
+									"    pm.response.to.have.status(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "gateway.arch.homework",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Description\": \"First order\",\r\n    \"Amount\": {{order_amount}},\r\n    \"OperationId\": \"{{buy_operationId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/billing/put-money",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"billing",
+								"put-money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Respose status code is 200\", () => {",
+									"    console.info(pm.response);",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Attributes is right\", () => {",
+									"    var jsonData = pm.response.json();",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData.orders[0]).have.property('state', 1);",
+									"    pm.expect(jsonData.orders[0]).have.property('amount', parseInt(pm.collectionVariables.get(\"order_amount\")));",
+									"    pm.expect(jsonData.orders[0]).have.property('description', \"First order\");",
+									"    pm.expect(jsonData.orders[0]).have.property('operationId', pm.collectionVariables.get(\"buy_operationId\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "gateway.arch.homework",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/order/get-orders",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"get-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Billing Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Respose status code is 200\", () => {",
+									"    console.info(pm.response);",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Respose is array\", () => {",
+									"    console.info(jsonData);",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    pm.expect(jsonData.length).to.be.greaterThan(1)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "gateway.arch.homework",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/notification/get-billing-events",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"notification",
+								"get-billing-events"
 							]
 						}
 					},
@@ -597,20 +810,44 @@
 	],
 	"variable": [
 		{
+			"key": "userId",
+			"value": 6
+		},
+		{
+			"key": "host",
+			"value": "arch.homework"
+		},
+		{
 			"key": "baseUrl",
 			"value": "arch.homework"
 		},
 		{
 			"key": "token",
-			"value": ""
+			"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjRBQjBERDE0NzI3MTQ4QUFBQzQ5MjY3QTI1N0QwNzkyIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2MTUwOTk1MjAsImV4cCI6MTYxNTEwMzEyMCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiYWNjb3VudFNlcnZpY2UiLCJjbGllbnRfaWQiOiJwb3N0bWFuIiwic3ViIjoiNzY0MzhkNDUtYmVkYS00Nzc2LWE4NDktYzZlYzE4YmVjODc2IiwiYXV0aF90aW1lIjoxNjE1MDk5NTIwLCJpZHAiOiJsb2NhbCIsInByZWZlcnJlZF91c2VybmFtZSI6Im90dXN1c2VyQGV4YW1wbGUuY29tIiwidW5pcXVlX25hbWUiOiJvdHVzdXNlckBleGFtcGxlLmNvbSIsImVtYWlsIjoib3R1c3VzZXJAZXhhbXBsZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImp0aSI6IkE3RjVEQjk4MjVGMDFDMTVFQTRGQkY5M0I0NjFBNEVBIiwiaWF0IjoxNjE1MDk5NTIwLCJzY29wZSI6WyJhY2NvdW50U2VydmljZSJdLCJhbXIiOlsicHdkIl19.XzNxrgIltm8eg8vwa9cYDbEpjAPKC8cKxMgUfg41SVorFTnuSnA1emQbepQMTT48h9vef4hAgLaf471TsIm7lHsDtHV-v7mE98PiCOygbowZ_fMqyBtIFzqIVTWHYnNI1lH8TFOKU8fG5HWuBDscP16tvQBLlG_92iP4Rv6ZaBU4MctQi2uN8qHmxaTzBLWdGMTFFixTzh7y7caduvrKHOsIg-18yPdL31yIqN2bBUUXvXu_uWRIvlYDneRkg9E6_sKTxIlKzcP1wUC_OPki2c-2Xzje_M7JRuoeVC2kJWnuDRPtrWIVt4-_8qTpJZZet-mkP1g3nQ1ndZUa5NJ9bw"
 		},
 		{
 			"key": "usermail1",
-			"value": ""
+			"value": "otususer_1_76@example.com"
 		},
 		{
 			"key": "usermail2",
-			"value": ""
+			"value": "otususer_2_19@example.com"
+		},
+		{
+			"key": "put_money_operationId",
+			"value": "7ba60664-2f0a-4e47-bf0e-9569bc8fab02"
+		},
+		{
+			"key": "buy_operationId",
+			"value": "7ba60664-2f0a-4e47-bf0e-9569bc8fab03"
+		},
+		{
+			"key": "amount",
+			"value": "1000"
+		},
+		{
+			"key": "order_amount",
+			"value": "100"
 		}
 	]
 }

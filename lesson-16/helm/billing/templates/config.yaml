@@ -14,7 +14,7 @@ data:
   EVENT_BUS_CONNECTION: "rabbitmq-service"
   EVENT_BUS_USERNAME: "user"
   EVENT_BUS_PASSWORD: "password"
-  QUEUE_NAME: "otus"
+  QUEUE_NAME: "billing_billing_event_queue"
 
 ---
 apiVersion: v1

@@ -1,0 +1,73 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+appname: account
+
+image:
+  repository: 1vandev/account
+  tag: "v2"
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: account.arch.homework
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: account-service
+            port:
+              number: 80
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 128Mi
+  requests:
+    cpu: 150m
+    memory: 128Mi
+ 
+postgresql:
+  enabled: true
+  postgresqlUsername: myuser
+  postgresqlPassword: passwd
+  postgresqlDatabase: accountdb
+  service:
+    port: "5432"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    limits:
+      cpu: 150m
+      memory: 128Mi
+    requests:
+      cpu: 150m
+      memory: 128Mi
+  persistence:
+    size: 512Mi
+
+externalPostgresql:
+  useSsl: false
+
+metrics:
+  serviceMonitor:
+    enabled: true

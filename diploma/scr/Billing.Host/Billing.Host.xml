@@ -1,0 +1,414 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Billing.Host</name>
+    </assembly>
+    <members>
+        <member name="T:Billing.Host.Attributes.ValidateModelAttribute">
+            <summary>
+                Атрибут валидации моделей.
+            </summary>
+        </member>
+        <member name="T:Billing.Host.BackgroundServices.NotificationService">
+            <summary>
+            Сервис отправки сообщений в очередь
+            </summary>
+        </member>
+        <member name="M:Billing.Host.BackgroundServices.NotificationService.#ctor(Microsoft.Extensions.Logging.ILogger{Billing.Host.BackgroundServices.NotificationService},Billing.Domain.Services.INotificationEventService,EventBus.Abstractions.IEventBus)">
+            <inheritdoc />
+        </member>
+        <member name="M:Billing.Host.BackgroundServices.NotificationService.ExecuteAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Billing.Host.Controllers.IndexController">
+            <summary>
+            Version check
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Controllers.IndexController.Index">
+            <summary>
+            Возвращает информацию о приложении
+            </summary>
+            <returns></returns>
+            <response code="200"> Сервис доступен </response>
+        </member>
+        <member name="T:Billing.Host.Controllers.InternalController">
+            <summary>
+            Внутренний API для взаимодействия между сервисами
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Controllers.InternalController.#ctor(Billing.Domain.Services.ICashTransactionService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Billing.Host.Controllers.InternalController.BuyAsync(Billing.Host.Models.BuyParamsDto,System.Threading.CancellationToken)">
+            <summary>
+                Совершение покупки
+            </summary>
+            <param name="buyParams"> параметры покупки </param>
+            <param name="cancellationToken"></param>
+            <returns> результат снятия со счета </returns>
+            <response code="200"> Покупка совершена </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="T:Billing.Host.Controllers.PublicController">
+            <summary>
+            Внешний API
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Controllers.PublicController.#ctor(Billing.Domain.Services.ICashTransactionService,Billing.Host.Services.IInternalHttpService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Billing.Host.Controllers.PublicController.PutMoneyAsync(Billing.Host.Models.PutMoneyParamsDto,System.Threading.CancellationToken)">
+            <summary>
+                Пополнение счета
+            </summary>
+            <param name="putMoneyParams"> параметры пополнения </param>
+            <param name="cancellationToken"></param>
+            <returns> результат пополнения со счета </returns>
+            <response code="200"> Пополнение совершено </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:Billing.Host.Controllers.PublicController.CheckMoneyAsync(System.Threading.CancellationToken)">
+            <summary>
+                Проверка счета
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns> состояние счета </returns>
+            <response code="200"> Состояние счета </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="T:Billing.Host.Extensions.ClaimExtensions">
+            <summary>
+            Класс расширений для <see cref="T:System.Security.Claims.Claim"/>.
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Extensions.ClaimExtensions.GetUserName(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">
+            <summary>
+            Получение логина пользователя.
+            </summary>
+            <param name="claims"> Claims. </param>
+            <returns> Значение claim'а. </returns>
+        </member>
+        <member name="T:Billing.Host.Extensions.ConfigurationExtensions">
+            <summary>
+            Класс расширений для <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Extensions.ConfigurationExtensions.GetValueOrThrow``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="key"> Наименование ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="M:Billing.Host.Extensions.ConfigurationExtensions.GetValueOrThrowBySuffix``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:Billing.Host.Extensions.DtoExtensions">
+            <summary>
+            Dto helper functions
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Extensions.DtoExtensions.ToCashTransaction(Billing.Host.Models.BuyParamsDto)">
+            <summary>
+            Convert to domain model
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Extensions.DtoExtensions.ToCashTransaction(Billing.Host.Models.PutMoneyParamsDto,System.Int64)">
+            <summary>
+            Convert to domain model
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Middlewares.ExceptionHandlerMiddleware">
+            <summary>
+                Мидлвара для перехвата ошибок.
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Middlewares.ExceptionHandlerMiddlewareExtension">
+            <summary>
+            Класс расширения для <see cref="T:Billing.Host.Middlewares.ExceptionHandlerMiddleware"/>.
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Middlewares.ExceptionHandlerMiddlewareExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Добавление <see cref="T:Billing.Host.Middlewares.ExceptionHandlerMiddleware"/> в пайплайн приложения.
+            </summary>
+            <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
+            <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
+        </member>
+        <member name="T:Billing.Host.Models.BuyParamsDto">
+            <summary>
+            Параметры покупки
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.BuyParamsDto.UserId">
+            <summary>
+            Идентификатор пользователя
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.BuyParamsDto.Amount">
+            <summary>
+            Сумма операции 
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.BuyParamsDto.Description">
+            <summary>
+            Описание операции
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.BuyParamsDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Models.ErrorDto">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.ErrorDto.Code">
+            <summary>
+            Код
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.ErrorDto.Message">
+            <summary>
+            Сообщение
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Models.Events.BillingEvent">
+            <summary>
+            Событие биллинга
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Models.Events.BillingEvent.#ctor(Billing.Domain.Models.NotificationEvent)">
+            <inheritdoc />
+        </member>
+        <member name="P:Billing.Host.Models.Events.BillingEvent.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.Events.BillingEvent.UserId">
+            <summary>
+            Идентификатор пользователя
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.Events.BillingEvent.Message">
+            <summary>
+            Тело операции
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Models.Events.BillingEventHandler">
+            <inheritdoc />
+        </member>
+        <member name="M:Billing.Host.Models.Events.BillingEventHandler.#ctor(Billing.Domain.Services.INotificationEventService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="notificationEventService"></param>
+        </member>
+        <member name="M:Billing.Host.Models.Events.BillingEventHandler.Handle(Billing.Host.Models.Events.BillingEvent)">
+            <inheritdoc />
+        </member>
+        <member name="T:Billing.Host.Models.PutMoneyParamsDto">
+            <summary>
+            Параметры пополнения счета
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.PutMoneyParamsDto.Amount">
+            <summary>
+            Сумма операции 
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.PutMoneyParamsDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Models.MoneyResultDto">
+            <summary>
+            Результат пополнения счета
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.MoneyResultDto.TotalAmount">
+            <summary>
+            Итого на счете 
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.MoneyResultDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Models.UserDto">
+            <summary>
+            Полная информация о пользователе
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.UserDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.UserDto.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.UserDto.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.UserDto.Email">
+            <summary>
+            Почта
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.UserDto.Phone">
+            <summary>
+            Телефон
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Models.VersionDto">
+            <summary>
+            Описание версии приложения
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Models.VersionDto.Version">
+            <summary>
+            Версия
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Program">
+            <summary>
+            The main class of program
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Program.Main(System.String[])">
+            <summary>
+            The start function
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Billing.Host.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Создание хоста приложения
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Billing.Host.Services.IInternalHttpService">
+            <summary>
+            Сервис внутренних http-соединений
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Services.IInternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получение информации о пользователе
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Services.InternalHttpService">
+            <inheritdoc cref="T:Billing.Host.Services.IInternalHttpService"/>
+        </member>
+        <member name="M:Billing.Host.Services.InternalHttpService.#ctor(Billing.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Billing.Host.Services.InternalHttpService})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Services.InternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Billing.Host.Settings.AppSettings">
+            <inheritdoc />
+        </member>
+        <member name="T:Billing.Host.Settings.IAppSettings">
+            <summary>
+            Настройки приложения.
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.UsersDbConnectionString">
+            <summary>
+            Строка подключения к БД пользователей
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.IsMigrationService">
+            <summary>
+            Флаг указывает режим запуска сервиса
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.IdentityServerUrl">
+            <summary>
+            Адрес службы проверки прав пользователей
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.AccountServiceUrl">
+            <summary>
+            Адрес службы информации пользователей
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.EventBusConnection">
+            <summary>
+            Строка подключения к Rabbit MQ
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.EventBusUserName">
+            <summary>
+            Rabbit MQ User
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.EventBusPassword">
+            <summary>
+            Rabbit MQ Password
+            </summary>
+        </member>
+        <member name="P:Billing.Host.Settings.IAppSettings.QueueName">
+            <summary>
+            Очередь для публикации
+            </summary>
+        </member>
+        <member name="T:Billing.Host.Startup">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Billing.Host.Startup.Configuration">
+            <summary>
+            Configuration info
+            </summary>
+        </member>
+        <member name="M:Billing.Host.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Billing.Host.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

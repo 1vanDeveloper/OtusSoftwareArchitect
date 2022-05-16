@@ -1,0 +1,445 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Order.Host</name>
+    </assembly>
+    <members>
+        <member name="T:Order.Host.Attributes.ValidateModelAttribute">
+            <summary>
+                Атрибут валидации моделей.
+            </summary>
+        </member>
+        <member name="T:Order.Host.Controllers.IndexController">
+            <summary>
+            Version check
+            </summary>
+        </member>
+        <member name="M:Order.Host.Controllers.IndexController.Index">
+            <summary>
+            Возвращает информацию о приложении
+            </summary>
+            <returns></returns>
+            <response code="200"> Сервис доступен </response>
+        </member>
+        <member name="T:Order.Host.Controllers.PublicController">
+            <summary>
+            Внешний API
+            </summary>
+        </member>
+        <member name="M:Order.Host.Controllers.PublicController.#ctor(Order.Host.Services.IInternalHttpService,Order.Domain.Services.IOrderService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Order.Host.Controllers.PublicController.MakeOrderAsync(Order.Host.Models.MakeOrderParamsDto,System.Threading.CancellationToken)">
+            <summary>
+                Формирование заказа
+            </summary>
+            <param name="makeOrderParams"> параметры заказа </param>
+            <param name="cancellationToken"></param>
+            <returns> результат формирования заказа </returns>
+            <response code="200"> Формирование совершено </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:Order.Host.Controllers.PublicController.GetOrdersAsync(System.Threading.CancellationToken)">
+            <summary>
+                Получение всех заказов пользователя
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns> список всех заказов пользователя </returns>
+            <response code="200"> Список сформирован </response>
+            <response code="400"> Неверные входные данные. </response>
+            <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="T:Order.Host.Extensions.ClaimExtensions">
+            <summary>
+            Класс расширений для <see cref="T:System.Security.Claims.Claim"/>.
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.ClaimExtensions.GetUserName(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">
+            <summary>
+            Получение логина пользователя.
+            </summary>
+            <param name="claims"> Claims. </param>
+            <returns> Значение claim'а. </returns>
+        </member>
+        <member name="T:Order.Host.Extensions.ConfigurationExtensions">
+            <summary>
+            Класс расширений для <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.ConfigurationExtensions.GetValueOrThrow``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="key"> Наименование ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="M:Order.Host.Extensions.ConfigurationExtensions.GetValueOrThrowBySuffix``1(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Получает значение по ключу, или выкидывает исключение если значение отсутствует или пусто.
+            </summary>
+            <param name="configuration"> Конфигурация приложения. </param>
+            <param name="suffix"> Наименование окончания ключа, по которому необходимо получить значение. </param>
+            <typeparam name="T"> Тип значения. </typeparam>
+            <returns> Значение. </returns>
+            <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
+        </member>
+        <member name="T:Order.Host.Extensions.DtoExtensions">
+            <summary>
+            Dto helper functions
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToOrder(Order.Host.Models.MakeOrderParamsDto,System.Int64)">
+            <summary>
+            Convert to domain model
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToMakeOrderResult(Order.Domain.Models.Order)">
+            <summary>
+            Convert to Dto model
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToGetOrdersResultDto(System.Collections.Generic.IList{Order.Domain.Models.Order})">
+            <summary>
+            Convert to Dto model
+            </summary>
+        </member>
+        <member name="M:Order.Host.Extensions.DtoExtensions.ToOrderResultDto(Order.Domain.Models.Order)">
+            <summary>
+            Convert to Dto model
+            </summary>
+        </member>
+        <member name="T:Order.Host.Middlewares.ExceptionHandlerMiddleware">
+            <summary>
+                Мидлвара для перехвата ошибок.
+            </summary>
+        </member>
+        <member name="T:Order.Host.Middlewares.ExceptionHandlerMiddlewareExtension">
+            <summary>
+            Класс расширения для <see cref="T:Order.Host.Middlewares.ExceptionHandlerMiddleware"/>.
+            </summary>
+        </member>
+        <member name="M:Order.Host.Middlewares.ExceptionHandlerMiddlewareExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Добавление <see cref="T:Order.Host.Middlewares.ExceptionHandlerMiddleware"/> в пайплайн приложения.
+            </summary>
+            <param name="builder"> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </param>
+            <returns> <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>. </returns>
+        </member>
+        <member name="T:Order.Host.Models.BuyParamsDto">
+            <summary>
+            Параметры покупки
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.BuyParamsDto.UserId">
+            <summary>
+            Идентификатор пользователя
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.BuyParamsDto.Amount">
+            <summary>
+            Сумма операции 
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.BuyParamsDto.Description">
+            <summary>
+            Описание операции
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.BuyParamsDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.ErrorDto">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.ErrorDto.Code">
+            <summary>
+            Код
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.ErrorDto.Message">
+            <summary>
+            Сообщение
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.GetOrdersResultDto">
+            <summary>
+            Список заказов
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrdersResultDto.Orders">
+            <summary>
+            Идентификатор пользователя
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.GetOrderResultDto">
+            <summary>
+            Заказ
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrderResultDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrderResultDto.Timestamp">
+            <summary>
+            Дата и время совершения операции
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrderResultDto.State">
+            <summary>
+            Состояние заказа
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrderResultDto.Amount">
+            <summary>
+            Сумма заказа 
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrderResultDto.Description">
+            <summary>
+            Описание заказа
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.GetOrderResultDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.MakeOrderParamsDto">
+            <summary>
+            Параметры заказа
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderParamsDto.Amount">
+            <summary>
+            Сумма операции 
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderParamsDto.Description">
+            <summary>
+            Описание операции
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderParamsDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.MakeOrderResultDto">
+            <summary>
+            Заказ
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderResultDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderResultDto.Timestamp">
+            <summary>
+            Дата и время совершения операции
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderResultDto.State">
+            <summary>
+            Состояние заказа
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderResultDto.Amount">
+            <summary>
+            Сумма заказа 
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderResultDto.Description">
+            <summary>
+            Описание заказа
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.MakeOrderResultDto.OperationId">
+            <summary>
+            Уникльный идентификатор операции
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.UserDto">
+            <summary>
+            Полная информация о пользователе
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.UserDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.UserDto.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.UserDto.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.UserDto.Email">
+            <summary>
+            Почта
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.UserDto.Phone">
+            <summary>
+            Телефон
+            </summary>
+        </member>
+        <member name="T:Order.Host.Models.VersionDto">
+            <summary>
+            Описание версии приложения
+            </summary>
+        </member>
+        <member name="P:Order.Host.Models.VersionDto.Version">
+            <summary>
+            Версия
+            </summary>
+        </member>
+        <member name="T:Order.Host.Program">
+            <summary>
+            The main class of program
+            </summary>
+        </member>
+        <member name="M:Order.Host.Program.Main(System.String[])">
+            <summary>
+            The start function
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Order.Host.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Создание хоста приложения
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Order.Host.Services.BillingService">
+            <inheritdoc cref="T:Order.Domain.Services.IBillingService"/>
+        </member>
+        <member name="M:Order.Host.Services.BillingService.#ctor(Order.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Order.Host.Services.BillingService})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Order.Host.Services.BillingService.BuyAsync(System.Int64,System.Decimal,System.String,System.Guid,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Order.Host.Services.IInternalHttpService">
+            <summary>
+            Сервис внутренних http-соединений
+            </summary>
+        </member>
+        <member name="M:Order.Host.Services.IInternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получение информации о пользователе
+            </summary>
+        </member>
+        <member name="T:Order.Host.Services.InternalHttpService">
+            <inheritdoc cref="T:Order.Host.Services.IInternalHttpService"/>
+        </member>
+        <member name="M:Order.Host.Services.InternalHttpService.#ctor(Order.Host.Settings.IAppSettings,Microsoft.Extensions.Logging.ILogger{Order.Host.Services.InternalHttpService})">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Order.Host.Services.InternalHttpService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Order.Host.Settings.AppSettings">
+            <inheritdoc />
+        </member>
+        <member name="T:Order.Host.Settings.IAppSettings">
+            <summary>
+            Настройки приложения.
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.UsersDbConnectionString">
+            <summary>
+            Строка подключения к БД пользователей
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.IsMigrationService">
+            <summary>
+            Флаг указывает режим запуска сервиса
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.IdentityServerUrl">
+            <summary>
+            Адрес службы проверки прав пользователей
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.AccountServiceUrl">
+            <summary>
+            Адрес службы информации пользователей
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.BillingServiceUrl">
+            <summary>
+            Адрес службы информации биллинга
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.EventBusConnection">
+            <summary>
+            Строка подключения к Rabbit MQ
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.EventBusUserName">
+            <summary>
+            Rabbit MQ User
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.EventBusPassword">
+            <summary>
+            Rabbit MQ Password
+            </summary>
+        </member>
+        <member name="P:Order.Host.Settings.IAppSettings.QueueName">
+            <summary>
+            Очередь для публикации
+            </summary>
+        </member>
+        <member name="T:Order.Host.Startup">
+            <summary>
+            Startup
+            </summary>
+        </member>
+        <member name="M:Order.Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Order.Host.Startup.Configuration">
+            <summary>
+            Configuration info
+            </summary>
+        </member>
+        <member name="M:Order.Host.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Order.Host.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

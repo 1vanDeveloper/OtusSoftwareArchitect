@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "helm.fullname" . }}-config"
+data:
+  CASH_TRANSACTIONS_PG_DATABASE: {{ .Values.postgresql.postgresqlDatabase }}
+  CASH_TRANSACTIONS_PG_USERNAME: {{ .Values.postgresql.postgresqlUsername }}
+  USE_SSL_PG_CONNECTION: {{ .Values.externalPostgresql.useSsl | quote }}
+  MIGRATION_MODE_FALSE: "false"
+  MIGRATION_MODE_TRUE: "true"
+  ORCHESTRATOR_TYPE: "K8S"
+  IDENTITY_SERVER_URL: "http://identity-service"
+  ACCOUNT_SERVICE_URL: "http://account-service"
+  EVENT_BUS_CONNECTION: "rabbitmq-service"
+  EVENT_BUS_USERNAME: "user"
+  EVENT_BUS_PASSWORD: "password"
+  QUEUE_NAME: "billing_billing_event_queue"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "{{ include "helm.fullname" . }}-secret"
+type: Opaque
+data:
+  CASH_TRANSACTIONS_PG_PASSWORD: {{ .Values.postgresql.postgresqlPassword | b64enc }}
+  

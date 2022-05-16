@@ -1,0 +1,112 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/account/register",
+      "DownstreamScheme": "http",
+      "ServiceName": "identity-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/register",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/connect/token",
+      "DownstreamScheme": "http",
+      "ServiceName": "identity-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/token",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/account/{everything}",
+      "DownstreamScheme": "http",
+      "ServiceName": "account-service",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/account",
+      "DownstreamScheme": "http",
+      "ServiceName": "account-service",
+      "Priority": 0,
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "accountService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/put-money",
+      "DownstreamScheme": "http",
+      "ServiceName": "billing-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/billing/put-money",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/check-money",
+      "DownstreamScheme": "http",
+      "ServiceName": "billing-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/billing/check-money",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/make-order",
+      "DownstreamScheme": "http",
+      "ServiceName": "order-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/order/make-order",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/get-orders",
+      "DownstreamScheme": "http",
+      "ServiceName": "order-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/order/get-orders",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/public/get-billing-events",
+      "DownstreamScheme": "http",
+      "ServiceName": "notification-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/notification/get-billing-events",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Namespace": "otus-services",
+      "Type": "kube"
+    }
+  }
+}

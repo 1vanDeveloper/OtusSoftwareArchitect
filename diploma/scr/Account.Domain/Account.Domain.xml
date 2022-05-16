@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Account.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Account.Domain.AppDbContext">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Domain.AppDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Account.Domain.AppDbContext})">
+            <inheritdoc />
+        </member>
+        <member name="P:Account.Domain.AppDbContext.Users">
+            <summary>
+            User table
+            </summary>
+        </member>
+        <member name="M:Account.Domain.AppDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Account.Domain.DomainServicesExtension">
+            <summary>
+            Класс инициализации сервисов домена
+            </summary>
+        </member>
+        <member name="M:Account.Domain.DomainServicesExtension.AddAccountDomainServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            Инициализации сервисов домена
+            </summary>
+            <param name="services"></param>
+            <param name="connectionString"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Account.Domain.Models.User">
+            <summary>
+            Класс пользователя
+            </summary>
+        </member>
+        <member name="P:Account.Domain.Models.User.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:Account.Domain.Models.User.UserName">
+            <summary>
+            Логин
+            </summary>
+        </member>
+        <member name="P:Account.Domain.Models.User.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:Account.Domain.Models.User.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:Account.Domain.Models.User.Email">
+            <summary>
+            Почта
+            </summary>
+        </member>
+        <member name="P:Account.Domain.Models.User.Phone">
+            <summary>
+            Телефон
+            </summary>
+        </member>
+        <member name="T:Account.Domain.Services.IUserService">
+            <summary>
+            Сервис управления записями пользователей
+            </summary>
+        </member>
+        <member name="M:Account.Domain.Services.IUserService.CreateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
+            <summary>
+            Создание пользователя
+            </summary>
+        </member>
+        <member name="M:Account.Domain.Services.IUserService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получение пользователя
+            </summary>
+        </member>
+        <member name="M:Account.Domain.Services.IUserService.UpdateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
+            <summary>
+            Обновление параметров пользователя
+            </summary>
+        </member>
+        <member name="M:Account.Domain.Services.IUserService.RemoveUserAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Удаление пользователя
+            </summary>
+        </member>
+        <member name="T:Account.Domain.Services.UserService">
+            <inheritdoc cref="T:Account.Domain.Services.IUserService"/>
+        </member>
+        <member name="M:Account.Domain.Services.UserService.#ctor(Account.Domain.AppDbContext)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="dbContext"></param>
+        </member>
+        <member name="M:Account.Domain.Services.UserService.CreateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Domain.Services.UserService.GetUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Domain.Services.UserService.UpdateUserAsync(Account.Domain.Models.User,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Account.Domain.Services.UserService.RemoveUserAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

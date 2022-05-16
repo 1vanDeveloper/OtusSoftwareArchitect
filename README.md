@@ -10,22 +10,22 @@
 1. Основы работы с Docker
 1. Инфраструктурные паттерны
 1. Основы работы с Kubernetes (часть 1)
-1. [Основы работы с Kubernetes (часть 2)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-05)
-1. [Основы работы с Kubernetes (часть 3)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-06)
-1. Kubernetes. QA
-1. Мониторинг и алертинг
+2. [Основы работы с Kubernetes (часть 2)](tree/main/lesson-05)
+3. [Основы работы с Kubernetes (часть 3)](tree/main/lesson-06)
+4. Kubernetes. QA
+5. Мониторинг и алертинг
 
 #### Часть II
 
-9. [Prometheus. Grafana](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-09)
-1. Service mesh на примере Istio
-1. Авторизация и аутентификация в микросервисной архитектуре
-1. [Backend for frontends. Apigateway](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-12)
-1. Асинхронный и синхронный API
-1. Event Driven Architecture
-1. Распределенные очереди сообщений на примере Kafka
-1. [Паттерны поддержания консистентности данных (Stream processing)](https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/lesson-16)
-1. RESTful
+1. [Prometheus. Grafana](tree/main/lesson-09)
+2. Service mesh на примере Istio
+3. Авторизация и аутентификация в микросервисной архитектуре
+4. [Backend for frontends. Apigateway](tree/main/lesson-12)
+5. Асинхронный и синхронный API
+6. Event Driven Architecture
+7. Распределенные очереди сообщений на примере Kafka
+8. [Паттерны поддержания консистентности данных (Stream processing)](tree/main/lesson-16)
+9. RESTful
 
 #### Часть III
 
@@ -49,7 +49,7 @@
 1. Роль архитектора
 1. Стоимость архитектуры. Артефакты архитектуры
 
-#### Проектная работа
+#### [Проектная работа](tree/main/diploma)
 
 34. Консультация по проектам и домашним заданиям
 1. Защита проектных работ

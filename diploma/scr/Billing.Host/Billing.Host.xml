@@ -194,9 +194,6 @@
             Событие биллинга
             </summary>
         </member>
-        <member name="M:Billing.Host.Models.Events.BillingEvent.#ctor(Billing.Domain.Models.NotificationEvent)">
-            <inheritdoc />
-        </member>
         <member name="P:Billing.Host.Models.Events.BillingEvent.OperationId">
             <summary>
             Уникльный идентификатор операции
@@ -212,14 +209,18 @@
             Тело операции
             </summary>
         </member>
+        <member name="M:Billing.Host.Models.Events.BillingEvent.Convert(Billing.Domain.Models.NotificationEvent)">
+            <summary>
+            Convert
+            </summary>
+        </member>
         <member name="T:Billing.Host.Models.Events.BillingEventHandler">
             <inheritdoc />
         </member>
-        <member name="M:Billing.Host.Models.Events.BillingEventHandler.#ctor(Billing.Domain.Services.INotificationEventService)">
+        <member name="M:Billing.Host.Models.Events.BillingEventHandler.#ctor(Billing.Domain.Services.INotificationEventService,Microsoft.Extensions.Logging.ILogger{Billing.Host.Models.Events.BillingEventHandler})">
             <summary>
             Constructor
             </summary>
-            <param name="notificationEventService"></param>
         </member>
         <member name="M:Billing.Host.Models.Events.BillingEventHandler.Handle(Billing.Host.Models.Events.BillingEvent)">
             <inheritdoc />

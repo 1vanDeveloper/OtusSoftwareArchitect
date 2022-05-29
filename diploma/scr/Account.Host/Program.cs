@@ -26,6 +26,8 @@ namespace Account.Host
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            
             LogEnvironmentAndSettings(host.Services);
 
             using (var serviceScope = host.Services.GetService<IServiceScopeFactory>()?.CreateScope())

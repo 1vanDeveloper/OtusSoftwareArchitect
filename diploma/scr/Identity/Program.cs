@@ -39,6 +39,7 @@ namespace Identity
                 
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
                 var host = BuildWebHost(configuration, args);
+                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
                 
                 LogEnvironmentAndSettings(host.Services);
 

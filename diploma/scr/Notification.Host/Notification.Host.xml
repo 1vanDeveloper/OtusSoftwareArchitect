@@ -26,10 +26,10 @@
             Внешний API
             </summary>
         </member>
-        <member name="M:Notification.Host.Controllers.PublicController.#ctor(Notification.Host.Services.IInternalHttpService,Notification.Domain.Services.INotificationEventService)">
+        <member name="M:Notification.Host.Controllers.PublicController.#ctor(Notification.Host.Services.IInternalHttpService,Notification.Domain.Services.INotificationEventService,Microsoft.AspNetCore.SignalR.IHubContext{Notification.Host.Models.SignalR.StockHub})">
             <inheritdoc />
         </member>
-        <member name="M:Notification.Host.Controllers.PublicController.GetBillngEventsAsync(System.Threading.CancellationToken)">
+        <member name="M:Notification.Host.Controllers.PublicController.GetBillingEventsAsync(System.Threading.CancellationToken)">
             <summary>
                 Получение всех сообщений по биллингу
             </summary>
@@ -38,6 +38,11 @@
             <response code="200"> Список </response>
             <response code="400"> Неверные входные данные. </response>
             <response code="500"> Ошибка сервера. </response>
+        </member>
+        <member name="M:Notification.Host.Controllers.PublicController.GetStockEventsAsync(System.Threading.CancellationToken)">
+            <summary>
+                Получение всех сообщений по рынку всем клиентам
+            </summary>
         </member>
         <member name="T:Notification.Host.Extensions.ClaimExtensions">
             <summary>
@@ -76,6 +81,34 @@
             <returns> Значение. </returns>
             <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
         </member>
+        <member name="M:Notification.Host.Helpers.StockHelper.GenerateData(Notification.Host.Models.SignalR.FinancialData[],System.Int32)">
+            <summary>
+            Generates new data based on passed length
+            </summary>
+            <param name="data"></param>
+            <param name="newCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Notification.Host.Helpers.StockHelper.RandomDayFunc">
+            <summary>
+            Instead of returning a random date directly, why not return a generator function which can be called repeatedly to create a random date.
+            You get a factory first: var getRandomDate = RandomDayFunc(); then you call it to get random dates: var randomDate = getRandomDate(); Mind that you need to reuse getRandomDate.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Notification.Host.Helpers.StockHelper.UpdateRandomPrices(Notification.Host.Models.SignalR.FinancialData[])">
+            <summary>
+            Updates all Prices fields
+            </summary>
+            <param name="finData"></param>
+        </member>
+        <member name="M:Notification.Host.Helpers.StockHelper.CopyObjectByValue(Notification.Host.Models.SignalR.FinancialData)">
+            <summary>
+            Serializes and Deserializes object in order to copy it by value instead of reference
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
         <member name="T:Notification.Host.Middlewares.ExceptionHandlerMiddleware">
             <summary>
                 Мидлвара для перехвата ошибок.
@@ -113,9 +146,6 @@
             Событие биллинга
             </summary>
         </member>
-        <member name="M:Notification.Host.Models.Events.BillingEvent.#ctor(Notification.Domain.Models.NotificationEvent)">
-            <inheritdoc />
-        </member>
         <member name="P:Notification.Host.Models.Events.BillingEvent.OperationId">
             <summary>
             Уникльный идентификатор операции
@@ -131,16 +161,42 @@
             Тело операции
             </summary>
         </member>
+        <member name="M:Notification.Host.Models.Events.BillingEvent.Convert(Notification.Domain.Models.NotificationEvent)">
+            <summary>
+            Convert
+            </summary>
+        </member>
         <member name="T:Notification.Host.Models.Events.BillingEventHandler">
             <inheritdoc />
         </member>
-        <member name="M:Notification.Host.Models.Events.BillingEventHandler.#ctor(Notification.Domain.Services.INotificationEventService)">
+        <member name="M:Notification.Host.Models.Events.BillingEventHandler.#ctor(Notification.Domain.Services.INotificationEventService,Microsoft.Extensions.Logging.ILogger{Notification.Host.Models.Events.BillingEventHandler})">
             <summary>
             Constructor
             </summary>
         </member>
         <member name="M:Notification.Host.Models.Events.BillingEventHandler.Handle(Notification.Host.Models.Events.BillingEvent)">
             <inheritdoc />
+        </member>
+        <member name="T:Notification.Host.Models.SignalR.FinancialData">
+            <summary>
+            Модель данных финансового сообщения
+            </summary>
+        </member>
+        <member name="T:Notification.Host.Models.SignalR.StockHub">
+            <summary>
+            Настройка хаба сигналов
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.StockHub.OnDisconnectedAsync(System.Exception)">
+            <inheritdoc />
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.TimerManager.Execute(System.Object)">
+            <summary>
+            We are using an Action delegate to execute the passed callback function every X seconds.
+            The timer will make a X seconds pause before the first execution.
+            Finally, we just create a sixty seconds time slot for execution, to avoid limitless timer loop.
+            </summary>
+            <param name="stateInfo"></param>
         </member>
         <member name="T:Notification.Host.Models.UserDto">
             <summary>
@@ -231,9 +287,14 @@
             Настройки приложения.
             </summary>
         </member>
-        <member name="P:Notification.Host.Settings.IAppSettings.UsersDbConnectionString">
+        <member name="P:Notification.Host.Settings.IAppSettings.DbConnectionString">
             <summary>
-            Строка подключения к БД пользователей
+            Строка подключения к БД
+            </summary>
+        </member>
+        <member name="P:Notification.Host.Settings.IAppSettings.RedisConnectionString">
+            <summary>
+            Строка подключения к Redis
             </summary>
         </member>
         <member name="P:Notification.Host.Settings.IAppSettings.IsMigrationService">

@@ -75,6 +75,8 @@ namespace ApiGateway
                     Predicate = r => r.Name.Contains("self")
                 });
             });
+            
+            app.UseWebSockets();
 
             await app.UseOcelot();
         }

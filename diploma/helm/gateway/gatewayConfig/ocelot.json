@@ -101,6 +101,26 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
       }
+    },
+    {
+      "DownstreamPathTemplate": "/public/get-stock-events",
+      "DownstreamScheme": "http",
+      "ServiceName": "notification-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/notification/get-stock-events",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "standardService" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/stock",
+      "DownstreamScheme": "ws",
+      "ServiceName": "notification-service",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/notification/stock",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
     }
   ],
   "GlobalConfiguration": {

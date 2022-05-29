@@ -9,8 +9,12 @@ using Notification.Host.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using Notification.Domain.Services;
+using Notification.Host.Helpers;
 using Notification.Host.Models.Events;
+using Notification.Host.Models.SignalR;
 
 namespace Notification.Host.Controllers
 {
@@ -25,12 +29,14 @@ namespace Notification.Host.Controllers
     {
         private readonly IInternalHttpService _internalHttpService;
         private readonly INotificationEventService _notificationEventService;
+        private readonly IHubContext<StockHub> _stockHub;
 
         /// <inheritdoc />
-        public PublicController(IInternalHttpService internalHttpService, INotificationEventService notificationEventService)
+        public PublicController(IInternalHttpService internalHttpService, INotificationEventService notificationEventService, IHubContext<StockHub> stockHub)
         {
             _internalHttpService = internalHttpService;
             _notificationEventService = notificationEventService;
+            _stockHub = stockHub;
         }
 
         /// <summary>
@@ -45,7 +51,7 @@ namespace Notification.Host.Controllers
         [ProducesResponseType(typeof(List<BillingEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetBillngEventsAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult> GetBillingEventsAsync(CancellationToken cancellationToken)
         {
             var currentUserName = HttpContext.User.Claims.GetUserName();
             if (string.IsNullOrWhiteSpace(currentUserName))
@@ -87,6 +93,23 @@ namespace Notification.Host.Controllers
                     StatusCode = 500
                 };
             }
+        }
+        
+         /// <summary>
+        ///     Получение всех сообщений по рынку всем клиентам
+        /// </summary>
+        [HttpGet("get-stock-events")]
+        public async Task<ActionResult> GetStockEventsAsync(CancellationToken cancellationToken)
+        {
+            var helper = new StockHelper();
+            const int recordsCount = 1000;
+            var dataArray = JsonConvert.DeserializeObject<List<FinancialData>>(helper.jsonData)?.ToArray();
+
+            // Send initial 1000 rows of data
+            var newDataArray = helper.GenerateData(dataArray, recordsCount);
+            await _stockHub.Clients.All.SendAsync("TransferData", newDataArray.OrderBy(item => item.ID).ToArray(), cancellationToken: cancellationToken);
+
+            return Ok(new { Message = "Request Completed" });
         }
     }
 }

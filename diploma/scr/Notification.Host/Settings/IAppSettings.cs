@@ -6,9 +6,14 @@ namespace Notification.Host.Settings
     public interface IAppSettings
     {
         /// <summary>
-        /// Строка подключения к БД пользователей
+        /// Строка подключения к БД
         /// </summary>
-        string UsersDbConnectionString { get; }
+        string DbConnectionString { get; }
+        
+        /// <summary>
+        /// Строка подключения к Redis
+        /// </summary>
+        string RedisConnectionString { get; }
 
         /// <summary>
         /// Флаг указывает режим запуска сервиса

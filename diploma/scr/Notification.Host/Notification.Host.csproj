@@ -17,6 +17,7 @@
       <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="5.0.17" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
         <PrivateAssets>all</PrivateAssets>
@@ -31,6 +32,11 @@
       <PackageReference Include="prometheus-net.AspNetCore" Version="5.0.1" />
       <PackageReference Include="prometheus-net.SystemMetrics" Version="2.0.0" />
       <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
+      <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+      <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="8.0.5" />
+      <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="8.0.5" />
+      <PackageReference Include="StackExchange.Redis.Extensions.MsgPack" Version="8.0.5" />
+      <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="8.0.5" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 

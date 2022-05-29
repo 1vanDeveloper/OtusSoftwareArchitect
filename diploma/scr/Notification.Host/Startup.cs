@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Security.Authentication;
 using Autofac;
@@ -15,15 +16,18 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Notification.Host.Models.SignalR;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using RabbitMQ.Client;
+using StackExchange.Redis;
 
 namespace Notification.Host
 {
@@ -62,7 +66,7 @@ namespace Notification.Host
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
-            services.AddNotificationDomainServices(appSettings.UsersDbConnectionString);
+            services.AddNotificationDomainServices(appSettings.DbConnectionString);
             services.AddSingleton<IInternalHttpService, InternalHttpService>();
             
             services.AddAuthorization(options =>
@@ -80,6 +84,14 @@ namespace Notification.Host
                     options.RequireHttpsMetadata = false;
                     options.SupportedTokens = SupportedTokens.Both;
                 });
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                }));
             
             services.AddSwaggerGen(c =>
             {
@@ -93,6 +105,30 @@ namespace Notification.Host
             RegisterEventBus(services, appSettings);
             
             services.AddSystemMetrics();
+            
+            services.AddSignalR(hubOptions =>
+                {
+                    hubOptions.EnableDetailedErrors = true;
+                    hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(10);
+                })
+                .AddStackExchangeRedis(o =>
+                {
+                    o.ConnectionFactory = async writer =>
+                    {
+                        var connection = await ConnectionMultiplexer.ConnectAsync(appSettings.RedisConnectionString, writer);
+                        connection.ConnectionFailed += (_, e) =>
+                        {
+                            Console.WriteLine($"Connection to Redis failed: {appSettings.RedisConnectionString}.");
+                        };
+
+                        if (!connection.IsConnected)
+                        {
+                            Console.WriteLine("Did not connect to Redis: {appSettings.RedisConnectionString}.");
+                        }
+
+                        return connection;
+                    };
+                });;
         }
 
         /// <summary>
@@ -122,6 +158,7 @@ namespace Notification.Host
             app.UseHttpMetrics();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
@@ -135,6 +172,15 @@ namespace Notification.Host
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
+                
+                endpoints.MapHub<StockHub>("/stock",
+                    options => {
+                        options.ApplicationMaxBufferSize = 64;
+                        options.TransportMaxBufferSize = 64;
+                        options.LongPolling.PollTimeout = TimeSpan.FromMinutes(1);
+                        options.Transports = HttpTransportType.LongPolling | HttpTransportType.WebSockets;
+                    })
+                    .RequireAuthorization("ApiScope");
             });
 
             ConfigureEventBus(app);

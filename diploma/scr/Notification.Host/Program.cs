@@ -76,8 +76,8 @@ namespace Notification.Host
             
             var allConfiguration = configuration.AsEnumerable().Concat(new[]
                 {
-                    new KeyValuePair<string, string>(nameof(appSettings.UsersDbConnectionString),
-                        appSettings.UsersDbConnectionString),
+                    new KeyValuePair<string, string>(nameof(appSettings.DbConnectionString),
+                        appSettings.DbConnectionString),
                 })
                 .Select(pair => $"'{pair.Key}={pair.Value}'");
 

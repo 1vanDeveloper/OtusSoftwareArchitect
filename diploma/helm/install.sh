@@ -6,6 +6,7 @@ helm repo update
 
 # install services
 helm install rabbitmq-service bitnami/rabbitmq -f ./rabbit/values.yaml
+helm install redis-service bitnami/redis -f ./redis/values.yaml
 helm install identity ./identity
 helm install billing ./billing
 helm install account ./account

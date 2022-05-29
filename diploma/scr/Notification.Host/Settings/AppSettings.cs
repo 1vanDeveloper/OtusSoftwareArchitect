@@ -9,7 +9,8 @@ namespace Notification.Host.Settings
     {
         public AppSettings(IConfiguration configuration)
         {
-            UsersDbConnectionString = GetDbConnectionString(configuration); 
+            DbConnectionString = GetDbConnectionString(configuration);
+            RedisConnectionString = GetRedisConnectionString(configuration);
             IsMigrationService = configuration.GetValue<bool>("MIGRATION_MODE");
             IdentityServerUrl = configuration.GetValue<string>("IDENTITY_SERVER_URL");
             AccountServiceUrl = configuration.GetValue<string>("ACCOUNT_SERVICE_URL");
@@ -21,7 +22,9 @@ namespace Notification.Host.Settings
             //UsersDbConnectionString = "Host=localhost;Port=7654;Database=otus-users;Username=postgres;Password=\"qweqwe123\";"; 
         }
 
-        public string UsersDbConnectionString { get; }
+        public string DbConnectionString { get; }
+        
+        public string RedisConnectionString { get; }
 
         public bool IsMigrationService { get; }
         
@@ -37,6 +40,22 @@ namespace Notification.Host.Settings
 
         public string QueueName { get; }
 
+        private static string GetRedisConnectionString(IConfiguration configuration)
+        {
+            var dbHost = configuration.GetValueOrThrowBySuffix<string>("REDIS_SERVICE_REPLICAS_SERVICE_HOST");
+            var dbPort = configuration.GetValueOrThrowBySuffix<string>("REDIS_SERVICE_REPLICAS_SERVICE_PORT");
+            
+            var connectionStringBuilder = new StringBuilder();
+            connectionStringBuilder.Append($"{dbHost}");
+
+            if (!string.IsNullOrWhiteSpace(dbPort))
+            {
+                connectionStringBuilder.Append($":{dbPort}");
+            }
+            
+            return connectionStringBuilder.ToString();
+        }
+        
         private static string GetDbConnectionString(IConfiguration configuration)
         {
             var dbHost = configuration.GetValueOrThrowBySuffix<string>("POSTGRESQL_SERVICE_HOST");

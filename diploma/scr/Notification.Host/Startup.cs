@@ -88,9 +88,10 @@ namespace Notification.Host
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>
                 {
-                    builder.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin();
+                    builder.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .SetIsOriginAllowed(_ => true) // allow any origin
+                        .AllowCredentials();
                 }));
             
             services.AddSwaggerGen(c =>

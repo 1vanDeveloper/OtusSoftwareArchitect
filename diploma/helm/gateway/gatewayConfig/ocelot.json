@@ -6,7 +6,7 @@
       "ServiceName": "identity-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/register",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Options", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/connect/token",
@@ -14,7 +14,7 @@
       "ServiceName": "identity-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/token",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Options", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/account/{everything}",
@@ -23,7 +23,7 @@
       "Priority": 0,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Options", "Get", "Put", "Delete" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "accountService" ]
@@ -36,7 +36,7 @@
       "Priority": 0,
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/account",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [ "Options", "Post" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "accountService" ]
@@ -48,7 +48,7 @@
       "ServiceName": "billing-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/billing/put-money",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [ "Options", "Post" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
@@ -60,7 +60,7 @@
       "ServiceName": "billing-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/billing/check-money",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Options", "Get" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
@@ -72,7 +72,7 @@
       "ServiceName": "order-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/order/make-order",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [ "Options", "Post" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
@@ -84,7 +84,7 @@
       "ServiceName": "order-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/order/get-orders",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Options", "Get" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
@@ -96,7 +96,7 @@
       "ServiceName": "notification-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/notification/get-billing-events",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Options", "Get" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]
@@ -108,7 +108,7 @@
       "ServiceName": "notification-service",
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/notification/get-stock-events",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Options", "Get" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": [ "standardService" ]

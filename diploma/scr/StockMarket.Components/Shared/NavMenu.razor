@@ -1,0 +1,49 @@
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IAccessTokenService AccessTokenService
+
+<div class="top-row ps-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">StockMarket</a>
+    <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>        
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <AuthorizeView>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="profile" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Profile
+                </NavLink>
+            </li>
+        </AuthorizeView>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="https://github.com/1vanDeveloper/OtusSoftwareArchitect/tree/main/diploma" target="_blank">
+                <span class="oi oi-bug" aria-hidden="true"></span> Source Code
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="" @onclick="Logout">
+                <span class="oi oi-lock-locked" aria-hidden="true"></span> Logout
+            </a>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool _collapseNavMenu = true;
+
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : string.Empty;
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+
+    private async Task Logout()
+    {
+        await AccessTokenService.RemoveAccessTokenAsync("jwt_token");
+        NavigationManager.NavigateTo("/", true);
+    }
+}

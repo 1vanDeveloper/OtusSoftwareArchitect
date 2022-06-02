@@ -1,13 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ApiGateway.Extensions;
 using ApiGateway.Settings;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Prometheus;
@@ -27,7 +33,7 @@ namespace ApiGateway
         public void ConfigureServices(IServiceCollection services)
         {
             var appSettings = new AppSettings(Configuration);
-            
+
             // NUGET - Microsoft.AspNetCore.Authentication.JwtBearer
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
@@ -36,7 +42,9 @@ namespace ApiGateway
                     options.RequireHttpsMetadata = false;
                     options.SupportedTokens = SupportedTokens.Both;
                 });
-            
+
+            services.AddCors();
+
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
@@ -60,6 +68,13 @@ namespace ApiGateway
             }
 
             app.UseRouting();
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true) // allow any origin
+                .AllowCredentials());
+
             app.UseHttpMetrics();
 
             app.UseEndpoints(endpoints =>
@@ -75,10 +90,39 @@ namespace ApiGateway
                     Predicate = r => r.Name.Contains("self")
                 });
             });
-            
+
             app.UseWebSockets();
 
-            await app.UseOcelot();
+            var configuration = new OcelotPipelineConfiguration
+            {
+                PreQueryStringBuilderMiddleware = PreErrorResponderMiddleware
+            };
+
+            await app.UseOcelot(configuration);
+        }
+
+        
+        private static async Task PreErrorResponderMiddleware(HttpContext context, Func<Task> next)
+        {
+            if (!context.Response.Headers.ContainsKey(HeaderNames.AccessControlAllowOrigin))
+            {
+                context.Response.Headers.Add(
+                    new KeyValuePair<string, StringValues>(HeaderNames.AccessControlAllowOrigin, new[] {"*"}));
+            }
+
+            if (!context.Response.Headers.ContainsKey(HeaderNames.AccessControlAllowHeaders))
+            {
+                context.Response.Headers.Add(
+                    new KeyValuePair<string, StringValues>(HeaderNames.AccessControlAllowHeaders, new[] {"*"}));
+            }
+
+            if (!context.Response.Headers.ContainsKey(HeaderNames.AccessControlRequestMethod))
+            {
+                context.Response.Headers.Add(
+                    new KeyValuePair<string, StringValues>(HeaderNames.AccessControlRequestMethod, new[] {"*"}));
+            }
+
+            await next.Invoke();
         }
     }
 }

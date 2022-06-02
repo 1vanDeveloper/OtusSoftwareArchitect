@@ -59,6 +59,8 @@ namespace Billing.Host
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddControllers(cfg => { cfg.Filters.Add(new ValidateModelAttribute()); })
                 .AddNewtonsoftJson();
+
+            services.AddCors();
             
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
@@ -121,6 +123,13 @@ namespace Billing.Host
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true) // allow any origin
+                .AllowCredentials());
+            
             app.UseHttpMetrics();
             app.UseAuthentication();
             app.UseAuthorization();

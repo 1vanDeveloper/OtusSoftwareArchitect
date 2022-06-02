@@ -91,13 +91,7 @@ namespace Identity
             });
             
             // add CORS policy for non-IdentityServer endpoints
-            services.AddCors(options =>
-            {
-                options.AddPolicy("ApiScope", policy =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                });
-            });
+            services.AddCors();
             
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -159,6 +153,13 @@ namespace Identity
                 Secure = CookieSecurePolicy.None
             });
             app.UseRouting();
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true) // allow any origin
+                .AllowCredentials());
+            
             app.UseHttpMetrics();
 
             app.UseAuthorization();

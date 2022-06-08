@@ -1,0 +1,9 @@
+serverBlock: |-
+  server {
+    listen 0.0.0.0:8080;
+    server_name _;
+
+    location / {
+      return 200 "hello!";
+    }
+  }

@@ -1,0 +1,9 @@
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    
+  hostname: gateway.arch.homework
+  
+service:
+  type: NodePort

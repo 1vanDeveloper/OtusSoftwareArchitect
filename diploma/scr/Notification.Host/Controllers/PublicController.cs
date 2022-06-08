@@ -15,6 +15,7 @@ using Notification.Domain.Services;
 using Notification.Host.Helpers;
 using Notification.Host.Models.Events;
 using Notification.Host.Models.SignalR;
+using StockMarket.Shared.Models;
 
 namespace Notification.Host.Controllers
 {
@@ -101,13 +102,11 @@ namespace Notification.Host.Controllers
         [HttpGet("get-stock-events")]
         public async Task<ActionResult> GetStockEventsAsync(CancellationToken cancellationToken)
         {
-            var helper = new StockHelper();
-            const int recordsCount = 1000;
-            var dataArray = JsonConvert.DeserializeObject<List<FinancialData>>(helper.jsonData)?.ToArray();
+            var dataArray = await StockHelper.GetHistoricalDataAsync();
 
             // Send initial 1000 rows of data
-            var newDataArray = helper.GenerateData(dataArray, recordsCount);
-            await _stockHub.Clients.All.SendAsync("TransferData", newDataArray.OrderBy(item => item.ID).ToArray(), cancellationToken: cancellationToken);
+            var newData = dataArray.GenerateData(DateTime.Today);
+            await _stockHub.Clients.All.SendAsync("TransferData", newData.Values.OrderBy(item => item.Index).ToArray(), cancellationToken: cancellationToken);
 
             return Ok(new { Message = "Request Completed" });
         }

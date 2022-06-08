@@ -1,0 +1,76 @@
+@page "/market"
+
+@using StockMarket.Shared.ViewModels.Interfaces
+@using IgniteUI.Blazor.Controls
+
+@inject IIgniteUIBlazor IgniteUiBlazor;
+@inject IMarketViewModel MarketViewModel
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+@implements IAsyncDisposable
+
+<h2 class="white-text">
+    <b>Market</b>
+</h2>
+<hr class="white-horizontal-line"/>
+
+<div class="container vertical">
+    <div class="container vertical">
+
+        <IgbFinancialChart Width="100%"
+                           Height="100%"
+                           ChartType=FinancialChartType.Line
+                           Thickness=2
+                           DataSource="Data"
+                           ChartTitle="Microsoft Changes"
+                           YAxisMode="FinancialChartYAxisMode.PercentChange"
+                           YAxisTitle="Percent Changed"
+        />
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+    private bool IsUserAuthorized { get; set; }
+    private List<FinancialData> Data { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationState!;
+        var user = authState.User;
+
+        if (user.Identity is { IsAuthenticated: true })
+        {
+            IsUserAuthorized = true;
+
+            try
+            {
+                IgbFinancialChartModule.Register(IgniteUiBlazor);
+                await MarketViewModel.OnInitializedAsync(NavigationManager, Update);
+                IsLoading = false;
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+            }
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private void Update(List<FinancialData> data)
+    {
+        Data.Clear();
+        Data.AddRange(data);
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        return MarketViewModel.DisposeAsync();
+    }
+
+}

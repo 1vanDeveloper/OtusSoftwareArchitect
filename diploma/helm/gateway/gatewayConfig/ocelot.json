@@ -115,11 +115,11 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/stock",
+      "DownstreamPathTemplate": "/{catchAll}",
       "DownstreamScheme": "ws",
       "ServiceName": "notification-service",
       "RouteIsCaseSensitive": false,
-      "UpstreamPathTemplate": "/api/notification/stock",
+      "UpstreamPathTemplate": "/api/notification/{catchAll}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
     }
   ],

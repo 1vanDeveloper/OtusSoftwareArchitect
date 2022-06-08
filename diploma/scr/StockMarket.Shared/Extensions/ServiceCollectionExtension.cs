@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using Blazored.LocalStorage;
 using Blazored.Toast;
+using IgniteUI.Blazor.Controls;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,7 @@ public static class ServiceCollectionExtension
         services.AddAuthorizationCore();
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
         services.AddScoped<IAccessTokenService, WebAppAccessTokenService>();
+        services.AddScoped(typeof(IIgniteUIBlazor), typeof(IgniteUIBlazor));
 
         // configuring http clients
         services.AddScoped(_ => new HttpClient {BaseAddress = new Uri(applicationSettings.BaseAddress)});
@@ -41,6 +43,7 @@ public static class ServiceCollectionExtension
         }
 
         services.AddHttpClient<IAccountViewModel, AccountViewModel>("AccountViewModelClient", (Action<HttpClient>) ClientConfigurator);
+        services.AddHttpClient<IMarketViewModel, MarketViewModel>("MarketViewModelClient", (Action<HttpClient>) ClientConfigurator);
 
         // authentication http clients
         services.AddHttpClient<ILoginViewModel, LoginViewModel>("LoginViewModelClient", (Action<HttpClient>) ClientConfigurator);

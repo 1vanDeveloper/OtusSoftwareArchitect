@@ -129,7 +129,7 @@ namespace Notification.Host
 
                         return connection;
                     };
-                });;
+                });
         }
 
         /// <summary>
@@ -173,15 +173,16 @@ namespace Notification.Host
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                
+
                 endpoints.MapHub<StockHub>("/stock",
-                    options => {
+                    options =>
+                    {
                         options.ApplicationMaxBufferSize = 64;
                         options.TransportMaxBufferSize = 64;
                         options.LongPolling.PollTimeout = TimeSpan.FromMinutes(1);
                         options.Transports = HttpTransportType.LongPolling | HttpTransportType.WebSockets;
-                    })
-                    .RequireAuthorization("ApiScope");
+                    });
+                //.RequireAuthorization("ApiScope");
             });
 
             ConfigureEventBus(app);

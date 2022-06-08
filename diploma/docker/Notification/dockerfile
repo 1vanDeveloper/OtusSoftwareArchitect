@@ -3,6 +3,7 @@ WORKDIR /build
 
 # copy csproj and restore as distinct layers
 COPY scr/EventBus/EventBus.csproj ./EventBus/EventBus.csproj
+COPY scr/StockMarket.Shared/StockMarket.Shared.csproj ./StockMarket.Shared/StockMarket.Shared.csproj
 COPY scr/Notification.Domain/Notification.Domain.csproj ./Notification.Domain/Notification.Domain.csproj
 COPY scr/Notification.Host/Notification.Host.csproj ./Notification.Host/Notification.Host.csproj
 RUN dotnet restore Notification.Host/Notification.Host.csproj

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using Notification.Host.Helpers;
+using StockMarket.Shared.Models;
 
 namespace Notification.Host.Models.SignalR
 {
@@ -12,32 +13,29 @@ namespace Notification.Host.Models.SignalR
     /// </summary>
     public class StockHub : Hub
     {
+        private static readonly object DataLocker = new();
+        private static readonly IDictionary<DateTime, FinancialData> Data;
         private static readonly IDictionary<string, TimerManager> ClientConnections = new Dictionary<string, TimerManager>();
-        private readonly StockHelper _helper = new ();
 
-        public async void UpdateParametersAsync(int interval, int volume, bool live = false, bool updateAll = true)
+        static StockHub()
         {
-            var dataArray = JsonConvert.DeserializeObject<List<FinancialData>>(_helper.jsonData)?.ToArray();
-            var newDataArray = _helper.GenerateData(dataArray, volume);
-            var connection = Context.ConnectionId;
-            var clients = Clients;
+            Data = StockHelper.GetHistoricalDataAsync().GetAwaiter().GetResult();
+        }
 
-            if (live)
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateParameters(int interval)
+        {
+            var connection = Context.ConnectionId;
+            if (!ClientConnections.ContainsKey(connection))
             {
-                if (!ClientConnections.ContainsKey(connection))
-                {
-                    ClientConnections.Add(connection, new TimerManager(async () => await NewConnectActionAsync(newDataArray, updateAll), interval));
-                } 
-                else
-                {
-                    ClientConnections[connection].Stop();
-                    ClientConnections[connection] = new TimerManager(async () => await UpdatingConnectActionAsync(newDataArray, updateAll), interval);
-                }
-            }
+                ClientConnections.Add(connection, new TimerManager(async () => await UpdatingConnectActionAsync(connection), interval));
+            } 
             else
             {
-                var client = clients.Client(connection);
-                await Send(newDataArray, client);
+                ClientConnections[connection].Stop();
+                ClientConnections[connection] = new TimerManager(async () => await UpdatingConnectActionAsync(connection), interval);
             }
         }
 
@@ -53,6 +51,13 @@ namespace Notification.Host.Models.SignalR
         }
 
         /// <inheritdoc />
+        public override Task OnConnectedAsync()
+        {
+            UpdateParameters(1000);
+            return base.OnConnectedAsync();
+        }
+
+        /// <inheritdoc />
         public override Task OnDisconnectedAsync(Exception exception)
         {
             StopTimer();
@@ -60,40 +65,17 @@ namespace Notification.Host.Models.SignalR
             return base.OnDisconnectedAsync(exception);
         }
         
-        private async Task NewConnectActionAsync(FinancialData[] newDataArray, bool updateAll = true)
+        private async Task UpdatingConnectActionAsync(string connection)
         {
-            var connection = Context.ConnectionId;
-            var clients = Clients;
+            var client = Clients.Client(connection);
+            FinancialData[] sentData;
+            lock (DataLocker)
+            {
+                Data.GenerateData(DateTime.Today);
+                sentData = Data.Values.ToArray();
+            }
             
-            var client = clients.Client(connection);
-            if (updateAll)
-            {
-                StockHelper.UpdateAllPrices(newDataArray);
-            }
-            else
-            {
-                StockHelper.UpdateRandomPrices(newDataArray);
-            }
-
-            await Send(newDataArray, client);
-        }
-        
-        private async Task UpdatingConnectActionAsync(FinancialData[] newDataArray, bool updateAll = true)
-        {
-            var connection = Context.ConnectionId;
-            var clients = Clients;
-            
-            var client = clients.Client(connection);
-            if (updateAll)
-            {
-                StockHelper.UpdateAllPrices(newDataArray);
-            }
-            else
-            {
-                StockHelper.UpdateRandomPrices(newDataArray);
-            }
-
-            await Send(newDataArray, client);
+            await Send(sentData, client);
         }
 
     }

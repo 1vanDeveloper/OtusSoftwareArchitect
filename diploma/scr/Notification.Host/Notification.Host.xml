@@ -81,33 +81,10 @@
             <returns> Значение. </returns>
             <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
         </member>
-        <member name="M:Notification.Host.Helpers.StockHelper.GenerateData(Notification.Host.Models.SignalR.FinancialData[],System.Int32)">
+        <member name="M:Notification.Host.Helpers.StockHelper.GenerateData(System.Collections.Generic.IDictionary{System.DateTime,StockMarket.Shared.Models.FinancialData},System.DateTime)">
             <summary>
             Generates new data based on passed length
             </summary>
-            <param name="data"></param>
-            <param name="newCount"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Notification.Host.Helpers.StockHelper.RandomDayFunc">
-            <summary>
-            Instead of returning a random date directly, why not return a generator function which can be called repeatedly to create a random date.
-            You get a factory first: var getRandomDate = RandomDayFunc(); then you call it to get random dates: var randomDate = getRandomDate(); Mind that you need to reuse getRandomDate.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Notification.Host.Helpers.StockHelper.UpdateRandomPrices(Notification.Host.Models.SignalR.FinancialData[])">
-            <summary>
-            Updates all Prices fields
-            </summary>
-            <param name="finData"></param>
-        </member>
-        <member name="M:Notification.Host.Helpers.StockHelper.CopyObjectByValue(Notification.Host.Models.SignalR.FinancialData)">
-            <summary>
-            Serializes and Deserializes object in order to copy it by value instead of reference
-            </summary>
-            <param name="obj"></param>
-            <returns></returns>
         </member>
         <member name="T:Notification.Host.Middlewares.ExceptionHandlerMiddleware">
             <summary>
@@ -177,15 +154,18 @@
         <member name="M:Notification.Host.Models.Events.BillingEventHandler.Handle(Notification.Host.Models.Events.BillingEvent)">
             <inheritdoc />
         </member>
-        <member name="T:Notification.Host.Models.SignalR.FinancialData">
-            <summary>
-            Модель данных финансового сообщения
-            </summary>
-        </member>
         <member name="T:Notification.Host.Models.SignalR.StockHub">
             <summary>
             Настройка хаба сигналов
             </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.StockHub.UpdateParameters(System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.StockHub.OnConnectedAsync">
+            <inheritdoc />
         </member>
         <member name="M:Notification.Host.Models.SignalR.StockHub.OnDisconnectedAsync(System.Exception)">
             <inheritdoc />

@@ -44,6 +44,14 @@
     <ItemGroup>
       <ProjectReference Include="..\EventBus\EventBus.csproj" />
       <ProjectReference Include="..\Notification.Domain\Notification.Domain.csproj" />
+      <ProjectReference Include="..\StockMarket.Shared\StockMarket.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Helpers\MSFT.csv" />
+      <EmbeddedResource Include="Helpers\MSFT.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

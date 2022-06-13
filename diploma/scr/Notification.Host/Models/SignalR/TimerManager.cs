@@ -25,7 +25,14 @@ namespace Notification.Host.Models.SignalR
         /// <param name="stateInfo"></param>
         private void Execute(object stateInfo)
         {
-            _action();
+            try
+            {
+                _action();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public void UpdateInterval(int interval)

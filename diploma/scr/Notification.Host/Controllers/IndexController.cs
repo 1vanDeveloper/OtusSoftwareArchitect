@@ -25,7 +25,7 @@ namespace Notification.Host.Controllers
         {
             return Ok(new VersionDto
             {
-                Version = "1"
+                Version = "1.2022.06.14.0209"
             });
         }
     }

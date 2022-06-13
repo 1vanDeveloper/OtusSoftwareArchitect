@@ -2,6 +2,7 @@
 
 @using StockMarket.Shared.ViewModels.Interfaces
 @using IgniteUI.Blazor.Controls
+@using System.Collections.ObjectModel
 
 @inject IIgniteUIBlazor IgniteUiBlazor;
 @inject IMarketViewModel MarketViewModel
@@ -18,10 +19,10 @@
     <div class="container vertical">
 
         <IgbFinancialChart Width="100%"
-                           Height="100%"
+                           Height="1000"
                            ChartType=FinancialChartType.Line
                            Thickness=2
-                           DataSource="Data"
+                           @bind-DataSource="@Data"
                            ChartTitle="Microsoft Changes"
                            YAxisMode="FinancialChartYAxisMode.PercentChange"
                            YAxisTitle="Percent Changed"
@@ -35,7 +36,9 @@
 
     private bool IsLoading { get; set; } = true;
     private bool IsUserAuthorized { get; set; }
-    private List<FinancialData> Data { get; set; } = new();
+    
+    [Parameter]
+    public ObservableCollection<FinancialData> Data { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,10 +65,15 @@
         }
     }
 
-    private void Update(List<FinancialData> data)
+    private async Task Update(List<FinancialData> data)
     {
         Data.Clear();
-        Data.AddRange(data);
+        foreach (var financialData in data)
+        {
+            Data.Add(financialData);
+        }
+        StateHasChanged();
+        await Task.Delay(10); 
     }
 
     public ValueTask DisposeAsync()

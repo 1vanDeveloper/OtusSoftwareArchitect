@@ -3,7 +3,104 @@ serverBlock: |-
     listen 0.0.0.0:8080;
     server_name _;
 
-    location / {
-      return 200 "hello!";
+    location /api/register {
+      limit_except OPTIONS POST { 
+        deny  all; 
+      }
+      proxy_pass http://identity-service/account/register;
+    }
+
+    location /api/token {
+      limit_except OPTIONS POST { 
+        deny  all; 
+      }
+      proxy_pass http://identity-service/connect/token;
+    }
+
+    location /api/account {
+      limit_except OPTIONS GET POST PUT DELETE { 
+        deny  all; 
+      }
+      proxy_pass http://account-service/account;
+    }
+
+    location /api/billing/put-money {
+      limit_except OPTIONS POST { 
+        deny  all; 
+      }
+      proxy_pass http://billing-service/public/put-money;
+    }
+
+    location /api/billing/check-money {
+      limit_except OPTIONS GET { 
+        deny  all; 
+      }
+      proxy_pass http://billing-service/public/check-money;
+    }
+
+    location /api/order/make-order {
+      limit_except OPTIONS POST { 
+        deny  all; 
+      }
+      proxy_pass http://order-service/public/make-order;
+    }
+
+    location /api/order/get-orders {
+      limit_except OPTIONS GET { 
+        deny  all; 
+      }
+      proxy_pass http://order-service/public/get-orders;
+    }
+
+    location /api/notification/get-billing-events {
+      limit_except OPTIONS GET { 
+        deny  all; 
+      }
+      proxy_pass http://notification-service/public/get-billing-events;
+    }
+
+    location /api/notification/get-stock-events {
+      limit_except OPTIONS GET { 
+        deny  all; 
+      }
+      proxy_pass http://notification-service/public/get-stock-events;
+    }
+
+    location /api/notification/stock {
+
+      if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE, PATCH';
+        add_header 'Access-Control-Allow-Headers' '*';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Content-Type' 'text/plain charset=UTF-8';
+        add_header 'Content-Length' 0;
+        return 204;
+      }
+
+      proxy_pass http://notification-service/stock;
+      # Configuration for WebSockets
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection keep-alive;
+      proxy_cache off;
+      # WebSockets were implemented after http/1.0
+      proxy_http_version 1.1;
+
+      # Configuration for ServerSentEvents
+      proxy_buffering off;
+
+      # Configuration for LongPolling or if your KeepAliveInterval is longer than 60 seconds
+      proxy_read_timeout 100s;
+
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/notification/index {
+      limit_except OPTIONS GET { 
+        deny  all; 
+      }
+      proxy_pass http://notification-service/;
     }
   }

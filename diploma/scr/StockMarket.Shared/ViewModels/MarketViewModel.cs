@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Http.Connections.Client;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using StockMarket.Shared.Models;
 using StockMarket.Shared.Services;
 using StockMarket.Shared.ViewModels.Interfaces;
@@ -25,22 +30,28 @@ public class MarketViewModel: IMarketViewModel
         _accessTokenService = accessTokenService;
     }
 
-    public async Task OnInitializedAsync(NavigationManager navigationManager, Action<List<FinancialData>> action)
+    public async Task OnInitializedAsync(NavigationManager navigationManager, Func<List<FinancialData>, Task> action)
     {
         _hubConnection = new HubConnectionBuilder()
             .WithUrl($"{_httpClient.BaseAddress}api/notification/stock", options =>
             {
-                //options.AccessTokenProvider = async () => await _accessTokenService.GetAccessTokenAsync("jwt_token");
+                options.AccessTokenProvider = async () => await _accessTokenService.GetAccessTokenAsync("jwt_token");
+                options.HttpMessageHandlerFactory = innerHandler => 
+                    new IncludeRequestCredentialsMessageHandler { InnerHandler = innerHandler };
+            }).ConfigureLogging(builder =>
+            {
+                builder.SetMinimumLevel(LogLevel.Trace);
             })
             .Build();
-
-        _hubConnection.On<string, FinancialData[]>("TransferData", (user, array) =>
+        
+        _hubConnection.On<FinancialData[]>("TransferData", async array =>
         {
             foreach (var data in array)
             {
                 _data[data.Time.Date] = data;
             }
-            action?.Invoke(_data.Values.ToList());
+            
+            await action.Invoke(_data.Values.OrderBy(v => v.Time).ToList());
         });
 
         await _hubConnection.StartAsync();

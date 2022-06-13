@@ -326,6 +326,44 @@
             <param name="args"></param>
             <returns></returns>
         </member>
+        <member name="T:Identity.Services.CorsPolicyService">
+            <summary>
+            Default CORS policy service.
+            </summary>
+        </member>
+        <member name="F:Identity.Services.CorsPolicyService.Logger">
+            <summary>
+            Logger
+            </summary>
+        </member>
+        <member name="M:Identity.Services.CorsPolicyService.#ctor(Microsoft.Extensions.Logging.ILogger{Identity.Services.CorsPolicyService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Identity.Services.CorsPolicyService"/> class.
+            </summary>
+        </member>
+        <member name="P:Identity.Services.CorsPolicyService.AllowedOrigins">
+            <summary>
+            The list allowed origins that are allowed.
+            </summary>
+            <value>
+            The allowed origins.
+            </value>
+        </member>
+        <member name="P:Identity.Services.CorsPolicyService.AllowAll">
+            <summary>
+            Gets or sets a value indicating whether all origins are allowed.
+            </summary>
+            <value>
+              <c>true</c> if allow all; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Identity.Services.CorsPolicyService.IsOriginAllowedAsync(System.String)">
+            <summary>
+            Determines whether the origin allowed.
+            </summary>
+            <param name="origin">The origin.</param>
+            <returns></returns>
+        </member>
         <member name="T:Identity.Services.CustomResourceOwnerPasswordValidator">
             <inheritdoc />
         </member>

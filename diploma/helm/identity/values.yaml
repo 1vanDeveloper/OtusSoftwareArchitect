@@ -8,7 +8,7 @@ appname: identity
 
 image:
   repository: 1vandev/identity
-  tag: "v2"
+  tag: "v3"
   pullPolicy: Always
 
 service:

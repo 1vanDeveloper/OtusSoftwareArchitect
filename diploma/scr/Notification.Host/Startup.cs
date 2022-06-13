@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using Autofac;
 using Notification.Domain;
 using Notification.Host.Attributes;
@@ -13,7 +13,9 @@ using Notification.Host.Settings;
 using EventBus;
 using EventBus.Abstractions;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Connections;
@@ -83,16 +85,28 @@ namespace Notification.Host
                     options.Authority = appSettings.IdentityServerUrl;
                     options.RequireHttpsMetadata = false;
                     options.SupportedTokens = SupportedTokens.Both;
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            // If the request is for our hub...
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                (string.IsNullOrEmpty(context.Token)) &&
+                                (path.StartsWithSegments("/stock")))
+                            {
+                                // Read the token out of the query string
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",
-                builder =>
-                {
-                    builder.AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .SetIsOriginAllowed(_ => true) // allow any origin
-                        .AllowCredentials();
-                }));
+                ConfigurePolicy));
             
             services.AddSwaggerGen(c =>
             {
@@ -106,30 +120,30 @@ namespace Notification.Host
             RegisterEventBus(services, appSettings);
             
             services.AddSystemMetrics();
-            
+
             services.AddSignalR(hubOptions =>
+            {
+                hubOptions.EnableDetailedErrors = true;
+                hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(10);
+            })
+            .AddStackExchangeRedis(o =>
+            {
+                o.ConnectionFactory = async writer =>
                 {
-                    hubOptions.EnableDetailedErrors = true;
-                    hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(10);
-                })
-                .AddStackExchangeRedis(o =>
-                {
-                    o.ConnectionFactory = async writer =>
+                    var connection = await ConnectionMultiplexer.ConnectAsync(appSettings.RedisConnectionString, writer);
+                    connection.ConnectionFailed += (_, _) =>
                     {
-                        var connection = await ConnectionMultiplexer.ConnectAsync(appSettings.RedisConnectionString, writer);
-                        connection.ConnectionFailed += (_, e) =>
-                        {
-                            Console.WriteLine($"Connection to Redis failed: {appSettings.RedisConnectionString}.");
-                        };
-
-                        if (!connection.IsConnected)
-                        {
-                            Console.WriteLine("Did not connect to Redis: {appSettings.RedisConnectionString}.");
-                        }
-
-                        return connection;
+                        Console.WriteLine($"Connection to Redis failed: {appSettings.RedisConnectionString}.");
                     };
-                });
+
+                    if (!connection.IsConnected)
+                    {
+                        Console.WriteLine("Did not connect to Redis: {appSettings.RedisConnectionString}.");
+                    }
+
+                    return connection;
+                };
+            });
         }
 
         /// <summary>
@@ -181,8 +195,9 @@ namespace Notification.Host
                         options.TransportMaxBufferSize = 64;
                         options.LongPolling.PollTimeout = TimeSpan.FromMinutes(1);
                         options.Transports = HttpTransportType.LongPolling | HttpTransportType.WebSockets;
-                    });
-                //.RequireAuthorization("ApiScope");
+                    })
+                    .RequireAuthorization("ApiScope")
+                    .RequireCors(ConfigurePolicy);
             });
 
             ConfigureEventBus(app);
@@ -229,6 +244,14 @@ namespace Notification.Host
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
             eventBus.Subscribe<BillingEvent, BillingEventHandler>();
+        }
+
+        private static void ConfigurePolicy(CorsPolicyBuilder builder)
+        {
+            builder.AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true) // allow any origin
+                .AllowCredentials();
         }
     }
 }

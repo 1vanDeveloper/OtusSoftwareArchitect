@@ -159,7 +159,7 @@
             Настройка хаба сигналов
             </summary>
         </member>
-        <member name="M:Notification.Host.Models.SignalR.StockHub.UpdateParameters(System.Int32)">
+        <member name="M:Notification.Host.Models.SignalR.StockHub.UpdateParametersAsync(System.Int32)">
             <summary>
             
             </summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Notification.Host.Helpers;
 using StockMarket.Shared.Models;
 
@@ -13,6 +14,7 @@ namespace Notification.Host.Models.SignalR
     /// </summary>
     public class StockHub : Hub
     {
+        private readonly ILogger<StockHub> _logger;
         private static readonly object DataLocker = new();
         private static readonly IDictionary<DateTime, FinancialData> Data;
         private static readonly IDictionary<string, TimerManager> ClientConnections = new Dictionary<string, TimerManager>();
@@ -22,20 +24,34 @@ namespace Notification.Host.Models.SignalR
             Data = StockHelper.GetHistoricalDataAsync().GetAwaiter().GetResult();
         }
 
+        public StockHub(ILogger<StockHub> logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// 
         /// </summary>
-        private void UpdateParameters(int interval)
+        private async Task UpdateParametersAsync(int interval)
         {
-            var connection = Context.ConnectionId;
-            if (!ClientConnections.ContainsKey(connection))
+            try
             {
-                ClientConnections.Add(connection, new TimerManager(async () => await UpdatingConnectActionAsync(connection), interval));
-            } 
-            else
+                var connection = Context.ConnectionId;
+                var client = Clients.Client(connection);
+                await UpdatingConnectActionAsync(client, Data, true);
+                if (!ClientConnections.ContainsKey(connection))
+                {
+                    ClientConnections.Add(connection, new TimerManager(async () => await UpdatingConnectActionAsync(client, Data), interval));
+                } 
+                else
+                {
+                    ClientConnections[connection].Stop();
+                    ClientConnections[connection] = new TimerManager(async () => await UpdatingConnectActionAsync(client, Data), interval);
+                }
+            }
+            catch (Exception e)
             {
-                ClientConnections[connection].Stop();
-                ClientConnections[connection] = new TimerManager(async () => await UpdatingConnectActionAsync(connection), interval);
+                _logger.LogError(e, "UpdateParameters");
             }
         }
 
@@ -51,10 +67,10 @@ namespace Notification.Host.Models.SignalR
         }
 
         /// <inheritdoc />
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-            UpdateParameters(1000);
-            return base.OnConnectedAsync();
+            await UpdateParametersAsync(1000);
+            await base.OnConnectedAsync();
         }
 
         /// <inheritdoc />
@@ -65,17 +81,25 @@ namespace Notification.Host.Models.SignalR
             return base.OnDisconnectedAsync(exception);
         }
         
-        private async Task UpdatingConnectActionAsync(string connection)
+        private async Task UpdatingConnectActionAsync(IClientProxy client, IDictionary<DateTime, FinancialData> data, bool all = false)
         {
-            var client = Clients.Client(connection);
-            FinancialData[] sentData;
-            lock (DataLocker)
+            try
             {
-                Data.GenerateData(DateTime.Today);
-                sentData = Data.Values.ToArray();
-            }
+                FinancialData[] sentData;
+                lock (DataLocker)
+                {
+                    data.GenerateData(DateTime.Today);
+                    sentData = all 
+                        ? data.Values.ToArray() 
+                        : new[] {data[DateTime.Today]};
+                }
             
-            await Send(sentData, client);
+                await Send(sentData, client);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "UpdatingConnectActionAsync");
+            }
         }
 
     }

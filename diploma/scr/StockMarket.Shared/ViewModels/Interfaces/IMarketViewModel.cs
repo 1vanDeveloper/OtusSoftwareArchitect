@@ -9,6 +9,6 @@ namespace StockMarket.Shared.ViewModels.Interfaces;
 public interface IMarketViewModel
 {
     bool IsConnected { get; }
-    Task OnInitializedAsync(NavigationManager navigationManager, Action<List<FinancialData>> action);
+    Task OnInitializedAsync(NavigationManager navigationManager, Func<List<FinancialData>, Task> action);
     ValueTask DisposeAsync();
 }

@@ -61,6 +61,11 @@ namespace Notification.Host
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
+                    logging.AddFilter("Microsoft.AspNetCore.Http.Connections", LogLevel.Debug);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
@@ -88,7 +93,7 @@ namespace Notification.Host
             const string logErrorInfo = "Application IConfiguration contains:\n{0}";
             
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-            logger.LogInformation(string.Format(logErrorInfo, resString));
+            logger?.LogInformation(string.Format(logErrorInfo, resString));
         }
     }
 }

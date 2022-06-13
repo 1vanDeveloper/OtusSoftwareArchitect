@@ -30,9 +30,9 @@ namespace Notification.Host.Helpers
                 }
 
                 var parts = line.Split(",");
-                if (parts.Length != 8 || !DateTime.TryParse(parts[0], out _))
+                if (parts.Length != 7 || !DateTime.TryParse(parts[0], out _))
                 {
-                    break;
+                    continue;
                 }
                 
                 var newValue = new FinancialData
@@ -58,22 +58,16 @@ namespace Notification.Host.Helpers
         /// </summary>
         public static IDictionary<DateTime, FinancialData> GenerateData(this IDictionary<DateTime, FinancialData> data, DateTime toDate)
         { 
-            var maxKey = data.Keys.Max();
+            var maxKey = data.Keys.Count > 0 ? data.Keys.Max() : toDate;
             if (maxKey >= toDate)
             {
-                data[maxKey].Update();
+                data[maxKey] = data.TryGetValue(maxKey, out var value) ? value?.Update() : new FinancialData().Update();
                 return data;
             }
 
-            for (var i = maxKey; i <= toDate.Date; i = i.AddDays(1))
+            for (var i = maxKey; i < toDate.Date; i = i.AddDays(1))
             {
-                if (i < toDate.Date)
-                {
-                    data[i.AddDays(1)] = data[i].NextRand();
-                    continue;
-                }
-                
-                data[i.AddDays(1)] = data[i].Next();
+                data[i.AddDays(1)] = data[i].NextRand();
             }
 
             return data;
@@ -83,6 +77,9 @@ namespace Notification.Host.Helpers
         {
             return new FinancialData
             {
+                Date = data.Time.AddDays(1).ToString("yyyy-MM-dd"),
+                Time = data.Time.AddDays(1),
+                Index = data.Index + 1,
                 Open = data.Close,
                 High = data.Close,
                 Low = data.Close,
@@ -108,7 +105,7 @@ namespace Notification.Host.Helpers
         private static FinancialData Update(this FinancialData data)
         {
             var rand = new Random();
-            data.Close = (rand.NextDouble() - 0.5) * (Math.Abs(data.Open - data.Close) * 0.1);
+            data.Close *= 1 + (rand.NextDouble() - 0.5) * 0.01;
             if (data.Close > data.High)
             {
                 data.High = data.Close;

@@ -6,10 +6,8 @@
 @inject ILoginViewModel LoginViewModel
 @inject NavigationManager NavigationManager
 @inject IToastService ToastService
-@inject IAccessTokenService AccessTokenService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IOptions<ApplicationSettings> ApplicationSettings
-
+@inject INotificationService NotificationService
 
 <hr class="white-horizontal-line" />
 <div class="col-12">
@@ -89,7 +87,6 @@
         var token = await LoginViewModel.AuthenticateJwtAsync();
         if (!string.IsNullOrEmpty(token))
         {
-            await AccessTokenService.SetAccessTokenAsync("jwt_token", token);
             await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated();
             
             NavigationManager.NavigateTo("/profile", true);

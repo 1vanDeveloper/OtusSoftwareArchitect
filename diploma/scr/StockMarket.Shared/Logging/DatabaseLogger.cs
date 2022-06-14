@@ -1,10 +1,8 @@
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using StockMarket.Shared.Logging;
 using StockMarket.Shared.Models;
 using Microsoft.Extensions.Logging;
-using static Microsoft.Extensions.Logging.LogLevel;
 
 namespace StockMarket.Shared.Logging;
 
@@ -23,7 +21,7 @@ public class DatabaseLogger : ILogger
     }
 
     public bool IsEnabled(LogLevel logLevel) =>
-        logLevel is Error or Critical;
+        logLevel is LogLevel.Error or LogLevel.Critical;
 
     public void Log<TState>(
         LogLevel logLevel,

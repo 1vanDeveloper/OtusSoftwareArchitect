@@ -14,6 +14,7 @@ using EventBus;
 using EventBus.Abstractions;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +61,8 @@ namespace Billing.Host
             services.AddControllers(cfg => { cfg.Filters.Add(new ValidateModelAttribute()); })
                 .AddNewtonsoftJson();
 
-            services.AddCors();
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                ConfigurePolicy));
             
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
@@ -123,20 +125,15 @@ namespace Billing.Host
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(_ => true) // allow any origin
-                .AllowCredentials());
-            
             app.UseHttpMetrics();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers().RequireAuthorization("ApiScope");
+                endpoints.MapControllers().RequireAuthorization("ApiScope")
+                    .RequireCors(ConfigurePolicy);
                 endpoints.MapMetrics();
                 endpoints.MapHealthChecks("/readiness", new HealthCheckOptions
                 {
@@ -192,6 +189,14 @@ namespace Billing.Host
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
             eventBus.Subscribe<BillingEvent, BillingEventHandler>();
+        }
+        
+        private static void ConfigurePolicy(CorsPolicyBuilder builder)
+        {
+            builder.AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true) // allow any origin
+                .AllowCredentials();
         }
     }
 }

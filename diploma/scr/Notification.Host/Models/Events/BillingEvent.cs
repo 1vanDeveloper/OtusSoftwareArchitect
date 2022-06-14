@@ -5,8 +5,10 @@ using Notification.Domain.Models;
 using Notification.Domain.Services;
 using EventBus.Abstractions;
 using EventBus.Events;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Notification.Host.Models.SignalR;
 
 namespace Notification.Host.Models.Events
 {
@@ -29,19 +31,6 @@ namespace Notification.Host.Models.Events
         /// Тело операции
         /// </summary>
         public string Message { get; set; }
-        
-        /// <summary>
-        /// Convert
-        /// </summary>
-        public static BillingEvent Convert(NotificationEvent notificationEvent)
-        {
-            return new BillingEvent
-            {
-                OperationId = notificationEvent?.OperationId ?? default,
-                UserId = notificationEvent?.UserId ?? default,
-                Message = notificationEvent?.Message,
-            };
-        }
     }
 
     /// <inheritdoc />
@@ -49,22 +38,35 @@ namespace Notification.Host.Models.Events
     {
         private readonly INotificationEventService _notificationEventService;
         private readonly ILogger<BillingEventHandler> _logger;
+        private readonly IHubContext<NotifyHub> _notifyHub;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public BillingEventHandler(INotificationEventService notificationEventService, ILogger<BillingEventHandler> logger)
+        public BillingEventHandler(INotificationEventService notificationEventService, ILogger<BillingEventHandler> logger, IHubContext<NotifyHub> notifyHub)
         {
             _notificationEventService = notificationEventService;
             _logger = logger;
+            _notifyHub = notifyHub;
         }
 
         /// <inheritdoc />
-        public Task Handle(BillingEvent @event)
+        public async Task Handle(BillingEvent @event)
         {
             
             _logger.LogInformation($"Get message {JsonConvert.SerializeObject(@event)}");
-            return _notificationEventService.CreateNotificationEventAsync(@event.OperationId, @event.UserId, @event.Message, CancellationToken.None);
+            await _notificationEventService.CreateNotificationEventAsync(@event.OperationId, @event.UserId, @event.Message, CancellationToken.None);
+            await SendNotifyAsync(@event);
+        }
+
+        private async Task SendNotifyAsync(BillingEvent @event)
+        {
+            var connections = NotifyHub.GetConnections(@event.UserId);
+            foreach (var connection in connections)
+            {
+                var client = _notifyHub.Clients.Client(connection);
+                await NotifyHub.Notify(@event, client);
+            }
         }
     }
 }

@@ -32,7 +32,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
         services.AddScoped<IAccessTokenService, WebAppAccessTokenService>();
         services.AddScoped(typeof(IIgniteUIBlazor), typeof(IgniteUIBlazor));
-
+        services.AddScoped<INotificationService, NotificationService>();        
+        
         // configuring http clients
         services.AddScoped(_ => new HttpClient {BaseAddress = new Uri(applicationSettings.BaseAddress)});
 

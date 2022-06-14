@@ -6,26 +6,38 @@
 @inject NavigationManager NavigationManager
 @inject IToastService ToastService
 
-<h2 class="white-text"><b>Profile</b></h2> 
+<h2 class="white-text">
+    <b>Profile</b>
+</h2>
 <hr class="white-horizontal-line"/>
 
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>
         <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
-            <br /><br />
+            <br/><br/>
             <Chase Center="true" Color="blue" Size="70px"></Chase>
         </div>
     </LoadingTemplate>
     <ContentTemplate>
         <div class="row">
             <div class="col-lg-8 col-md-6 col-sm-12">
-                <input type="text" @bind-value="AccountViewModel.Account.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
+                <input type="text" @bind-value="AccountVm.Account.FirstName" class="form-control dark-theme-textbox" placeholder="first name" disabled="@(AccountVm.Account.FirstName == null)">
                 <br/>
-                <input type="text" @bind-value="AccountViewModel.Account.LastName" class="form-control dark-theme-textbox" placeholder="last name">
+                <input type="text" @bind-value="AccountVm.Account.LastName" class="form-control dark-theme-textbox" placeholder="last name" disabled="@(AccountVm.Account.LastName == null)">
                 <br/>
-                <input type="text" @bind-value="AccountViewModel.Account.Phone" class="form-control dark-theme-textbox" placeholder="phone">
+                <input type="text" @bind-value="AccountVm.Account.Phone" class="form-control dark-theme-textbox" placeholder="phone" disabled="@(AccountVm.Account.Phone == null)">
                 <br/>
-                <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="UpdateProfile">Save</button>
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized || AccountVm.Account.Email == null)" @onclick="UpdateProfile">Save</button>
+            </div>
+        </div>
+        <hr class="white-horizontal-line"/>
+        <div class="row">
+            <div class="col-lg-8 col-md-6 col-sm-12">
+                <label>Balance: @AccountVm.Money.Wallet</label>
+                <br/>
+                <input type="text" @bind-value="AccountVm.Money.Deposit" class="form-control dark-theme-textbox" placeholder="sum">
+                <br/>
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized || AccountVm.Account.Email == null)" @onclick="PayDeposit">Add money</button>
             </div>
         </div>
     </ContentTemplate>
@@ -33,32 +45,37 @@
 
 <ActivateMessage></ActivateMessage>
 
-<br />
+<br/>
 
 @code {
+
     [CascadingParameter]
     public Task<AuthenticationState>? AuthenticationState { get; set; }
+    
+    [Parameter]
+    public IAccountViewModel AccountVm { get; set; }
 
     private bool IsLoading { get; set; } = true;
     private bool IsUserAuthorized { get; set; }
 
-    protected override async Task OnInitializedAsync() 
+    protected override async Task OnInitializedAsync()
     {
+        AccountVm = AccountViewModel;
         var authState = await AuthenticationState!;
         var user = authState.User;
 
-        if(user.Identity is { IsAuthenticated: true })
+        if (user.Identity is { IsAuthenticated: true })
         {
             IsUserAuthorized = true;
 
             try
             {
-                await AccountViewModel.GetAsync();
+                await AccountVm.InitAsync();
                 IsLoading = false;
             }
             catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                //_navigationManager.NavigateTo("/", true);
+    //_navigationManager.NavigateTo("/", true);
             }
         }
         else
@@ -69,7 +86,14 @@
 
     private async Task UpdateProfile()
     {
-        await AccountViewModel.UpdateAsync();
-        ToastService.ShowSuccess("Profile info has been saved successfully.");
+        await AccountVm.UpdateAccountAsync();
+        StateHasChanged();
     }
+    
+    private async Task PayDeposit()
+    {
+        await AccountVm.PutMoneyAsync();
+        StateHasChanged();
+    }
+
 }

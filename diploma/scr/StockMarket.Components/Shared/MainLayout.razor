@@ -5,6 +5,7 @@
 @inject ILoginViewModel LoginViewModel
 @inject IJSRuntime JsRuntime
 @inject IAccessTokenService AccessTokenService
+@inject INotificationService NotificationService
 
 <div class="page">
     <div class="sidebar">
@@ -39,27 +40,28 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        //if(firstRender)
+        var jwtToken = await AccessTokenService.GetAccessTokenAsync("jwt_token");
+        if (jwtToken == null)
         {
-            var jwtToken = await AccessTokenService.GetAccessTokenAsync("jwt_token");
-            if (jwtToken == null) return;
+            return;
+        }
 
-            jwtToken = $@"""{jwtToken}""";
-            var currentUser = LoginViewModel.GetUser(jwtToken);
+        jwtToken = $@"""{jwtToken}""";
+        var currentUser = LoginViewModel.GetUser(jwtToken);
 
-            if (currentUser != null)
-            {
-                //setting the themeName parameter for JS function
-                var themeName = "dark"; // "light";
-                //calling the JS function
-                var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/StockMarket.Components/js/site.js");
-                await module.InvokeVoidAsync("setTheme", themeName);
-            }
+        if (currentUser != null)
+        {
+    //setting the themeName parameter for JS function
+            var themeName = "dark"; // "light";
+    //calling the JS function
+            var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/StockMarket.Components/js/site.js");
+            await module.InvokeVoidAsync("setTheme", themeName);
         }
     }
 
     private async Task LogoutUser()
     {
+        await NotificationService.StopAsync();
         await AccessTokenService.RemoveAccessTokenAsync("jwt_token");
         NavigationManager.NavigateTo("/", true);
     }

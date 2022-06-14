@@ -10,12 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using Notification.Domain.Services;
 using Notification.Host.Helpers;
 using Notification.Host.Models.Events;
 using Notification.Host.Models.SignalR;
-using StockMarket.Shared.Models;
 
 namespace Notification.Host.Controllers
 {
@@ -78,7 +76,7 @@ namespace Notification.Host.Controllers
                 
                 var events = await _notificationEventService.GetNotificationEventAsync(cancellationToken);
                 
-                return Ok(events.Select(BillingEvent.Convert).ToList());
+                return Ok(events.Select(e => e.Convert()).ToList());
             }
             catch (ArgumentException e)
             {

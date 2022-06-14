@@ -7,7 +7,11 @@ public interface IAccountViewModel
 {
     Account Account { get; }
     
-    public Task GetAsync();
+    Money Money { get; }
 
-    public Task UpdateAsync();
+    public Task InitAsync();
+
+    public Task UpdateAccountAsync();
+
+    public Task PutMoneyAsync();
 }

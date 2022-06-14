@@ -1,6 +1,7 @@
 ﻿@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject IAccessTokenService AccessTokenService
+@inject INotificationService NotificationService
 
 <div class="top-row ps-4 navbar navbar-dark">
     <a class="navbar-brand" href="">StockMarket</a>
@@ -48,6 +49,7 @@
 
     private async Task Logout()
     {
+        await NotificationService.StopAsync();
         await AccessTokenService.RemoveAccessTokenAsync("jwt_token");
         NavigationManager.NavigateTo("/", true);
     }

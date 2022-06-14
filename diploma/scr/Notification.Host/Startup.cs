@@ -177,7 +177,8 @@ namespace Notification.Host
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers().RequireAuthorization("ApiScope");
+                endpoints.MapControllers().RequireAuthorization("ApiScope")
+                    .RequireCors(ConfigurePolicy);
                 endpoints.MapMetrics();
                 endpoints.MapHealthChecks("/readiness", new HealthCheckOptions
                 {
@@ -196,6 +197,17 @@ namespace Notification.Host
                         options.LongPolling.PollTimeout = TimeSpan.FromMinutes(1);
                         options.Transports = HttpTransportType.LongPolling | HttpTransportType.WebSockets;
                     })
+                    .RequireAuthorization("ApiScope")
+                    .RequireCors(ConfigurePolicy);
+                
+                endpoints.MapHub<NotifyHub>("/notify",
+                        options =>
+                        {
+                            options.ApplicationMaxBufferSize = 64;
+                            options.TransportMaxBufferSize = 64;
+                            options.LongPolling.PollTimeout = TimeSpan.FromMinutes(1);
+                            options.Transports = HttpTransportType.LongPolling | HttpTransportType.WebSockets;
+                        })
                     .RequireAuthorization("ApiScope")
                     .RequireCors(ConfigurePolicy);
             });

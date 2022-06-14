@@ -39,10 +39,10 @@ ingress:
 resources:
   limits:
     cpu: 150m
-    memory: 128Mi
+    memory: 256Mi
   requests:
     cpu: 150m
-    memory: 128Mi
+    memory: 256Mi
  
 postgresql:
   enabled: true
@@ -58,12 +58,12 @@ postgresql:
   resources:
     limits:
       cpu: 150m
-      memory: 128Mi
+      memory: 256Mi
     requests:
       cpu: 150m
-      memory: 128Mi
+      memory: 256Mi
   persistence:
-    size: 512Mi
+    size: 1024Mi
 
 externalPostgresql:
   useSsl: false

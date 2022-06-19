@@ -42,6 +42,18 @@ public static class HttpClientExtensions
     {
         return httpClient.SendAsync<T>(HttpMethod.Post, url, content, token);
     }
+    
+    public static Task<(HttpStatusCode Code, Error Error)> PostAsync(this HttpClient httpClient,
+        string url,
+        object data,
+        string token = null)
+    {
+        var content = new StringContent(JsonSerializer.Serialize(data),
+            Encoding.UTF8,
+            "application/json");
+
+        return httpClient.SendAsync(HttpMethod.Post, url, content, token);
+    }
 
     public static Task<(HttpStatusCode Code, Error Error)> PutAsync(this HttpClient httpClient,
         string url,

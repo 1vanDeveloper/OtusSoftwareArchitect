@@ -92,13 +92,11 @@ namespace Notification.Host
                             var accessToken = context.Request.Query["access_token"];
 
                             // If the request is for our hub...
-                            var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                (string.IsNullOrEmpty(context.Token)) &&
-                                (path.StartsWithSegments("/stock")))
+                                string.IsNullOrEmpty(context.Token))
                             {
                                 // Read the token out of the query string
-                                context.Token = accessToken;
+                                context.Token = accessToken.ToString().StartsWith("Bearer") ? accessToken : "Bearer " + accessToken;
                             }
                             return Task.CompletedTask;
                         }

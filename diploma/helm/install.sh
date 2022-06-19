@@ -21,3 +21,4 @@ helm install order ./order
 helm install notification ./notification
 # helm install gateway ./gateway
 helm install gateway bitnami/nginx -f ./nginx/values.yaml -f ./nginx/custom-server-block.yaml
+helm install client ./client

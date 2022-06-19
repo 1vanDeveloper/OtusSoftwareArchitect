@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
 using StockMarket.Components;
 using StockMarket.Shared.Models;
 using StockMarket.Shared.Extensions;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

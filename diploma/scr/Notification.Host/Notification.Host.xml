@@ -81,6 +81,16 @@
             <returns> Значение. </returns>
             <exception> Исключение, выбрасываемое если значение отсутствует или пусто. </exception>
         </member>
+        <member name="T:Notification.Host.Extensions.NotificationEventExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Extensions.NotificationEventExtensions.Convert(Notification.Domain.Models.NotificationEvent)">
+            <summary>
+            Convert
+            </summary>
+        </member>
         <member name="M:Notification.Host.Helpers.StockHelper.GenerateData(System.Collections.Generic.IDictionary{System.DateTime,StockMarket.Shared.Models.FinancialData},System.DateTime)">
             <summary>
             Generates new data based on passed length
@@ -138,20 +148,41 @@
             Тело операции
             </summary>
         </member>
-        <member name="M:Notification.Host.Models.Events.BillingEvent.Convert(Notification.Domain.Models.NotificationEvent)">
-            <summary>
-            Convert
-            </summary>
-        </member>
         <member name="T:Notification.Host.Models.Events.BillingEventHandler">
             <inheritdoc />
         </member>
-        <member name="M:Notification.Host.Models.Events.BillingEventHandler.#ctor(Notification.Domain.Services.INotificationEventService,Microsoft.Extensions.Logging.ILogger{Notification.Host.Models.Events.BillingEventHandler})">
+        <member name="M:Notification.Host.Models.Events.BillingEventHandler.#ctor(Notification.Domain.Services.INotificationEventService,Microsoft.Extensions.Logging.ILogger{Notification.Host.Models.Events.BillingEventHandler},Microsoft.AspNetCore.SignalR.IHubContext{Notification.Host.Models.SignalR.NotifyHub})">
             <summary>
             Constructor
             </summary>
         </member>
         <member name="M:Notification.Host.Models.Events.BillingEventHandler.Handle(Notification.Host.Models.Events.BillingEvent)">
+            <inheritdoc />
+        </member>
+        <member name="T:Notification.Host.Models.SignalR.NotifyHub">
+            <summary>
+            Настройка хаба оповещений
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.NotifyHub.GetConnections(System.Int64)">
+            <summary>
+            Получение списка подключений пользователя
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.NotifyHub.UpdateParametersAsync">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.NotifyHub.Notify(Notification.Host.Models.Events.BillingEvent,Microsoft.AspNetCore.SignalR.IClientProxy)">
+            <summary>
+            Отправка сообщения пользователю
+            </summary>
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.NotifyHub.OnConnectedAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:Notification.Host.Models.SignalR.NotifyHub.OnDisconnectedAsync(System.Exception)">
             <inheritdoc />
         </member>
         <member name="T:Notification.Host.Models.SignalR.StockHub">

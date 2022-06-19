@@ -21,3 +21,7 @@ sudo docker push 1vandev/order:v1
 cp docker/Notification/dockerfile .
 sudo docker build -t 1vandev/notification:v1 .
 sudo docker push 1vandev/notification:v1
+
+cp docker/Client/dockerfile .
+sudo docker build -t 1vandev/client:v1 .
+sudo docker push 1vandev/client:v1

@@ -1,13 +1,11 @@
 @page "/market"
 
 @using StockMarket.Shared.ViewModels.Interfaces
-@using IgniteUI.Blazor.Controls
 @using System.Collections.ObjectModel
 
-@inject IIgniteUIBlazor IgniteUiBlazor;
+@inject IIgniteUIBlazor IgniteUiBlazor
 @inject IMarketViewModel MarketViewModel
 @inject NavigationManager NavigationManager
-@inject IToastService ToastService
 @implements IAsyncDisposable
 
 <h2 class="white-text">
@@ -15,30 +13,71 @@
 </h2>
 <hr class="white-horizontal-line"/>
 
-<div class="container vertical">
-    <div class="container vertical">
-
-        <IgbFinancialChart Width="100%"
-                           Height="1000"
-                           ChartType=FinancialChartType.Line
-                           Thickness=2
-                           @bind-DataSource="@Data"
-                           ChartTitle="Microsoft Changes"
-                           YAxisMode="FinancialChartYAxisMode.PercentChange"
-                           YAxisTitle="Percent Changed"
-        />
-    </div>
-</div>
+<SpinLoader IsLoading="IsLoading">
+    <LoadingTemplate>
+        <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
+            <br/><br/>
+            <Chase Center="true" Color="blue" Size="70px"></Chase>
+        </div>
+    </LoadingTemplate>
+    <ContentTemplate>
+        <div class="row" style="height: 600px;">
+            <IgbFinancialChart Width="100%"
+                               Height="1000"
+                               ChartType=FinancialChartType.Line
+                               Thickness=2
+                               @bind-DataSource="@Data"
+                               ChartTitle="Microsoft Changes"
+                               YAxisMode="FinancialChartYAxisMode.PercentChange"
+                               YAxisTitle="Percent Changed"/>
+        </div>
+        <hr class="white-horizontal-line"/>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <input type="text" @bind-value="OrderCost" class="form-control dark-theme-textbox" placeholder="order cost">
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized || OrderCost is null or <= 0)" @onclick="MakeOrder">Make order</button>
+            </div>
+        </div>
+        <hr class="white-horizontal-line"/>
+        <div class="row">
+            <IgbDataGrid Height="100%" Width="100%"
+                         @bind-DataSource="@Orders"
+                         AutoGenerateColumns="false"
+                         SelectionMode="@GridSelectionMode.MultipleRow"
+                         IsGroupCollapsable="true"
+                         RowHeight="32"
+                         HeaderClickAction="@HeaderClickAction.SortByMultipleColumnsTriState"
+                         ActivationMode="GridActivationMode.Cell"
+                         DefaultColumnMinWidth="100"
+                         IsRowHoverEnabled="false">
+                <IgbNumericColumn Width="@("*>140")" Field="Id"/>
+                <IgbDateTimeColumn Width="@("*>140")" Field="Timestamp" HorizontalAlignment="@CellContentHorizontalAlignment.Right"/>
+                <IgbTextColumn Width="@("*>120")" Field="StateDescription"/>
+                <IgbNumericColumn Width="@("*>120")" Field="Amount" HeaderText="Cost" MinFractionDigits="2" MaxFractionDigits="2"/>
+                <IgbTextColumn Width="@("*>180")" Field="Description"/>
+            </IgbDataGrid>
+        </div>
+    </ContentTemplate>
+</SpinLoader>
 
 @code {
+
     [CascadingParameter]
     public Task<AuthenticationState>? AuthenticationState { get; set; }
 
     private bool IsLoading { get; set; } = true;
     private bool IsUserAuthorized { get; set; }
-    
+
     [Parameter]
     public ObservableCollection<FinancialData> Data { get; set; } = new();
+
+    [Parameter]
+    public ObservableCollection<Order> Orders { get; set; } = new();
+
+    [Parameter]
+    public decimal? OrderCost { get; set; } = 100;
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,7 +91,8 @@
             try
             {
                 IgbFinancialChartModule.Register(IgniteUiBlazor);
-                await MarketViewModel.OnInitializedAsync(NavigationManager, Update);
+                IgbDataGridModule.Register(IgniteUiBlazor);
+                await MarketViewModel.OnInitializedAsync(NavigationManager, UpdateFinancialData, UpdateOrders);
                 IsLoading = false;
             }
             catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -65,7 +105,7 @@
         }
     }
 
-    private async Task Update(List<FinancialData> data)
+    private async Task UpdateFinancialData(List<FinancialData> data)
     {
         Data.Clear();
         foreach (var financialData in data)
@@ -73,7 +113,28 @@
             Data.Add(financialData);
         }
         StateHasChanged();
-        await Task.Delay(10); 
+        await Task.Delay(10);
+    }
+
+    private async Task UpdateOrders(List<Order> orders)
+    {
+        Orders.Clear();
+        foreach (var order in orders)
+        {
+            Orders.Add(order);
+        }
+        StateHasChanged();
+        await Task.Delay(10);
+    }
+
+    private async Task MakeOrder()
+    {
+        if (OrderCost is null or <= 0)
+        {
+            return;
+        }
+
+        await MarketViewModel.MakeOrderAsync(OrderCost.Value);
     }
 
     public ValueTask DisposeAsync()
